@@ -1,0 +1,299 @@
+const fs = require("fs");
+const seedrandom = require("seedrandom");
+
+/**@type {{"seed": "Main" | string, "radius": number, "count": number, "exponent": number, "types": {"chance": number, "minDistance": number, "maxDistance": number, "preferred": string|"", "type": string[]}[]}} */
+const config = JSON.parse(fs.readFileSync("config.json", "utf-8"));
+const rng = seedrandom(config.seed);
+
+/**@type {{type: string, x: number, y: number, name: string, metadata: []}} */
+const galaxy = [];
+
+function polarToCartesian(r, angle) {
+    return {
+        x: r * Math.cos(angle),
+        y: r * Math.sin(angle)
+    };
+}
+
+function getRandomDistance(min, max) {
+    if (max === 0) max = config.radius;
+
+    const exponent = config.exponent || 1; // 1 = linear, >1 = mehr im Zentrum
+
+    //// return min + (max - min) * rng();
+
+    return min + (max - min) * Math.pow(rng(), exponent);
+}
+
+function generateAnomalyName(rng) {
+    const prefix = ["RX", "ZB", "QK", "VR", "IA", "OR", "PA", "TR"];
+    const suffix = [];
+    for (let i = 0; i < 99; i++) {
+        if (i < 10) suffix.push("-0" + i);
+        else suffix.push("-" + i)
+    }
+    for (let i = 0; i < 99; i++) {
+        if (i < 10) suffix.push("-0" + i);
+        else suffix.push("-MK" + i)
+    }
+
+    return prefix[Math.floor(rng() * prefix.length)] + suffix[Math.floor(rng() * suffix.length)];
+}
+
+function generateName(type, rng) {
+    if (type === "anomaly") { return generateAnomalyName(rng) };
+
+    const syllables = [
+        "ka", "lo", "ra", "ze", "tu", "mi", "xa", "vi", "no",
+        "shi", "dra", "qu", "ly", "tor", "zan", "ny", "fel", "vra",
+        "zur", "kre", "tho", "bal", "ix", "sy", "jen", "kul", "orn",
+        "nef", "ria", "sol", "mek", "tas", "lur", "xen", "cai", "vor",
+        "hel", "ume", "zan", "tha", "py", "rek", "gri", "yul", "zan",
+        "eph", "ari", "zho", "the", "mur", "dax", "nix", "zor", "lim"
+    ];
+
+    let name = "";
+    const length = 2 + Math.floor(rng() * 2);
+    for (let i = 0; i < length; i++) {
+        name += syllables[Math.floor(rng() * syllables.length)];
+    }
+    return name.charAt(0).toUpperCase() + name.slice(1);
+}
+
+const usedNames = new Set();
+
+function generateUniqueName(type, rng) {
+    let name;
+    let tries = 0;
+    do {
+        name = generateName(type, rng);
+        tries++;
+        if (tries > 100) {
+            name += `-ZU${Math.floor(rng() * 100)}`;
+        }
+    } while (usedNames.has(name));
+    usedNames.add(name);
+    return name;
+}
+
+function validateDistance(distance, angle, chosenType) {
+    const { x, y } = polarToCartesian(distance, angle)
+
+    const stars = getObjectType("star");
+
+    const typeConfig = config.types[chosenType]
+
+    let dx = 0;
+    let dy = 0;
+    let tooClose = false
+
+    if (galaxy.length === 0) {
+        return { tooClose, x, y, dx, dy }
+    }
+
+    if (typeConfig.preferred.startsWith("nearStar")) {
+        const parts = typeConfig.preferred.split("-");
+        if (parts.length === 3) {
+            const nearMin = parseFloat(parts[1]);
+            const nearMax = parseFloat(parts[2]);
+
+            const target = stars[Math.floor(rng() * stars.length)];
+            const dist = nearMin + rng() * (nearMax - nearMin);
+            dx = target.x + Math.cos(angle) * dist;
+            dy = target.y + Math.sin(angle) * dist;
+        }
+    }
+
+    // Check: Abstand zu Sternen, wenn deepSpace bevorzugt wird
+    if (typeConfig.preferred?.startsWith("deepSpace")) {
+        const parts = typeConfig.preferred.split("-");
+        if (parts.length === 2) {
+            const min = parseFloat(parts[1]);
+            for (const obj of galaxy) {
+                if (obj.type === "star") {
+                    const dx = obj.x - x;
+                    const dy = obj.y - y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < min) {
+                        tooClose = true;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    // Check: Abstand zu ähnlichen Typen
+    for (const obj of galaxy) {
+        if (obj.type === chosenType) {
+            const dx = obj.x - x;
+            const dy = obj.y - y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < typeConfig.minDistance) {
+                tooClose = true;
+                break;
+            }
+        }
+    }
+
+    return { tooClose, x, y, dx, dy }
+}
+
+function getObjectType(objectType) {
+    const all = []
+    for (const obj of galaxy) {
+        if (obj.type == objectType) {
+            all.push(obj)
+        }
+    }
+    return all;
+}
+
+function getRandomObjectType(objectType) {
+    const all = getObjectType(objectType)
+
+    return all[(Math.random() * (all.length - 1))];
+}
+
+const VALID_PLANETARY_RESOURCES = ["iron", "copper", "cobalt", "titanium", "hydrogen", "argon", "uranium", "tungsten"];
+const VALID_PLANETARY_SPECIALRESOURCES = ["razetulim", "zanzorlim", "mekballim", "helumelim"];
+const VALID_PLANETARY_FEATURES = ["dev_test", "hostile", "peaceful", "resource_rich", "inferno_temp", "hot_temp", "average_temp", "cold_temp", "frosty_temp"];
+
+/**
+ * Masse der Sonne (M_sol): 1.989e30
+ * Temperatur der Sonne (T_sol): 5778 °K
+ */
+
+/**
+ * Zulässige Ressourcen (nur Planeten/Einzelgänger/Asteroiden) (resource):\
+ * iron, copper, cobalt, titanium, hydrogen, argon, uranium, tungston
+ * 
+ * Zulässige Spezialressourcen (nur Planeten/Einzelgänger/Asteroiden) (specialresource):\
+ * razetulim, zanzorlim, mekballim, helumelim
+ * 
+ * Zulässige Planetare Eigenschaften (nur Planeten/Einzelgänger/Asteroiden) (features):\
+ * devNone, hostile, peaceful, resourceRich, infernoTemp, hotTemp, averageTemp, coldTemp, frostyTemp
+ * 
+ * Zulässige Sterneneigenschaften:\
+ * erstmal Nix
+ * 
+ * Diese Informationen werden Automatisch Via Seed "Erfunden"
+ * star:\
+ * Spektralklasse via Seed\
+ * Masse via Seed + Tabelle\
+ * Subspektralklasse via Seed + Masse\
+ * Temparatur via Seed + Subspektralklasse
+ * 
+ * @param type {string}
+ * @param x {number}
+ * @param y {number}
+ * @param name {string}
+ * @param metadata {{resource: {}, specialresource: {}, features: string[]}}
+ */
+function galaxyPush(type, x, y, name, metadata = { resource: {}, specialresource: {}, features: [] }) {
+
+    /**@type {{resource: {res:string, amount:number}[], specialresource: {res:string, amount:number}[], features: string[]}} */
+    const metadata_edit1 = { resource: [], specialresource: [], features: [] }
+
+    //* Ressourcen (resource)
+    //// if (metadata.resource.iron != null) { metadata_edit1.resource.push({ res: "iron", amount: metadata.resource.iron }) }
+    //// if (metadata.resource.copper != null) { metadata_edit1.resource.push({ res: "copper", amount: metadata.resource.copper }) }
+    //// if (metadata.resource.cobalt != null) { metadata_edit1.resource.push({ res: "cobalt", amount: metadata.resource.cobalt }) }
+    //// if (metadata.resource.titanium != null) { metadata_edit1.resource.push({ res: "titanium", amount: metadata.resource.titanium }) }
+    //// if (metadata.resource.hydrogen != null) { metadata_edit1.resource.push({ res: "hydrogen", amount: metadata.resource.hydrogen }) }
+    //// if (metadata.resource.argon != null) { metadata_edit1.resource.push({ res: "argon", amount: metadata.resource.argon }) }
+    //// if (metadata.resource.uranium != null) { metadata_edit1.resource.push({ res: "uranium", amount: metadata.resource.uranium }) }
+    //// if (metadata.resource.tungsten != null) { metadata_edit1.resource.push({ res: "tungsten", amount: metadata.resource.tungsten }) }
+    for (const [res, amount] of Object.entries(metadata.resource || {})) {
+        if (VALID_PLANETARY_RESOURCES.includes(res)) {
+            metadata_edit1.resource.push({ res, amount });
+        }
+    }
+
+    //* Spezielle Ressourcen (specialresource)
+    //// if (metadata.specialresource.razetulim != null) { metadata_edit1.specialresource.push({ res: "razetulim", amount: metadata.specialresource.razetulim }) }
+    //// if (metadata.specialresource.zanzorlim != null) { metadata_edit1.specialresource.push({ res: "zanzorlim", amount: metadata.specialresource.zanzorlim }) }
+    //// if (metadata.specialresource.mekballim != null) { metadata_edit1.specialresource.push({ res: "mekballim", amount: metadata.specialresource.mekballim }) }
+    //// if (metadata.specialresource.helumelim != null) { metadata_edit1.specialresource.push({ res: "helumelim", amount: metadata.specialresource.helumelim }) }
+    for (const [res, amount] of Object.entries(metadata.specialresource || {})) {
+        if (VALID_PLANETARY_SPECIALRESOURCES.includes(res)) {
+            metadata_edit1.specialresource.push({ res, amount });
+        }
+    }
+
+    //* Planetare/Stellare/Interstellare Eigenschaften (features)
+    for (let i = 0; i < metadata.features.length; i++) {
+        const e = metadata.features[i];
+        for (let j = 0; j < VALID_PLANETARY_FEATURES.length; j++) {
+            const f = VALID_PLANETARY_FEATURES[j];
+            if (e.toLowerCase() == f.toLowerCase()) metadata_edit1.features.push(f)
+        }
+    }
+
+    const metadata_edit2 = {}
+
+    if (metadata_edit1.resource.length != 0) { metadata_edit2.resource = metadata_edit1.resource }
+    if (metadata_edit1.specialresource.length != 0) { metadata_edit2.specialresource = metadata_edit1.specialresource }
+    if (metadata_edit1.features.length != 0) { metadata_edit2.features = metadata_edit1.features }
+
+    // const distanceToCenter = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+    const distanceToCenter = Math.hypot(x, y);
+
+    const d = {
+        type,
+        x,
+        y,
+        name,
+        distanceToCenter,
+        metadata: metadata_edit2
+    }
+    console.log(JSON.stringify(d));
+
+    // console.log(d.chosenType);
+
+    galaxy.push(d)
+}
+
+while (galaxy.length < config.count) {
+    const angle = rng() * Math.PI * 2;
+    const typeKeys = Object.keys(config.types);
+    const chosenType = typeKeys.find(key => rng() < config.types[key].chance);
+
+    if (!chosenType) continue;
+
+    const typeConfig = config.types[chosenType];
+    let distance = getRandomDistance(typeConfig.minDistance || 0, typeConfig.maxDistance || 0);
+
+    const stars = getObjectType("star");
+
+    // === nearStar ===
+    if (typeConfig.preferred?.startsWith("nearStar")) {
+        const parts = typeConfig.preferred.split("-");
+        if (parts.length === 3 && stars.length > 0) {
+            const nearMin = parseFloat(parts[1]);
+            const nearMax = parseFloat(parts[2]);
+            const target = stars[Math.floor(rng() * stars.length)];
+
+            const angleTo = rng() * Math.PI * 2;
+            const dist = nearMin + rng() * (nearMax - nearMin);
+
+            const x = target.x + Math.cos(angleTo) * dist;
+            const y = target.y + Math.sin(angleTo) * dist;
+
+            const { tooClose } = validateDistance(0, 0, chosenType);
+            if (!tooClose) {
+                galaxyPush(chosenType, x, y, generateUniqueName(chosenType, rng));
+            }
+            continue;
+        }
+    }
+
+    // === Alle anderen ===
+    const { tooClose, x, y } = validateDistance(distance, angle, chosenType);
+    if (!tooClose) {
+        galaxyPush(chosenType, x, y, generateUniqueName(chosenType, rng));
+    }
+}
+
+fs.writeFileSync("./public/galaxy.json", JSON.stringify(galaxy));
+console.log("💫 Galaxie generiert mit", galaxy.length, "Objekten.");

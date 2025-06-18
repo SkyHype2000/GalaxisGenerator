@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "seedrandom": "^3.0.5"
+  },
+  "name": "galaxisgenerator",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
