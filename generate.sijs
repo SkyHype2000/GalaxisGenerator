@@ -171,9 +171,6 @@ const VALID_PLANETARY_FEATURES = ["dev_test", "hostile", "peaceful", "resource_r
  * Zulässige Spezialressourcen (nur Planeten/Einzelgänger/Asteroiden) (specialresource):\
  * razetulim, zanzorlim, mekballim, helumelim
  * 
- * Zulässige Planetare Eigenschaften (nur Planeten/Einzelgänger/Asteroiden) (features):\
- * devNone, hostile, peaceful, resourceRich, infernoTemp, hotTemp, averageTemp, coldTemp, frostyTemp
- * 
  * Zulässige Sterneneigenschaften:\
  * erstmal Nix
  * 
@@ -190,10 +187,24 @@ const VALID_PLANETARY_FEATURES = ["dev_test", "hostile", "peaceful", "resource_r
  * @param name {string}
  * @param metadata {{resource: {}, specialresource: {}, features: string[]}}
  */
-function galaxyPush(type, x, y, name, metadata = { resource: {}, specialresource: {}, features: [] }) {
+function galaxyPush(type, x, y, name, metadata = { resource: {}, specialresource: {} }) {
 
-    /**@type {{resource: {res:string, amount:number}[], specialresource: {res:string, amount:number}[], features: string[]}} */
-    const metadata_edit1 = { resource: [], specialresource: [], features: [] }
+    /**@type {{resource: {res:string, amount:number}[], specialresource: {res:string, amount:number}[], features: string[], informationType: "star"|"planet"|"astroidField", informationBase: {}}} */
+    const metadata_edit1 = { resource: [], specialresource: [], features: [], informationType: null, informationBase: null }
+
+    /**@type {{}} */
+    const informationStar = {
+        starTemperature: null,
+        starMass: null,
+        starLum: null,
+        starSpectral: {h: null, s: null}
+    }
+    /**@type {{}} */
+    const planet = {}
+    /**@type {{}} */
+    const astroidField = {}
+
+    if (type == "star") {metadata_edit1.informationType = "star"; metadata_edit1.informationBase = informationStar}
 
     //* Ressourcen (resource)
     //// if (metadata.resource.iron != null) { metadata_edit1.resource.push({ res: "iron", amount: metadata.resource.iron }) }
