@@ -40,6 +40,10 @@ function generateAnomalyName(rng) {
     return prefix[Math.floor(rng() * prefix.length)] + suffix[Math.floor(rng() * suffix.length)];
 }
 
+function generateSolarMass() {
+    
+}
+
 function generateName(type, rng) {
     if (type === "anomaly") { return generateAnomalyName(rng) };
 
@@ -152,17 +156,12 @@ function getObjectType(objectType) {
 function getRandomObjectType(objectType) {
     const all = getObjectType(objectType)
 
-    return all[(Math.random() * (all.length - 1))];
+    return all[(rng() * (all.length - 1))];
 }
 
+const VALID_SPACE_OBJECTS = ["mainBlackHole", "star", "planet", "astroidfieldt1_astroid", "astroidfieldt2_astroid", "astroidfieldt3_astroid", "rogue_planet", "anomaly", "blackHole"]
 const VALID_PLANETARY_RESOURCES = ["iron", "copper", "cobalt", "titanium", "hydrogen", "argon", "uranium", "tungsten"];
 const VALID_PLANETARY_SPECIALRESOURCES = ["razetulim", "zanzorlim", "mekballim", "helumelim"];
-const VALID_PLANETARY_FEATURES = ["dev_test", "hostile", "peaceful", "resource_rich", "inferno_temp", "hot_temp", "average_temp", "cold_temp", "frosty_temp"];
-
-/**
- * Masse der Sonne (M_sol): 1.989e30
- * Temperatur der Sonne (T_sol): 5778 °K
- */
 
 /**
  * Zulässige Ressourcen (nur Planeten/Einzelgänger/Asteroiden) (resource):\
@@ -181,20 +180,31 @@ const VALID_PLANETARY_FEATURES = ["dev_test", "hostile", "peaceful", "resource_r
  * Subspektralklasse via Seed + Masse\
  * Temparatur via Seed + Subspektralklasse
  * 
- * @param type {string}
+ * @param type {string|"mainBlackHole"|"star"|"planet"|"astroidfieldt1_astroid"|"astroidfieldt2_astroid"|"astroidfieldt3_astroid"|"rogue_planet"|"anomaly"|"blackHole"}
  * @param x {number}
  * @param y {number}
  * @param name {string}
- * @param metadata {{resource: {}, specialresource: {}, features: string[]}}
+ * @param metadata {{resource: {}, specialresource: {}}}
  */
 function galaxyPush(type, x, y, name, metadata = { resource: {}, specialresource: {} }) {
 
-    /**@type {{resource: {res:string, amount:number}[], specialresource: {res:string, amount:number}[], features: string[], informationType: "star"|"planet"|"astroidField", informationBase: {}}} */
-    const metadata_edit1 = { resource: [], specialresource: [], features: [], informationType: null, informationBase: null };
+    /**@type {{resource: {res:string, amount:number}[], specialresource: {res:string, amount:number}[], informationType: "star"|"planet"|"astroidField", informationBase: {}|null}} */
+    const metadata_edit1 = { resource: [], specialresource: [], features: [], informationType: null, informationsBase: null };
     const metadata_edit2 = {};
 
     if (type != "mainBlackHole") {
-        /**@type {{}} */
+        /**
+         * Die Grund-Informationen für den Stern
+         * 
+         * starTemperature: Sternentemparatur in °K\
+         * starMass: Sternenmasse in Sonnenmassen\
+         * starLum: Sternenleuchtstärke in Sonnenleuchtstärken
+         * starSpectral: Spektrum des Sterns:
+         *  - h=Hauptsprektrum
+         *  - s=Subspektrum
+         * 
+         * @type {{starTemperature: number, starMass: number, starLum: number, starSpectral: {h:string, s:string}}}
+         */
         const informationStar = {
             starTemperature: null,
             starMass: null,
@@ -247,12 +257,16 @@ function galaxyPush(type, x, y, name, metadata = { resource: {}, specialresource
         if (metadata_edit1.specialresource.length != 0) { metadata_edit2.specialresource = metadata_edit1.specialresource }
         if (metadata_edit1.features.length != 0) { metadata_edit2.features = metadata_edit1.features }
     } else {
-        x = 0
-        y = 0,
-        name = config.mainBlackHoleName
+        x = 0;
+        y = 0;
+        name = config.mainBlackHoleName;
+    }
+
+    if (type == "star") {
+        
     }
     
-    // const distanceToCenter = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+    //// const distanceToCenter = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
     const distanceToCenter = Math.hypot(x, y);
 
     const d = {
@@ -269,7 +283,6 @@ function galaxyPush(type, x, y, name, metadata = { resource: {}, specialresource
 
     galaxy.push(d)
 }
-
 galaxyPush("mainBlackHole")
 
 while (galaxy.length < config.count) {
