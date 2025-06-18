@@ -2,98 +2,102 @@
 <html>
 
 <head>
-  <meta charset="UTF-8" />
-  <title>Galaxie</title>
-  <style>
-    html,
-    body {
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      background: black;
-    }
+    <meta charset="UTF-8" />
+    <title>Galaxie</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: black;
+        }
 
-    canvas {
-      display: block;
-    }
+        canvas {
+            display: block;
+        }
 
-    .legend {
-      position: absolute;
-      bottom: 10px;
-      left: 10px;
-      background: rgba(0, 0, 0, 0.6);
-      color: white;
-      font-family: sans-serif;
-      font-size: 12px;
-      padding: 8px;
-      border-radius: 5px;
-    }
+        .legend {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            font-family: sans-serif;
+            font-size: 12px;
+            padding: 8px;
+            border-radius: 5px;
+        }
 
-    .legend div {
-      margin: 4px 0;
-    }
+        .legend div {
+            margin: 4px 0;
+        }
 
-    .dot {
-      display: inline-block;
-      width: 12px;
-      height: 12px;
-      margin-right: 6px;
-      border-radius: 50%;
-    }
+        .dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            margin-right: 6px;
+            border-radius: 50%;
+        }
 
-    input {
-      background-color: darkslategray;
-      color: white;
-    }
+        input {
+            background-color: darkslategray;
+            color: white;
+        }
 
-    input:focus {
-      outline: none
-    }
+        input:focus {
+            outline: none
+        }
 
-    .info-panel {
-      position: absolute;
-      bottom: 10px;
-      right: 10px;
-      background: rgba(0, 0, 0, 0.6);
-      color: white;
-      font-family: sans-serif;
-      font-size: 12px;
-      padding: 8px;
-      border-radius: 5px;
-      max-width: 200px;
-      pointer-events: none;
-      /* Damit man nicht versehentlich draufklickt */
-    }
-  </style>
+        input:disabled {
+            background-color: rgb(23, 23, 23);
+            color: #3f3f3f;
+        }
+
+        .info-panel {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            font-family: sans-serif;
+            font-size: 12px;
+            padding: 8px;
+            border-radius: 5px;
+            max-width: 200px;
+            pointer-events: none;
+            /* Damit man nicht versehentlich draufklickt */
+        }
+    </style>
 </head>
 
 <body>
-  <canvas id="galaxy"></canvas>
-  <div class="legend">
-    <h3>Legende</h3>
-    <div><span class="dot" style="background: yellow;"></span> Stern <span id="star_count">(?)</span></div>
-    <div><span class="dot" style="background: lightgray;"></span> T1 - Asteroidenhaufen <span
-        id="t1_astroid_count">(?)</span></div>
-    <div><span class="dot" style="background: gray;"></span> T2 - Asteroidenhaufen <span
-        id="t2_astroid_count">(?)</span></div>
-    <div><span class="dot" style="background: darkgreen;"></span> T3 - Asteroidenhaufen <span
-        id="t3_astroid_count">(?)</span></div>
-    <div><span class="dot" style="background: blue;"></span> Einzelgänger-Planet <span
-        id="rogue_planet_count">(?)</span></div>
-    <div><span class="dot" style="background: magenta;"></span> Anomalie <span id="anomaly_count">(?)</span></div>
-    <div><span class="dot" style="background: pink;"></span> Schwarzes Loch <span id="blackHole_count">(?)</span></div>
-    <h3>Optionen</h3>
-    <div><span>Name Zoom-Anzeigedistanz: </span><input type="number" min="0.0001" max="10.0000" step="0.0001"
-        value="0.7000" id="nameDistance"></div>
-    <div><span>Zeige Distanzlinien: </span><input type="checkbox" id="showDistanceLines"> <input type="number" name="" id=""></div>
-  </div>
+    <canvas id="galaxy"></canvas>
+    <div class="legend">
+        <h3>Legende</h3>
+        <div><span class="dot" style="background: yellow;"></span> Stern <span id="star_count">(?)</span></div>
+        <div><span class="dot" style="background: lightgray;"></span> T1 - Asteroidenhaufen <span id="t1_astroid_count">(?)</span></div>
+        <div><span class="dot" style="background: gray;"></span> T2 - Asteroidenhaufen <span id="t2_astroid_count">(?)</span></div>
+        <div><span class="dot" style="background: darkgreen;"></span> T3 - Asteroidenhaufen <span id="t3_astroid_count">(?)</span></div>
+        <div><span class="dot" style="background: blue;"></span> Einzelgänger-Planet <span id="rogue_planet_count">(?)</span></div>
+        <div><span class="dot" style="background: magenta;"></span> Anomalie <span id="anomaly_count">(?)</span></div>
+        <div><span class="dot" style="background: pink;"></span> Schwarzes Loch <span id="blackHole_count">(?)</span>
+        <div><span class="dot" style="background: pink;"></span> Schwarzes Loch (Zentrum) <span id="mainBlackHole_count">(?)</span>
+        </div>
+        <h3>Optionen</h3>
+        <div><span>Name Zoom-Anzeigedistanz: </span><input type="number" min="0.0001" max="10.0000" step="0.0001"
+                value="0.7000" id="nameDistance"></div>
+        <div><span>Zeige Distanzlinien: </span><input type="checkbox" id="showDistanceLines"> <input type="number"
+                value="10" step="1" min="1" , max="25" id="maxDistanceLines" disabled></div>
+    </div>
 
-  <div class="info-panel" id="info_panel">
-    <h3>Objektinfo</h3>
-    <div id="info_content">Bewege den Mauszeiger über ein Objekt...</div>
-  </div>
+    <!-- <div class="info-panel" id="info_panel"> -->
+        <!-- <h3>Objektinfo</h3> -->
+        <!-- <div id="info_content">Bewege den Mauszeiger über ein Objekt...</div> -->
+    <!-- </div> -->
 
-  <script src="render.js"></script>
+    <script src="render.js"></script>
 </body>
 
 </html>

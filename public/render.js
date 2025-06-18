@@ -16,15 +16,23 @@ const legend = document.getElementById("galaxy");
 const legendDivs = document.querySelectorAll('.legend div');
 
 const nameShowDistance = document.getElementById('nameDistance');
+const showDistanceLines = document.getElementById('showDistanceLines');
+const maxDistanceLines = document.getElementById('maxDistanceLines');
+
 nameShowDistance.addEventListener('change', () => {
     NAME_VANISH_DISTANCE = nameShowDistance.value;
     console.log("new nameShowDistance: " + NAME_VANISH_DISTANCE);
 
 });
-const showDistanceLines = document.getElementById('showDistanceLines');
 showDistanceLines.addEventListener('change', () => {
     SHOW_LINE_DISTANCE = showDistanceLines.checked;
     console.log("new showDistanceLines: " + SHOW_LINE_DISTANCE);
+    if (showDistanceLines.checked == true) maxDistanceLines.disabled = false;
+    else maxDistanceLines.disabled = true;
+})
+
+maxDistanceLines.addEventListener('change', () => {
+    OBJECT_DISTANCE_VISUALIZATION_LIMIT = Math.round(maxDistanceLines.value);
 })
 
 const info_panel = document.getElementById('info_panel');
@@ -64,6 +72,7 @@ fetch("galaxy.json")
                 case 'rogue_planet': object_count.rogue_planet++; continue;
                 case 'anomaly': object_count.anomaly++; continue;
                 case 'blackHole': object_count.blackHole++; continue;
+                case 'mainBlackHole': object_count.blackHole++; continue;
             }
         }
         const star_count = document.getElementById('star_count');
@@ -80,6 +89,8 @@ fetch("galaxy.json")
         anomaly_count.innerText = `(${object_count.anomaly})`;
         const blackHole_count = document.getElementById('blackHole_count');
         blackHole_count.innerText = `(${object_count.blackHole})`;
+        const mainBlackHole_count = document.getElementById('mainBlackHole_count');
+        mainBlackHole_count.innerText = `(${object_count.blackHole})`;
 
         console.log("Objekte: " + data.length.toString());
 
@@ -100,6 +111,7 @@ fetch("galaxy.json")
                 else if (text.includes('einzelgänger')) hoveredType = 'rogue_planet';
                 else if (text.includes('anomalie')) hoveredType = 'anomaly';
                 else if (text.includes('schwarzes loch')) hoveredType = 'blackHole';
+                else if (text.includes('schwarzes loch (zentrum)')) hoveredType = 'mainBlackHole';
                 else hoveredType = null;
 
                 draw();
@@ -145,7 +157,8 @@ fetch("galaxy.json")
                         case 't3_astroid': return 'darkgreen';
                         case 'rogue_planet': return 'blue';
                         case 'anomaly': return 'magenta';
-                        case 'blachHole': return 'pink';
+                        case 'blackHole': return 'pink';
+                        case 'mainBlackHole': return 'magenta';
                         default: return 'white';
                     }
                 })();
@@ -292,6 +305,7 @@ fetch("galaxy.json")
                     case 'rogue_planet': ctx.fillStyle = 'blue'; break;
                     case 'anomaly': ctx.fillStyle = 'magenta'; break;
                     case 'blackHole': ctx.fillStyle = 'pink'; break;
+                    case 'mainBlackHole': ctx.fillStyle = 'magenta'; break;
                     default: ctx.fillStyle = 'white'; break;
                 }
 
@@ -303,6 +317,7 @@ fetch("galaxy.json")
                 // Namen anzeigen, wenn entweder zoom > threshold oder Objekt gehighlightet
                 if (zoom > NAME_VANISH_DISTANCE || (hoveredType && obj.type === hoveredType) || (hoveredObject && obj === hoveredObject)) {
                     ctx.fillStyle = (obj.type === 'anomaly') ? 'magenta' : 'white';
+                    ctx.fillStyle = (obj.type === 'mainBlackHole') ? 'magenta' : 'white';
                     ctx.font = `${FONT_SIZE}px monospace`;
                     ctx.fillText(obj.name, x + size + 3, y - size - 3);
                 }

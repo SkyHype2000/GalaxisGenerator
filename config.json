@@ -3,6 +3,7 @@
   "radius": 100000,
   "count": 2500,
   "exponent": 5,
+  "mainBlackHoleName": "Nexus",
   "types": {
     "star": {
       "chance": 0.8,

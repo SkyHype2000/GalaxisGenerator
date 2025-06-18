@@ -1,7 +1,7 @@
 const fs = require("fs");
 const seedrandom = require("seedrandom");
 
-/**@type {{"seed": "Main" | string, "radius": number, "count": number, "exponent": number, "types": {"chance": number, "minDistance": number, "maxDistance": number, "preferred": string|"", "type": string[]}[]}} */
+/**@type {{"seed": "Main" | string, "radius": number, "count": number, "exponent": number, "mainBlackHoleName": string, "types": {"chance": number, "minDistance": number, "maxDistance": number, "preferred": string|"", "type": string[]}[]}} */
 const config = JSON.parse(fs.readFileSync("config.json", "utf-8"));
 const rng = seedrandom(config.seed);
 
@@ -190,63 +190,68 @@ const VALID_PLANETARY_FEATURES = ["dev_test", "hostile", "peaceful", "resource_r
 function galaxyPush(type, x, y, name, metadata = { resource: {}, specialresource: {} }) {
 
     /**@type {{resource: {res:string, amount:number}[], specialresource: {res:string, amount:number}[], features: string[], informationType: "star"|"planet"|"astroidField", informationBase: {}}} */
-    const metadata_edit1 = { resource: [], specialresource: [], features: [], informationType: null, informationBase: null }
+    const metadata_edit1 = { resource: [], specialresource: [], features: [], informationType: null, informationBase: null };
+    const metadata_edit2 = {};
 
-    /**@type {{}} */
-    const informationStar = {
-        starTemperature: null,
-        starMass: null,
-        starLum: null,
-        starSpectral: {h: null, s: null}
-    }
-    /**@type {{}} */
-    const planet = {}
-    /**@type {{}} */
-    const astroidField = {}
-
-    if (type == "star") {metadata_edit1.informationType = "star"; metadata_edit1.informationBase = informationStar}
-
-    //* Ressourcen (resource)
-    //// if (metadata.resource.iron != null) { metadata_edit1.resource.push({ res: "iron", amount: metadata.resource.iron }) }
-    //// if (metadata.resource.copper != null) { metadata_edit1.resource.push({ res: "copper", amount: metadata.resource.copper }) }
-    //// if (metadata.resource.cobalt != null) { metadata_edit1.resource.push({ res: "cobalt", amount: metadata.resource.cobalt }) }
-    //// if (metadata.resource.titanium != null) { metadata_edit1.resource.push({ res: "titanium", amount: metadata.resource.titanium }) }
-    //// if (metadata.resource.hydrogen != null) { metadata_edit1.resource.push({ res: "hydrogen", amount: metadata.resource.hydrogen }) }
-    //// if (metadata.resource.argon != null) { metadata_edit1.resource.push({ res: "argon", amount: metadata.resource.argon }) }
-    //// if (metadata.resource.uranium != null) { metadata_edit1.resource.push({ res: "uranium", amount: metadata.resource.uranium }) }
-    //// if (metadata.resource.tungsten != null) { metadata_edit1.resource.push({ res: "tungsten", amount: metadata.resource.tungsten }) }
-    for (const [res, amount] of Object.entries(metadata.resource || {})) {
-        if (VALID_PLANETARY_RESOURCES.includes(res)) {
-            metadata_edit1.resource.push({ res, amount });
+    if (type != "mainBlackHole") {
+        /**@type {{}} */
+        const informationStar = {
+            starTemperature: null,
+            starMass: null,
+            starLum: null,
+            starSpectral: { h: null, s: null }
         }
-    }
+        /**@type {{}} */
+        const planet = {}
+        /**@type {{}} */
+        const astroidField = {}
 
-    //* Spezielle Ressourcen (specialresource)
-    //// if (metadata.specialresource.razetulim != null) { metadata_edit1.specialresource.push({ res: "razetulim", amount: metadata.specialresource.razetulim }) }
-    //// if (metadata.specialresource.zanzorlim != null) { metadata_edit1.specialresource.push({ res: "zanzorlim", amount: metadata.specialresource.zanzorlim }) }
-    //// if (metadata.specialresource.mekballim != null) { metadata_edit1.specialresource.push({ res: "mekballim", amount: metadata.specialresource.mekballim }) }
-    //// if (metadata.specialresource.helumelim != null) { metadata_edit1.specialresource.push({ res: "helumelim", amount: metadata.specialresource.helumelim }) }
-    for (const [res, amount] of Object.entries(metadata.specialresource || {})) {
-        if (VALID_PLANETARY_SPECIALRESOURCES.includes(res)) {
-            metadata_edit1.specialresource.push({ res, amount });
+        if (type == "star") { metadata_edit1.informationType = "star"; metadata_edit1.informationBase = informationStar }
+
+        //* Ressourcen (resource)
+        //// if (metadata.resource.iron != null) { metadata_edit1.resource.push({ res: "iron", amount: metadata.resource.iron }) }
+        //// if (metadata.resource.copper != null) { metadata_edit1.resource.push({ res: "copper", amount: metadata.resource.copper }) }
+        //// if (metadata.resource.cobalt != null) { metadata_edit1.resource.push({ res: "cobalt", amount: metadata.resource.cobalt }) }
+        //// if (metadata.resource.titanium != null) { metadata_edit1.resource.push({ res: "titanium", amount: metadata.resource.titanium }) }
+        //// if (metadata.resource.hydrogen != null) { metadata_edit1.resource.push({ res: "hydrogen", amount: metadata.resource.hydrogen }) }
+        //// if (metadata.resource.argon != null) { metadata_edit1.resource.push({ res: "argon", amount: metadata.resource.argon }) }
+        //// if (metadata.resource.uranium != null) { metadata_edit1.resource.push({ res: "uranium", amount: metadata.resource.uranium }) }
+        //// if (metadata.resource.tungsten != null) { metadata_edit1.resource.push({ res: "tungsten", amount: metadata.resource.tungsten }) }
+        for (const [res, amount] of Object.entries(metadata.resource || {})) {
+            if (VALID_PLANETARY_RESOURCES.includes(res)) {
+                metadata_edit1.resource.push({ res, amount });
+            }
         }
-    }
 
-    //* Planetare/Stellare/Interstellare Eigenschaften (features)
-    for (let i = 0; i < metadata.features.length; i++) {
-        const e = metadata.features[i];
-        for (let j = 0; j < VALID_PLANETARY_FEATURES.length; j++) {
-            const f = VALID_PLANETARY_FEATURES[j];
-            if (e.toLowerCase() == f.toLowerCase()) metadata_edit1.features.push(f)
+        //* Spezielle Ressourcen (specialresource)
+        //// if (metadata.specialresource.razetulim != null) { metadata_edit1.specialresource.push({ res: "razetulim", amount: metadata.specialresource.razetulim }) }
+        //// if (metadata.specialresource.zanzorlim != null) { metadata_edit1.specialresource.push({ res: "zanzorlim", amount: metadata.specialresource.zanzorlim }) }
+        //// if (metadata.specialresource.mekballim != null) { metadata_edit1.specialresource.push({ res: "mekballim", amount: metadata.specialresource.mekballim }) }
+        //// if (metadata.specialresource.helumelim != null) { metadata_edit1.specialresource.push({ res: "helumelim", amount: metadata.specialresource.helumelim }) }
+        for (const [res, amount] of Object.entries(metadata.specialresource || {})) {
+            if (VALID_PLANETARY_SPECIALRESOURCES.includes(res)) {
+                metadata_edit1.specialresource.push({ res, amount });
+            }
         }
+
+        //// Planetare/Stellare/Interstellare Eigenschaften (features)
+        //// for (let i = 0; i < metadata.features.length; i++) {
+        ////     const e = metadata.features[i];
+        ////     for (let j = 0; j < VALID_PLANETARY_FEATURES.length; j++) {
+        ////         const f = VALID_PLANETARY_FEATURES[j];
+        ////         if (e.toLowerCase() == f.toLowerCase()) metadata_edit1.features.push(f)
+        ////     }
+        //// }
+
+        if (metadata_edit1.resource.length != 0) { metadata_edit2.resource = metadata_edit1.resource }
+        if (metadata_edit1.specialresource.length != 0) { metadata_edit2.specialresource = metadata_edit1.specialresource }
+        if (metadata_edit1.features.length != 0) { metadata_edit2.features = metadata_edit1.features }
+    } else {
+        x = 0
+        y = 0,
+        name = config.mainBlackHoleName
     }
-
-    const metadata_edit2 = {}
-
-    if (metadata_edit1.resource.length != 0) { metadata_edit2.resource = metadata_edit1.resource }
-    if (metadata_edit1.specialresource.length != 0) { metadata_edit2.specialresource = metadata_edit1.specialresource }
-    if (metadata_edit1.features.length != 0) { metadata_edit2.features = metadata_edit1.features }
-
+    
     // const distanceToCenter = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
     const distanceToCenter = Math.hypot(x, y);
 
@@ -264,6 +269,8 @@ function galaxyPush(type, x, y, name, metadata = { resource: {}, specialresource
 
     galaxy.push(d)
 }
+
+galaxyPush("mainBlackHole")
 
 while (galaxy.length < config.count) {
     const angle = rng() * Math.PI * 2;
