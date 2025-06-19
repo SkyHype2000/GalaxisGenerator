@@ -1,13 +1,33 @@
 const fs = require("fs");
 const seedrandom = require("seedrandom");
 
-/**@type {{"seed": "Main" | string, "radius": number, "count": number, "exponent": number, "mainBlackHoleName": string, "types": {"chance": number, "minDistance": number, "maxDistance": number, "preferred": string|"", "type": string[]}[]}} */
+/**
+ * Die Config wo alle Informationen aufgeschrieben sind.\
+ * Ohne sie würde alles den Bach Runter gehen XD.
+ * 
+ * Ich sollte mal schlafen gehen, wir haben es am 19.06.2025 um 02:02 Uhr Morgens XD.
+ * 
+ * @type {{"seed": "Main" | string, "radius": number, "count": number, "exponent": number, "mainBlackHoleName": string, "types": {"chance": number, "minDistance": number, "maxDistance": number, "preferred": string|"", "type": string[]}[]}} */
 const config = JSON.parse(fs.readFileSync("config.json", "utf-8"));
+
+/**
+ * Der seed basierend auf der config.json/seed
+ */
 const rng = seedrandom(config.seed);
 
-/**@type {{type: string, x: number, y: number, name: string, metadata: []}} */
+/**
+ * Alle Objekte in der Galaxie die bisher Generiert wurden
+ * 
+ * @type {{type: string, x: number, y: number, name: string, metadata: []}} */
 const galaxy = [];
 
+/**
+ * ähm... ja, danke ChatGPT. XD
+ * 
+ * @param r 
+ * @param angle 
+ * @returns 
+ */
 function polarToCartesian(r, angle) {
     return {
         x: r * Math.cos(angle),
@@ -15,6 +35,14 @@ function polarToCartesian(r, angle) {
     };
 }
 
+/**
+ * Hier wird eine Seedbasierte Distanz generiert.\
+ * hab einfach ChatGPT Gefragt lol.
+ * 
+ * @param min {number}
+ * @param max {number}
+ * @returns {number}
+ */
 function getRandomDistance(min, max) {
     if (max === 0) max = config.radius;
 
@@ -25,7 +53,18 @@ function getRandomDistance(min, max) {
     return min + (max - min) * Math.pow(rng(), exponent);
 }
 
+/**
+ * Die Funktion gibt es Extra dafür um Anomalienamen zu Generieren,
+ * ich wollte nicht einfach nur Silben für die Namen verwenden also habe ich mich dafür hier entschieden.
+ * 
+ * @param rng 
+ * @returns 
+ */
 function generateAnomalyName(rng) {
+    /**
+     * Die Prefixe, quasi die ersten Zeichen die Verwendet werden.
+     * @type {string[]}
+     */
     const prefix = ["RX", "ZB", "QK", "VR", "IA", "OR", "PA", "TR"];
     const suffix = [];
     for (let i = 0; i < 99; i++) {
@@ -40,20 +79,53 @@ function generateAnomalyName(rng) {
     return prefix[Math.floor(rng() * prefix.length)] + suffix[Math.floor(rng() * suffix.length)];
 }
 
-function generateSolarMass() {
-    
+/**
+ * Gibt den Sonnenmassenwert basierend auf x zurück.
+ * 
+ * @param x {number} wert zwischen 0.0000000000000001 - 1.0000000000000000
+ * @returns {number} wert zwischen 0.0086 - 100
+ */
+function generateSolarMass(x) {
+    // Der Minimalwert Basierend auf dem Minimalen wert über 0 vom Seed
+    if (x <= 0) x == 0.0000000000000001
+    // Naja einfach den Wert auf 1 Setzen wenn es über 1 Geht, eigentlich unwahrscheinlich wenn man nur den seed selbst verwendet
+    if (x > 1) x == 1.0000000000000000
+
+    return -(1 - Math.pow(x / 1.2, -0.5));
 }
 
+/**
+ * Gibt Einen Namen basierend auf den Typ des Planeten zurück.
+ * 
+ * Sehr Interessant ist das er Basierend auf Silben Generiert wird, ich wusste davor nicht einmal, dass das geht.\
+ * Danke ChatGPT XD.
+ * 
+ * @param type typ des Objektes
+ * @param rng seed Funktion
+ * @returns 
+ */
 function generateName(type, rng) {
     if (type === "anomaly") { return generateAnomalyName(rng) };
 
+    /**@type {string[]} Silben von ChatGPT für die Namensgenerierung */
     const syllables = [
+        // Silben V1
         "ka", "lo", "ra", "ze", "tu", "mi", "xa", "vi", "no",
         "shi", "dra", "qu", "ly", "tor", "zan", "ny", "fel", "vra",
         "zur", "kre", "tho", "bal", "ix", "sy", "jen", "kul", "orn",
         "nef", "ria", "sol", "mek", "tas", "lur", "xen", "cai", "vor",
         "hel", "ume", "zan", "tha", "py", "rek", "gri", "yul", "zan",
-        "eph", "ari", "zho", "the", "mur", "dax", "nix", "zor", "lim"
+        "eph", "ari", "zho", "the", "mur", "dax", "nix", "zor", "lim",
+
+        // Silben V2
+        "bri", "clo", "dre", "fen", "gla", "hro", "jor", "kli", "mar",
+        "nel", "oph", "pra", "qua", "rin", "sha", "tre", "uln", "vex",
+        "wra", "xis", "yra", "zor", "bex", "dru", "fla", "gra", "hul",
+        "jum", "kor", "lek", "mip", "nox", "opl", "pru", "qui", "rax",
+        "syl", "tri", "uvo", "vyn", "wex", "xil", "yan", "zep", "zor",
+        "bax", "cro", "dav", "elx", "fra", "gyn", "hax", "jin", "kre",
+        "lom", "myr", "nov", "oph", "plu", "qir", "rum", "syn", "tor",
+        "urn", "vok", "wir", "xon", "yar", "zun"
     ];
 
     let name = "";
@@ -108,7 +180,6 @@ function validateDistance(distance, angle, chosenType) {
         }
     }
 
-    // Check: Abstand zu Sternen, wenn deepSpace bevorzugt wird
     if (typeConfig.preferred?.startsWith("deepSpace")) {
         const parts = typeConfig.preferred.split("-");
         if (parts.length === 2) {
@@ -127,7 +198,6 @@ function validateDistance(distance, angle, chosenType) {
         }
     }
 
-    // Check: Abstand zu ähnlichen Typen
     for (const obj of galaxy) {
         if (obj.type === chosenType) {
             const dx = obj.x - x;
@@ -175,10 +245,10 @@ const VALID_PLANETARY_SPECIALRESOURCES = ["razetulim", "zanzorlim", "mekballim",
  * 
  * Diese Informationen werden Automatisch Via Seed "Erfunden"
  * star:\
- * Spektralklasse via Seed\
- * Masse via Seed + Tabelle\
+ * Spektralklasse via Seed + Tabelle\
+ * Masse via Spektralklasse + Tabelle\
  * Subspektralklasse via Seed + Masse\
- * Temparatur via Seed + Subspektralklasse
+ * Temperatur via Seed + Subspektralklasse
  * 
  * @param type {string|"mainBlackHole"|"star"|"planet"|"astroidfieldt1_astroid"|"astroidfieldt2_astroid"|"astroidfieldt3_astroid"|"rogue_planet"|"anomaly"|"blackHole"}
  * @param x {number}
@@ -263,9 +333,9 @@ function galaxyPush(type, x, y, name, metadata = { resource: {}, specialresource
     }
 
     if (type == "star") {
-        
+
     }
-    
+
     //// const distanceToCenter = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
     const distanceToCenter = Math.hypot(x, y);
 
@@ -327,4 +397,6 @@ while (galaxy.length < config.count) {
 }
 
 fs.writeFileSync("./public/galaxy.json", JSON.stringify(galaxy));
+console.log(rng());
+
 console.log("💫 Galaxie generiert mit", galaxy.length, "Objekten.");
