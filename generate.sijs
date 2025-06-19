@@ -66,6 +66,11 @@ function generateAnomalyName(rng) {
      * @type {string[]}
      */
     const prefix = ["RX", "ZB", "QK", "VR", "IA", "OR", "PA", "TR"];
+    /**
+     * Das sind die Suffixe die nach den Prefixen kommen,
+     * sie bestehen aus nur eine Zahl oder MK + Zahl.
+     * @type {string[]}
+     */
     const suffix = [];
     for (let i = 0; i < 99; i++) {
         if (i < 10) suffix.push("-0" + i);
@@ -87,11 +92,92 @@ function generateAnomalyName(rng) {
  */
 function generateSolarMass(x) {
     // Der Minimalwert Basierend auf dem Minimalen wert über 0 vom Seed
-    if (x <= 0) x == 0.0000000000000001
+    if (x <= 0) x = 0.0000000000000001;
     // Naja einfach den Wert auf 1 Setzen wenn es über 1 Geht, eigentlich unwahrscheinlich wenn man nur den seed selbst verwendet
-    if (x > 1) x == 1.0000000000000000
+    if (x > 1) x = 1.0000000000000000;
 
-    return -(1 - Math.pow(x / 1.2, -0.5));
+    return -(1 - Math.pow(x / 1.2, -0.4));
+}
+
+/**
+ * Alle Validen Werte für jeden Spektrum.
+ *
+ * Hier habe ich natürlich einige Simplifikationen durchgeführt, besonders bei der Klasse M, L, T und Y.
+ * 
+ * @type {{class:string, tempmin:number, tempmax: number, massmin: number, massmax: number}[]}
+ */
+const VALID_SPECTRAL_CLASS_VALUES = [
+    {class: "O", tempmin: 30000, tempmax: 60000, massmin: 16, massmax: Infinity},
+    {class: "B", tempmin: 10000, tempmax: 30000, massmin: 2.1, massmax: 16},
+    {class: "A", tempmin: 7500, tempmax: 10000, massmin: 1.7, massmax: 2.1},
+    {class: "F", tempmin: 6000, tempmax: 7500, massmin: 1.1, massmax: 1.7},
+    {class: "G", tempmin: 5300, tempmax: 6000, massmin: 0.8, massmax: 1.1},
+    {class: "K", tempmin: 3500, tempmax: 5300, massmin: 0.5, massmax: 0.8},
+    {class: "M", tempmin: 2500, tempmax: 3500, massmin: 0.03, massmax: 0.5},
+    {class: "L", tempmin: 1300, tempmax: 2500, massmin: 0.05, massmax: 0.03},
+    {class: "T", tempmin: 800, tempmax: 1300, massmin: 0.01, massmax: 0.03},
+    {class: "Y", tempmin: 0, tempmax: 800, massmin: 0.0083, massmax: 0.01},
+]
+
+/**
+ * Die Luminosität der Sonne in Watt
+ * @type {number}
+ */
+const LUM_SOL = 3.828 * Math.pow(10, 26); // W
+/**
+ * Der Radius der Sonne in KM
+ * @type {number}
+ */
+const R_SOL = 695700; // KM
+/**
+ * Die (Oberflächen-)Temperatur der Sonne in °K
+ * @type {number}
+ */
+const T_SOL = 5778; // °K
+/**
+ * Die Masser der Sonne in KG
+ * @type {number}
+ */
+const M_SOL = 1.989 * Math.pow(10, 30); // KG
+
+/**
+ * Hier wird die Spektralklasse des Sterns einfach basierend auf der Masse ausgegeben.\
+ * Sehr Simpel Gehalten, ich meine wir brauchen hier keine Wissenschaftliche Simulation.
+ * 
+ * @param mass Die Masse des STerns
+ * @returns {{class:string, subclass:string, temp:number, mass_sol: number, lum_sol: number, r_sol: number}}
+ */
+function getSolarSpectralClassData(mass) {
+    /**@type {{class:string, subclass:string, temp:number, mass_sol: number, lum_sol: number, r_sol: number}} */
+    let returnData = {};
+    
+    returnData.mass_sol = mass;
+
+    /**@type {{class:string, tempmin:number, tempmax: number, massmin: number, massmax: number}} */
+    let currentClass = null
+
+    for (let i = 0; i < VALID_SPECTRAL_CLASS_VALUES.length; i++) {
+        const specs = VALID_SPECTRAL_CLASS_VALUES[i]
+        if (mass >= specs.massmin && mass <= specs.massmax) {currentClass = specs; returnData.class = specs.class; break;}
+    }
+
+    for (let i = 0; i < 10; i++) {
+        const min = 0;
+        const max = currentClass.tempmax - currentClass.tempmin;
+        const relmass = mass - currentClass.massmin;
+        
+        const massPartStepSize = max / 10;
+
+        if (relmass >= (min+massPartStepSize*i) && relmass <= (min+massPartStepSize*(i+1))) returnData.subclass = i;
+    }
+
+    returnData.temp = Math.round((rng() * (currentClass.tempmax-currentClass.tempmin)) + currentClass.tempmin);
+
+    returnData.r_sol = Math.pow(returnData.mass_sol, 0.8);
+
+    returnData.lum_sol = Math.pow((returnData.r_sol * R_SOL) / R_SOL, 2) * Math.pow(returnData.temp / T_SOL, 4);
+    
+    return returnData;
 }
 
 /**
@@ -152,6 +238,14 @@ function generateUniqueName(type, rng) {
     return name;
 }
 
+/**
+ * Validiert die Distanz zwischen Objekten, sodass Objekte nicht zu nahm und auch nicht zu weit voneinander sind
+ * 
+ * @param distance 
+ * @param angle 
+ * @param chosenType 
+ * @returns 
+ */
 function validateDistance(distance, angle, chosenType) {
     const { x, y } = polarToCartesian(distance, angle)
 
@@ -229,9 +323,36 @@ function getRandomObjectType(objectType) {
     return all[(rng() * (all.length - 1))];
 }
 
+/**
+ * Alle Validen Objekte die zur Generierung Verwendet werden dürfen.
+ * @type {string[]}
+ */
 const VALID_SPACE_OBJECTS = ["mainBlackHole", "star", "planet", "astroidfieldt1_astroid", "astroidfieldt2_astroid", "astroidfieldt3_astroid", "rogue_planet", "anomaly", "blackHole"]
-const VALID_PLANETARY_RESOURCES = ["iron", "copper", "cobalt", "titanium", "hydrogen", "argon", "uranium", "tungsten"];
-const VALID_PLANETARY_SPECIALRESOURCES = ["razetulim", "zanzorlim", "mekballim", "helumelim"];
+/**
+ * Alle Validen Standard Ressourcen die AUF PLANETEN gefunden werden können.
+ * @type {string[]}
+ */
+const VALID_PLANETARY_RESOURCES = ["iron_ore", "copper_ore", "cobalt_ore", "titanium_ore", "hydrogen", "argon", "uranium_ore", "tungsten_ore"];
+/**
+ * Alle Validen Fortschrittliche Ressourcen die AUF PLANETEN gefunden werden können.
+ * @type {string[]}
+ */
+const VALID_PLANETARY_SPECIALRESOURCES = ["razetulim_ore", "zanzorlim_ore", "mekballim_ice", "helumelim_sulfide"];
+/**
+ * Alle Validen Ressourcen die AUF T-1, T-2 UND T3 ASTEROIDENFELDERN gefunden werden können.
+ * @type {string[]}
+ */
+const VALID_AST_1_RESOURCES = ["methan_ice", "water_ice"];
+/**
+ * Alle Validen Ressourcen die AUF T-2 UND T3 ASTEROIDENFELDERN gefunden werden können.
+ * @type {string[]}
+ */
+const VALID_AST_2_RESOURCES = ["naqium_ore"];
+/**
+ * Alle Validen Ressourcen die AUF T3 ASTEROIDENFELDERN gefunden werden können.
+ * @type {string[]}
+ */
+const VALID_AST_3_RESOURCES = ["Nexus_carbonsulfide_ice"];
 
 /**
  * Zulässige Ressourcen (nur Planeten/Einzelgänger/Asteroiden) (resource):\
@@ -273,17 +394,30 @@ function galaxyPush(type, x, y, name, metadata = { resource: {}, specialresource
          *  - h=Hauptsprektrum
          *  - s=Subspektrum
          * 
-         * @type {{starTemperature: number, starMass: number, starLum: number, starSpectral: {h:string, s:string}}}
+         * Hauptspektrum: Y, T, L, M, K, G (zb. wie unsere Sonne), F, A, B, O\
+         * Subspektrul: Y0-Y9, T0-T9, L0-L9, M0-M9, K0-K9, G0-G9 (unsere Sonne ist G-2), F0-F9, A0-A9, B0-B9, O0-O9
+         * 
+         * @type {{starTemperature: number, starMass: number, starRad: number, starLum: number, starSpectral: {h:"Y"|"T"|"L"|"M"|"K"|"G"|"F"|"A"|"B"|"O"|string, s:"0"|"1"|"2"|"3"|"4"|"5"|"6"|"7"|"8"|"9"|string}}}
          */
         const informationStar = {
             starTemperature: null,
             starMass: null,
             starLum: null,
+            starRad: null,
             starSpectral: { h: null, s: null }
         }
-        /**@type {{}} */
+
+        /**
+         * 
+         * 
+         * @type {{}}
+         */
         const planet = {}
-        /**@type {{}} */
+        /**
+         * 
+         * 
+         * @type {{}}
+         */
         const astroidField = {}
 
         if (type == "star") { metadata_edit1.informationType = "star"; metadata_edit1.informationBase = informationStar }
@@ -323,18 +457,32 @@ function galaxyPush(type, x, y, name, metadata = { resource: {}, specialresource
         ////     }
         //// }
 
-        if (metadata_edit1.resource.length != 0) { metadata_edit2.resource = metadata_edit1.resource }
-        if (metadata_edit1.specialresource.length != 0) { metadata_edit2.specialresource = metadata_edit1.specialresource }
-        if (metadata_edit1.features.length != 0) { metadata_edit2.features = metadata_edit1.features }
+        if (type == "star") {
+            const sunMass = generateSolarMass(rng());
+
+            let info = informationStar;
+
+            let specs = getSolarSpectralClassData(sunMass);
+
+            info.starLum = specs.lum_sol;
+            info.starMass = specs.mass_sol;
+            info.starRad = specs.r_sol
+            info.starSpectral = {h: specs.class, s: specs.subclass};
+            info.starTemperature = specs.temp;
+
+            metadata_edit1.informationType = "star";
+            metadata_edit1.informationBase = info;
+        }
+
     } else {
         x = 0;
         y = 0;
         name = config.mainBlackHoleName;
     }
 
-    if (type == "star") {
-
-    }
+    if (metadata_edit1.resource.length != 0) { metadata_edit2.resource = metadata_edit1.resource }
+    if (metadata_edit1.specialresource.length != 0) { metadata_edit2.specialresource = metadata_edit1.specialresource }
+    if (metadata_edit1.informationType != null && metadata_edit1.informationBase != null) {metadata.informationType = metadata_edit1.informationType; metadata_edit2.informationBase = metadata_edit1.informationBase}
 
     //// const distanceToCenter = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
     const distanceToCenter = Math.hypot(x, y);
@@ -355,6 +503,9 @@ function galaxyPush(type, x, y, name, metadata = { resource: {}, specialresource
 }
 galaxyPush("mainBlackHole")
 
+/**
+ * Hier werden per Seed alle Objekte Ausgewählt, deren Positionen Generiert & Validiert und dann Abgespeichert.
+ */
 while (galaxy.length < config.count) {
     const angle = rng() * Math.PI * 2;
     const typeKeys = Object.keys(config.types);
@@ -369,6 +520,13 @@ while (galaxy.length < config.count) {
 
     // === nearStar ===
     if (typeConfig.preferred?.startsWith("nearStar")) {
+        
+        if (stars.length === 0) {
+            // Kein Stern = Kein nearStar.
+            // macht sinn oder?
+            continue;
+        }
+
         const parts = typeConfig.preferred.split("-");
         if (parts.length === 3 && stars.length > 0) {
             const nearMin = parseFloat(parts[1]);

@@ -1,0 +1,124 @@
+<<==| Infos |==>>
+
+Grundstruktur:
+name
+> name {string}
+class
+> class {string}
+> energy {number} (In TWh)
+> maxEngines {number} (Der Size von Allen Triebwerken zusammen darf nicht maxEngines überschreiten)
+faction
+> faction {string}
+
+Technische Daten:
+cargoCapacity (Wieviel Ladung Maximal Transportiert werden kann in Volumen und Tonnen, zb. der Frachtraum kann maximal 800 m³ an Volumen und 10 kT an Masse Tragen)
+> cargoCapacity {massmax: number, volumemax: number}
+
+accelerationForce (zb bei Ionenantrieb 10 PN also wenn Masse niedriger = mehr Beschleunigung)
+> engineType {force: number}
+maxSpeed (zb 1000 c/s)
+> engineType {maxSpeed: number}
+engineType (Was für ein Triebwerk genutzt wird, Unterkategorien sind Möglich. zb. Ion_Mastaton_Neon und Ion_Mastaton_Argon die beide auch eigene ISPs haben)
+> engineType {name: string, type: string}
+fuelCapacity (Wieviel L an Treibstoff maximal gelagert werden, normalerweise 100 kL)
+> fuelCapacity {fuelCapacity: number, current: number}
+engineISP (zb bei eine Ionenantrieb 1 L Treibstoff alle 5000 Sekunden)
+> engineType {ISP: number}
+
+jumpDriveType
+> jumpDrive {name: string, type: string}
+jumpFuelCapacity (1 fuel/pro angefangene 1000kg)
+> jumpDrive {maxFuel: number}
+currentJumpFuel
+> jumpDrive {currentFuel: number}
+jumpStrength (1 punkt kann 1000kg 1Lj springen lassen, sollte mehr masse pro punkt anfallen dann sinkt die Lj wert, wenn Niedriger steigt der Lj wert also: 1p/masseInTonnenAverage = Lj/punkt)
+> jumpDrive {jumpStrength: number}
+jumpChargeTime (wie lange das aufladen des Sprungantriebs in s dauert)
+> jumpDrive {chargeTime: number}
+jumpCooldown (wie lange der Jump Cooldown des Sprungantriebs in s dauert)
+> jumpDrive {cooldownTime: number}
+
+shieldCount (Wieviele Schild-Einheiten es gibt)
+> shield {count: number}
+shieldStrength (Wieviele HP/Schild-Einheit)
+> shield {hp: number}
+shieldEnergyResistance (Wieviel % Energieschaden pro Schild-Einheit absorbiert werden, normalerweise 10%)
+> shield {energyResistance: number}
+shieldPhysicalResistance (Wieviel % Physischen Schaden pro Schild absorbiert werden, normalerweise 100%)
+> shield {physicalResistance: number}
+
+hullPoints (Wieviel HP die Hülle hat)
+> hull {hp: number}
+hullEnergyResistance (Wieviel % an Energieschaden absorbiert werden kann, normalerweise 90%)
+> hull {energyResistance: number}
+hullPhysicalResistance (Wieviel % an Physischen Schaden absorbiert werden kann, normalerweise 0%)
+> hull {physicalResistance: number}
+
+boostPower (true/false)
+> boost {hasBoost: boolean}
+boostPowerStength (zb acce. 5000%)
+> boost {strength: number}
+boostPowerDuration (für 100 s)
+> boost {duration: number}
+boostPowerCooldown (5000 s)
+> boost {cooldown: number}
+boostPowerChargeTime (500 s)
+> boost {chargeTime: number}
+
+Spezialfeatures:
+AI (true/false)
+> AI {boolean}
+
+passiveCloaking (true/false)
+> passiveCloaking {passiveCloaking: boolean}
+passiveDodgeChance (% von wie oft man verfehlt wird)
+> passiveCloaking {dodgeChance: number}
+passiveCloakingAvoid (wie viel schwerer es ist jemanden zu entdecken)
+> passiveCloaking {avoidChance: number}
+
+activeCloaking (true/false)
+> activeCloaking {activeCloaking: boolean}
+activeCloakingDuration (Die Zeit in Sekunden in der man Komplett getarnt ist, normalerweise ~180s)
+> activeCloaking {duration: number}
+activeCloakingCooldown (Die Zeit die es braucht bis man es wieder einsetzen kann, typischerweise ~60 Sekunden)
+> activeCloaking {cooldown: number}
+activeCloakingCharge (Die Zeit die es zum aufladen braucht, normalerweise ~5s)
+> activeCloaking {chargetime: number}
+
+Besatzung:
+crewSize (wieviel Crew auf dem Schiff vorhanden ist)
+> crewSize {number}
+
+Komponenten:
+
+colorscheme
+> colorscheme {string}
+
+<<==| FRAKTIONEN |==>>
+
+SkyHype IND
+United Colonies
+Urban Fleet
+
+<<==| CLASS |==>>
+
+Celestial: Reactor 8 TWh, Engine Size 18
+
+<<==| COLORSCHEME |==>>
+
+celestial/default
+
+<<==| TRIEBWERKE |==>>
+
+=> Es ist immer nur 1 Typ an Triebwerken erlaubt
+
+Ionentriebwerk:
+Bambus: ISP 4900s, Argon, 418 PN, Size 8
+Bambus: ISP 8200s, Helium, 199 PN, Size 8
+Bambus: ISP 3900s, Xenon, 970 PN, Size 8
+
+EKP (Electro Kinetic Propulsion):
+Alum: 800 MWh, 71 TN, Size 4
+Opal: 1.1 GWh, 84 TN, Size 4
+Ignis: 9.2 GWh, 450 TN, Size 6
+OmegaEKP: 110 GWh, 12.9 PN, Size 12

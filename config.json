@@ -1,58 +1,58 @@
 {
-  "seed": "Main",
-  "radius": 100000,
-  "count": 2500,
-  "exponent": 1,
-  "mainBlackHoleName": "Nexus",
-  "types": {
-    "star": {
-      "chance": 0.8,
-      "minDistance": 3,
-      "maxDistance": 0,
-      "preferred": "",
-      "type": []
-    },
-    "t1_astroid": {
-      "chance": 0.2,
-      "minDistance": 1,
-      "maxDistance": 0,
-      "preferred": "nearStar-1-5",
-      "type": ["resources"]
-    },
-    "t2_astroid": {
-      "chance": 0.05,
-      "minDistance": 2000,
-      "maxDistance": 0,
-      "preferred": "deepSpace-1000",
-      "type": ["advanced_resources"]
-    },
-    "t3_astroid": {
-      "chance": 0.05,
-      "minDistance": 5000,
-      "maxDistance": 0,
-      "preferred": "deepSpace-2000",
-      "type": ["very_advanced_resources"]
-    },
-    "rogue_planet": {
-      "chance": 0.2,
-      "minDistance": 2,
-      "maxDistance": 0,
-      "preferred": "nearStar-2-10",
-      "type": ["planet"]
-    },
-    "anomaly": {
-      "chance": 0.01,
-      "minDistance": 1000,
-      "maxDistance": 0,
-      "preferred": "deepSpace-2000",
-      "type": []
-    },
-    "blackHole": {
-      "chance": 0.001,
-      "minDistance": 50000,
-      "maxDistance": 0,
-      "preferred": "deepSpace-10000",
-      "type": []
+    "seed": "Main",
+    "radius": 100000,
+    "count": 25000,
+    "exponent": 0.75,
+    "mainBlackHoleName": "Nexus",
+    "types": {
+        "star": {
+            "chance": 0.2,
+            "minDistance": 3,
+            "maxDistance": 0,
+            "preferred": "",
+            "type": []
+        },
+        "t1_astroid": {
+            "chance": 0.05,
+            "minDistance": 5,
+            "maxDistance": 0,
+            "preferred": "nearStar-1-5",
+            "type": ["resources"]
+        },
+        "t2_astroid": {
+            "chance": 0.05,
+            "minDistance": 8000,
+            "maxDistance": 0,
+            "preferred": "deepSpace-1000",
+            "type": ["advanced_resources"]
+        },
+        "t3_astroid": {
+            "chance": 0.05,
+            "minDistance": 15000,
+            "maxDistance": 0,
+            "preferred": "deepSpace-4000",
+            "type": ["very_advanced_resources"]
+        },
+        "rogue_planet": {
+            "chance": 0.01,
+            "minDistance": 5,
+            "maxDistance": 0,
+            "preferred": "nearStar-2-15",
+            "type": ["planet"]
+        },
+        "anomaly": {
+            "chance": 0.01,
+            "minDistance": 1000,
+            "maxDistance": 0,
+            "preferred": "deepSpace-2000",
+            "type": []
+        },
+        "blackHole": {
+            "chance": 0.001,
+            "minDistance": 50000,
+            "maxDistance": 0,
+            "preferred": "deepSpace-10000",
+            "type": []
+        }
     }
-  }
 }

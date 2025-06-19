@@ -4,9 +4,11 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
     const MAX_OBJECT_HOVER_SIZE = 2;
     const MIN_OBJECT_HOVER_SIZE = 1;
     const FONT_SIZE = 15;
-    const OBJECT_DISTANCE_VISUALIZATION_LIMIT = 10;
+    const MAX_ZOOM_DISTANCE = 0.0000000001;
+    const MIN_ZOOM_DISTANCE = 25;
+    let OBJECT_DISTANCE_VISUALIZATION_LIMIT = 10;
 
-    let zoom = 0.05;
+    let zoom = 0.004;
     let offsetX = 0;
     let offsetY = 0;
     let isDragging = false;
@@ -17,7 +19,7 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
     let hoveredObject = null;
 
     let NAME_VANISH_DISTANCE = 0.70;
-    let SHOW_NAMES = false;
+    let SHOW_NAMES = true;
     let SHOW_LINE_DISTANCE = false;
 
     const canvas = document.getElementById("galaxy");
@@ -263,13 +265,13 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
         const worldY = (mouseY - offsetY) / zoom;
 
         zoom *= scale;
-        if (zoom < 0.00001) zoom = 0.00001;
-        if (zoom > 25) zoom = 25;
+        if (zoom < MAX_ZOOM_DISTANCE) zoom = MAX_ZOOM_DISTANCE;
+        if (zoom > MIN_ZOOM_DISTANCE) zoom = MIN_ZOOM_DISTANCE;
 
         offsetX = mouseX - worldX * zoom;
         offsetY = mouseY - worldY * zoom;
 
-        currentZoom.innerText = zoom.toFixed(5);
+        currentZoom.innerText = zoom.toFixed(10);
 
         draw();
     });
