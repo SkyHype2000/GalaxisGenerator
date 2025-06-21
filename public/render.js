@@ -29,6 +29,13 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
 
     const legendDivs = document.querySelectorAll('.legend div');
 
+    const info_panel = document.getElementById('info_panel');
+    const info_content = document.getElementById('info_content');
+
+    const ship_content = document.getElementById('ship_content');
+    const shipvalues = document.getElementById('shipvalues');
+    const shipSelect = document.getElementById('shipSelect');
+
     const nameShowDistance = document.getElementById('nameDistance');
     const showNames = document.getElementById('showNames');
     const showDistanceLines = document.getElementById('showDistanceLines');
@@ -61,8 +68,6 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
         draw();
 
     })
-
-    const info_panel = document.getElementById('info_panel');
 
     let object_count = {
         star: 0,

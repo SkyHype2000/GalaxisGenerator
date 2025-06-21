@@ -2,17 +2,24 @@
 
 Grundstruktur:
 name
-> name {string}
+> ship {name: string}
 class
-> class {string}
-> energy {number} (In TWh)
-> maxEngines {number} (Der Size von Allen Triebwerken zusammen darf nicht maxEngines überschreiten)
+> ship {class: string}
 faction
-> faction {string}
+> ship {faction: string}
+
+reactorClass
+> reactor {class: string, name: string}
+energy
+> reactor {energy: number}
+maxEngines
+> reactor {maxEngines: number}
 
 Technische Daten:
 cargoCapacity (Wieviel Ladung Maximal Transportiert werden kann in Volumen und Tonnen, zb. der Frachtraum kann maximal 800 m³ an Volumen und 10 kT an Masse Tragen)
 > cargoCapacity {massmax: number, volumemax: number}
+fuelCapacity (Wieviel L an Treibstoff maximal gelagert werden, normalerweise 100 kL)
+> fuelCapacity {fuelCapacity: number, current: number}
 
 accelerationForce (zb bei Ionenantrieb 10 PN also wenn Masse niedriger = mehr Beschleunigung)
 > engineType {force: number}
@@ -20,10 +27,10 @@ maxSpeed (zb 1000 c/s)
 > engineType {maxSpeed: number}
 engineType (Was für ein Triebwerk genutzt wird, Unterkategorien sind Möglich. zb. Ion_Mastaton_Neon und Ion_Mastaton_Argon die beide auch eigene ISPs haben)
 > engineType {name: string, type: string}
-fuelCapacity (Wieviel L an Treibstoff maximal gelagert werden, normalerweise 100 kL)
-> fuelCapacity {fuelCapacity: number, current: number}
 engineISP (zb bei eine Ionenantrieb 1 L Treibstoff alle 5000 Sekunden)
 > engineType {ISP: number}
+engineFuel (Was für ein Treibstoff der Antrieb nutzt)
+> engineType {fuel: string}
 
 jumpDriveType
 > jumpDrive {name: string, type: string}
@@ -102,7 +109,10 @@ Urban Fleet
 
 <<==| CLASS |==>>
 
-Celestial: Reactor 8 TWh, Engine Size 18
+Celestial
+> Reactor "Urlano" 16 TWh, Engine Size 12
+> Reactor "Takana" 12 TWh, Engine Size 14
+> Reactor "Holium" 8 TWh, Engine Size 18
 
 <<==| COLORSCHEME |==>>
 
@@ -113,9 +123,9 @@ celestial/default
 => Es ist immer nur 1 Typ an Triebwerken erlaubt
 
 Ionentriebwerk:
-Bambus: ISP 4900s, Argon, 418 PN, Size 8
-Bambus: ISP 8200s, Helium, 199 PN, Size 8
-Bambus: ISP 3900s, Xenon, 970 PN, Size 8
+Bambus: ISP 4900s, 420 MWh, Argon, 418 PN, Size 8
+Bambus: ISP 8200s, 650 MWh, Helium, 199 PN, Size 8
+Bambus: ISP 3900s, 1.25 GWh MWh, Xenon, 970 PN, Size 8
 
 EKP (Electro Kinetic Propulsion):
 Alum: 800 MWh, 71 TN, Size 4

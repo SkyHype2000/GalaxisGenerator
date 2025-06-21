@@ -1,0 +1,92 @@
+Made with Pixel Planets
+
+=== White Star ===
+
+SEED: 2328485974
+
+colors:
+#00000000
+#fffdff
+#a5a8ac
+#cfcfcf
+#ffffff
+#00000000
+#00000000
+
+=== Blue Star ===
+
+SEED: 4280895249
+
+colors:
+#ffffe4
+#f5ffe8
+#77d6c1
+#1c92a7
+#033e5e
+#77d6c1
+#ffffe4
+
+=== Yellow Star ===
+
+SEED: 1050437764
+
+colors:
+#fff22e
+#f7f91b
+#ebdd0e
+#e9ff50
+#d3ee19
+#f1ee18
+#edda14
+
+=== Orange Star ===
+
+SEED: 1555787460
+
+colors:
+#fa8918
+#fd8c1b
+#eeae13
+#f2c117
+#d29c08
+#f6dc0b
+#eaa90d
+
+=== Red Star ===
+
+SEED: 3841151716
+
+colors:
+#c10808
+#e73939
+#db2e15
+#cb0808
+#970000
+#00000000
+#00000000
+
+=== Brown Star ===
+
+SEED: 322591870
+
+colors:
+#00000000
+#561808
+#210808
+#2b0d0d
+#340000
+#00000000
+#00000000
+
+=== Black Star ===
+
+SEED: 3604487884
+
+colors:
+#00000000
+#1a0f0c
+#290606
+#330a0a
+#3e0505
+#00000000
+#00000000

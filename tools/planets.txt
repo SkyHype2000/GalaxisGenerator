@@ -1,0 +1,106 @@
+Made With Pixel Planets
+
+=== Toxic World 1 (Terran Wet) ===
+
+hasAtmosphere
+
+SEED: 2520496449
+
+colors:
+#a842ac
+#81326c
+#562138
+#2b1114
+#478151
+#24403a
+#f2f2de
+#d9e5be
+#b5d79d
+#85ca7d
+
+=== Toxic World 2 (Terran Wet) ===
+
+hasAtmosphere
+
+SEED: 3569307632
+
+colors:
+#7f7c49
+#565f37
+#314025
+#152012
+#7d42bd
+#5f215a
+#e6e9da
+#c5d2b4
+#9bbc8f
+#6aa56c
+
+=== Barren World 1 (Terran Dry) ===
+
+hasAtmosphere
+
+SEED: 766009890
+
+colors:
+#87826f
+#636554
+#3f4338
+#1e221c
+#afc3b8
+#586161
+#d8e6f0
+#b1bee1
+#8d8ad2
+#8364c3
+
+=== Cold Barren World 2 (Terran Dry) ===
+
+hasAtmosphere
+
+SEED: 174302102
+
+colors:
+#c3c3c3
+#9d9d9d
+#604a47
+#3e2d2d
+#1d1b1b
+
+=== Frozen Barren World 3 (Terran Dry) ===
+
+hasAtmosphere
+
+SEED: 3857157377
+
+colors:
+#8cffd8
+#669ca3
+#517f8e
+#3c5b68
+#1d3438
+
+=== Barren World 4 (No Atmosphere) ===
+
+SEED: 1130184966
+
+colors:
+#a3a7c2
+#4c6885
+#3a3f5e
+#4c6885
+#3a3f5e
+
+=== Molten World 1 (Lava World) ===
+
+SEED: 3001409858
+
+colors:
+#8f4d57
+#52333f
+#3d2936
+#52333f
+#3d2936
+#ff8933
+#e64539
+#ad2f45

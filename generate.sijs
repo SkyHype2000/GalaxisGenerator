@@ -18,11 +18,14 @@ const rng = seedrandom(config.seed);
 /**
  * Alle Objekte in der Galaxie die bisher Generiert wurden
  * 
- * @type {{type: string, x: number, y: number, name: string, metadata: []}} */
+ * @type {{type: string, x: number, y: number, name: string, metadata: []}[]} */
 const galaxy = [];
 
 /**
  * ähm... ja, danke ChatGPT. XD
+ * 
+ * Ich glaube das generiert die `x` und `y` koordinaten die nicht
+ * weiter als der Radius der Galaxie entfernt sein dürfen
  * 
  * @param r 
  * @param angle 
@@ -56,6 +59,8 @@ function getRandomDistance(min, max) {
 /**
  * Die Funktion gibt es Extra dafür um Anomalienamen zu Generieren,
  * ich wollte nicht einfach nur Silben für die Namen verwenden also habe ich mich dafür hier entschieden.
+ * 
+ *  Weil es sich für Anomalien besser anhört
  * 
  * @param rng 
  * @returns 
@@ -185,6 +190,8 @@ function getSolarSpectralClassData(mass) {
  * 
  * Sehr Interessant ist das er Basierend auf Silben Generiert wird, ich wusste davor nicht einmal, dass das geht.\
  * Danke ChatGPT XD.
+ * 
+ * Wer das liest ist Dumm.
  * 
  * @param type typ des Objektes
  * @param rng seed Funktion
