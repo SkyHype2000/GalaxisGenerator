@@ -1,0 +1,29 @@
+<==| Black Hole |==>
+
+<==| Star |==>
+starTemperature
+starMass
+starLum
+starRad
+starSpectral
+
+<==| Planet |==>
+
+<==| Gas Giant |==>
+gasGiantCompesition (>)
+gasGiantMass
+gasGiantTemperature
+
+<==| Moon |==>
+
+<==| Rogue Planet |==>
+
+<==| Anomaly |==>
+
+<==| Stellar Astroid Field |==>
+
+<==| T-1 Astroid Field |==>
+
+<==| T-2 Astroid Field |==>
+
+<==| T-3 Astroid Field |==>

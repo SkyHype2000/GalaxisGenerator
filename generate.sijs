@@ -1,19 +1,57 @@
 const fs = require("fs");
 const seedrandom = require("seedrandom");
+const cc = require("./color.js")
 
 /**
  * Die Config wo alle Informationen aufgeschrieben sind.\
  * Ohne sie würde alles den Bach Runter gehen XD.
  * 
+ * Sie beinhaltet nur die Basic Informationen, die Ressourcen werden in ./resource_config.json gespeichert
+ * 
  * Ich sollte mal schlafen gehen, wir haben es am 19.06.2025 um 02:02 Uhr Morgens XD.
  * 
- * @type {{"seed": "Main" | string, "radius": number, "count": number, "exponent": number, "mainBlackHoleName": string, "types": {"chance": number, "minDistance": number, "maxDistance": number, "preferred": string|"", "type": string[]}[]}} */
+ * @type {{"seed": "Main" | string, "radius": number, "count": number, "stellarPlanetCount": {"min": number, "max": number}, "stellarAstroidCount": {"min": number, "max": number}, "exponent": number, "mainBlackHoleName": string, "types": {"chance": number, "minDistance": number, "maxDistance": number, "preferred": string|"", "type": string[]}[]}} */
 const config = JSON.parse(fs.readFileSync("config.json", "utf-8"));
+
+/**
+ * Hier werden alle Ressourceninformationen abgespeichert.
+ * Angefangen mit einem Array wo alles Ressourcen abgespeichert werden gefolgt von ihen detaillierten Informationen.
+ * 
+ * das layout wird immer so sein:
+ * "typ:ressource"
+ * also zb
+ * standard:iron_ore
+ * advanced:gold_ore
+ * astroid:methane_ice
+ * gas:hydrogen
+ * 
+ * @type {{"resources": string[], standard_resource_information: {name: string, vorkommen: string[]}[], "advanced_resource_information": {name: string, vorkommen: string[]}[], "astroid_resource_information": {name: string, vorkommen: string[]}[], "gas_resource_information": {name: string, vorkommen: string[]}[]}}
+ */
+const resource_config = JSON.parse(fs.readFileSync("./resource_config.json", "utf-8"));
 
 /**
  * Der seed basierend auf der config.json/seed
  */
 const rng = seedrandom(config.seed);
+
+/**@type {6.67430e-11} Die Gravitationskonstante */
+const G = 6.67430e-11;
+/**@type {149597870700} Die Länge einer Astronomischen Einheit in Meter */
+const AE = 149_597_870_700;
+/**@type {9460730472580800n} Die Länge eines Lichtjahres in Meter */
+const LJ = 9_460_730_472_580_800n;
+/**@type {31557600} Die Länge eines Jahres in Sekunden */
+const YEAR_IN_SEC = 31_557_600;
+/**@type {1.9884e30} Masse der Sonne in KG */
+const SUN_MASS_KG = 1.9884e30;
+/**@type {5.972e24} Masse der Erde in KG */
+const EARTH_MASS_KG = 5.972e24;
+/**@type {number} Die Maximale Anzahl an Planeten die in einem Sternensystem vorhanden sein dürfen */
+const MAX_PLANETS_PER_SOLSYS = 10;
+/**@type {number} Die Maximale Anzahl an Monden die um einen Planeten vorhanden sein dürfen */
+const MAX_MOONS_PER_PLANET = 3;
+/**Berechnet die Orbitalgeschwindigkeit @param {number} mass @param {number} height @returns {number} */
+const calculateOrbitalSpeed = (mass, height) => { return }
 
 /**
  * Alle Objekte in der Galaxie die bisher Generiert wurden
@@ -92,8 +130,8 @@ function generateAnomalyName(rng) {
 /**
  * Gibt den Sonnenmassenwert basierend auf x zurück.
  * 
- * @param x {number} wert zwischen 0.0000000000000001 - 1.0000000000000000
- * @returns {number} wert zwischen 0.0086 - 100
+ * @param x {number} wert zwischen `0.0000000000000001` - `1.0000000000000000`
+ * @returns {number} wert zwischen `0.0086` - `100`
  */
 function generateSolarMass(x) {
     // Der Minimalwert Basierend auf dem Minimalen wert über 0 vom Seed
@@ -107,21 +145,21 @@ function generateSolarMass(x) {
 /**
  * Alle Validen Werte für jeden Spektrum.
  *
- * Hier habe ich natürlich einige Simplifikationen durchgeführt, besonders bei der Klasse M, L, T und Y.
+ * Hier habe ich natürlich einige Simplifikationen durchgeführt, besonders bei der Klasse `M`, `L`, `T` und `Y`.
  * 
  * @type {{class:string, tempmin:number, tempmax: number, massmin: number, massmax: number}[]}
  */
 const VALID_SPECTRAL_CLASS_VALUES = [
-    {class: "O", tempmin: 30000, tempmax: 60000, massmin: 16, massmax: Infinity},
-    {class: "B", tempmin: 10000, tempmax: 30000, massmin: 2.1, massmax: 16},
-    {class: "A", tempmin: 7500, tempmax: 10000, massmin: 1.7, massmax: 2.1},
-    {class: "F", tempmin: 6000, tempmax: 7500, massmin: 1.1, massmax: 1.7},
-    {class: "G", tempmin: 5300, tempmax: 6000, massmin: 0.8, massmax: 1.1},
-    {class: "K", tempmin: 3500, tempmax: 5300, massmin: 0.5, massmax: 0.8},
-    {class: "M", tempmin: 2500, tempmax: 3500, massmin: 0.03, massmax: 0.5},
-    {class: "L", tempmin: 1300, tempmax: 2500, massmin: 0.05, massmax: 0.03},
-    {class: "T", tempmin: 800, tempmax: 1300, massmin: 0.01, massmax: 0.03},
-    {class: "Y", tempmin: 0, tempmax: 800, massmin: 0.0083, massmax: 0.01},
+    { class: "O", tempmin: 30000, tempmax: 60000, massmin: 16, massmax: Infinity },
+    { class: "B", tempmin: 10000, tempmax: 30000, massmin: 2.1, massmax: 16 },
+    { class: "A", tempmin: 7500, tempmax: 10000, massmin: 1.7, massmax: 2.1 },
+    { class: "F", tempmin: 6000, tempmax: 7500, massmin: 1.1, massmax: 1.7 },
+    { class: "G", tempmin: 5300, tempmax: 6000, massmin: 0.8, massmax: 1.1 },
+    { class: "K", tempmin: 3500, tempmax: 5300, massmin: 0.5, massmax: 0.8 },
+    { class: "M", tempmin: 2500, tempmax: 3500, massmin: 0.03, massmax: 0.5 },
+    { class: "L", tempmin: 1300, tempmax: 2500, massmin: 0.05, massmax: 0.03 },
+    { class: "T", tempmin: 800, tempmax: 1300, massmin: 0.01, massmax: 0.03 },
+    { class: "Y", tempmin: 0, tempmax: 800, massmin: 0.0083, massmax: 0.01 },
 ]
 
 /**
@@ -155,7 +193,7 @@ const M_SOL = 1.989 * Math.pow(10, 30); // KG
 function getSolarSpectralClassData(mass) {
     /**@type {{class:string, subclass:string, temp:number, mass_sol: number, lum_sol: number, r_sol: number}} */
     let returnData = {};
-    
+
     returnData.mass_sol = mass;
 
     /**@type {{class:string, tempmin:number, tempmax: number, massmin: number, massmax: number}} */
@@ -163,25 +201,25 @@ function getSolarSpectralClassData(mass) {
 
     for (let i = 0; i < VALID_SPECTRAL_CLASS_VALUES.length; i++) {
         const specs = VALID_SPECTRAL_CLASS_VALUES[i]
-        if (mass >= specs.massmin && mass <= specs.massmax) {currentClass = specs; returnData.class = specs.class; break;}
+        if (mass >= specs.massmin && mass <= specs.massmax) { currentClass = specs; returnData.class = specs.class; break; }
     }
 
     for (let i = 0; i < 10; i++) {
         const min = 0;
         const max = currentClass.tempmax - currentClass.tempmin;
         const relmass = mass - currentClass.massmin;
-        
+
         const massPartStepSize = max / 10;
 
-        if (relmass >= (min+massPartStepSize*i) && relmass <= (min+massPartStepSize*(i+1))) returnData.subclass = i;
+        if (relmass >= (min + massPartStepSize * i) && relmass <= (min + massPartStepSize * (i + 1))) returnData.subclass = i;
     }
 
-    returnData.temp = Math.round((rng() * (currentClass.tempmax-currentClass.tempmin)) + currentClass.tempmin);
+    returnData.temp = Math.round((rng() * (currentClass.tempmax - currentClass.tempmin)) + currentClass.tempmin);
 
     returnData.r_sol = Math.pow(returnData.mass_sol, 0.8);
 
     returnData.lum_sol = Math.pow((returnData.r_sol * R_SOL) / R_SOL, 2) * Math.pow(returnData.temp / T_SOL, 4);
-    
+
     return returnData;
 }
 
@@ -246,7 +284,8 @@ function generateUniqueName(type, rng) {
 }
 
 /**
- * Validiert die Distanz zwischen Objekten, sodass Objekte nicht zu nahm und auch nicht zu weit voneinander sind
+ * Validiert die Distanz zwischen Objekten, sodass Objekte nicht zu nah und auch nicht zu weit voneinander sind,
+ * basierend auf der config.
  * 
  * @param distance 
  * @param angle 
@@ -334,32 +373,68 @@ function getRandomObjectType(objectType) {
  * Alle Validen Objekte die zur Generierung Verwendet werden dürfen.
  * @type {string[]}
  */
-const VALID_SPACE_OBJECTS = ["mainBlackHole", "star", "planet", "astroidfieldt1_astroid", "astroidfieldt2_astroid", "astroidfieldt3_astroid", "rogue_planet", "anomaly", "blackHole"]
+const VALID_SPACE_OBJECTS = ["mainBlackHole", "star", "planet", "t1_astroid", "t2_astroid", "t3_astroid", "rogue_planet", "anomaly", "blackHole", "gas_giant"]
 /**
- * Alle Validen Standard Ressourcen die AUF PLANETEN gefunden werden können.
+ * Alle Validen Standard Ressourcen die auf Planeten gefunden werden können.
  * @type {string[]}
  */
-const VALID_PLANETARY_RESOURCES = ["iron_ore", "copper_ore", "cobalt_ore", "titanium_ore", "hydrogen", "argon", "uranium_ore", "tungsten_ore"];
+const VALID_PLANETARY_RESOURCES = [];
 /**
- * Alle Validen Fortschrittliche Ressourcen die AUF PLANETEN gefunden werden können.
+ * Alle Validen Fortschrittliche Ressourcen die auf Planeten gefunden werden können.
  * @type {string[]}
  */
-const VALID_PLANETARY_SPECIALRESOURCES = ["razetulim_ore", "zanzorlim_ore", "mekballim_ice", "helumelim_sulfide"];
+const VALID_PLANETARY_SPECIALRESOURCES = [];
 /**
- * Alle Validen Ressourcen die AUF T-1, T-2 UND T3 ASTEROIDENFELDERN gefunden werden können.
+ * Alle Validen Standard Ressourcen die auf Stellaren Asteroidenfeldern gefunden werden können.
  * @type {string[]}
  */
-const VALID_AST_1_RESOURCES = ["methan_ice", "water_ice"];
+const VALID_STELLAR_ASTROID_RESOURCES = [];
 /**
- * Alle Validen Ressourcen die AUF T-2 UND T3 ASTEROIDENFELDERN gefunden werden können.
+ * Alle Validen Fortschrittliche Ressourcen die auf Stellaren Asteroidenfeldern gefunden werden können.
  * @type {string[]}
  */
-const VALID_AST_2_RESOURCES = ["naqium_ore"];
+const VALID_STELLAR_ASTROID_SPECIALRESOURCES = [];
 /**
- * Alle Validen Ressourcen die AUF T3 ASTEROIDENFELDERN gefunden werden können.
+ * Alle Validen Ressourcen die AUF T-1 Interstellaren Asteroidenfeldern gefunden werden können.
  * @type {string[]}
  */
-const VALID_AST_3_RESOURCES = ["Nexus_carbonsulfide_ice"];
+const VALID_AST_1_RESOURCES = [];
+/**
+ * Alle Validen Ressourcen die AUF T-2 Interstellaren Asteroidenfeldern gefunden werden können.
+ * @type {string[]}
+ */
+const VALID_AST_2_RESOURCES = [];
+/**
+ * Alle Validen Ressourcen die AUF T-3 Interstellaren Asteroidenfeldern gefunden werden können.
+ * @type {string[]}
+ */
+const VALID_AST_3_RESOURCES = [];
+
+/**
+ * 
+ */
+function init_resources() {
+    // Leere die Arrays zuerst
+    VALID_PLANETARY_RESOURCES.length = 0;
+    VALID_PLANETARY_SPECIALRESOURCES.length = 0;
+    VALID_STELLAR_ASTROID_RESOURCES.length = 0;
+    VALID_STELLAR_ASTROID_SPECIALRESOURCES.length = 0;
+    VALID_AST_1_RESOURCES.length = 0;
+    VALID_AST_2_RESOURCES.length = 0;
+    VALID_AST_3_RESOURCES.length = 0;
+
+    // resource_config ist vermutlich ein Array von Objekten
+    for (const entry of resource_config) {
+        // Beispiel: "type": "normal:solid"
+        if (entry.type === "normal:solid") {
+            VALID_PLANETARY_RESOURCES.push(entry.name);
+        }
+        // Hier kannst du weitere Typen auswerten, z.B. für Spezialressourcen oder Asteroiden
+        // if (entry.type === "special:planet") { ... }
+        // if (entry.type === "astroid:t1") { ... }
+        // usw.
+    }
+}
 
 /**
  * Zulässige Ressourcen (nur Planeten/Einzelgänger/Asteroiden) (resource):\
@@ -378,13 +453,23 @@ const VALID_AST_3_RESOURCES = ["Nexus_carbonsulfide_ice"];
  * Subspektralklasse via Seed + Masse\
  * Temperatur via Seed + Subspektralklasse
  * 
- * @param type {string|"mainBlackHole"|"star"|"planet"|"astroidfieldt1_astroid"|"astroidfieldt2_astroid"|"astroidfieldt3_astroid"|"rogue_planet"|"anomaly"|"blackHole"}
+ * `gasGiant` | `moon` | `planet` | `stellar_astroid_field` sind zwar Valide objekte sind\
+ * aber deaktiviert für die Galaxiegenerierung, weil sie nix in der Galaxie zu suchen haben,\
+ * sie werden separat in den Sternensystemen Generiert.\
+ * Die Gesammtmenge der Objekte in der Galaxie wird dennoch `config.amount` erreichen.
+ * 
+ * @param type {string|"mainBlackHole"|"star"|"gasGiant"|"moon"|"planet"|"astroidfieldt1_astroid"|"astroidfieldt2_astroid"|"astroidfieldt3_astroid"|"rogue_planet"|"anomaly"|"blackHole"}
  * @param x {number}
  * @param y {number}
  * @param name {string}
  * @param metadata {{resource: {}, specialresource: {}}}
  */
 function galaxyPush(type, x, y, name, metadata = { resource: {}, specialresource: {} }) {
+
+    if (type == "planet") return;
+    if (type == "gasGiant") return;
+    if (type == "moon") return;
+    if (type == "stellar_astroid_field") return;
 
     /**@type {{resource: {res:string, amount:number}[], specialresource: {res:string, amount:number}[], informationType: "star"|"planet"|"astroidField", informationBase: {}|null}} */
     const metadata_edit1 = { resource: [], specialresource: [], features: [], informationType: null, informationsBase: null };
@@ -396,7 +481,7 @@ function galaxyPush(type, x, y, name, metadata = { resource: {}, specialresource
          * 
          * starTemperature: Sternentemparatur in °K\
          * starMass: Sternenmasse in Sonnenmassen\
-         * starLum: Sternenleuchtstärke in Sonnenleuchtstärken
+         * starLum: Sternenleuchtstärke in Sonnenleuchtstärken\
          * starSpectral: Spektrum des Sterns:
          *  - h=Hauptsprektrum
          *  - s=Subspektrum
@@ -404,22 +489,32 @@ function galaxyPush(type, x, y, name, metadata = { resource: {}, specialresource
          * Hauptspektrum: Y, T, L, M, K, G (zb. wie unsere Sonne), F, A, B, O\
          * Subspektrul: Y0-Y9, T0-T9, L0-L9, M0-M9, K0-K9, G0-G9 (unsere Sonne ist G-2), F0-F9, A0-A9, B0-B9, O0-O9
          * 
-         * @type {{starTemperature: number, starMass: number, starRad: number, starLum: number, starSpectral: {h:"Y"|"T"|"L"|"M"|"K"|"G"|"F"|"A"|"B"|"O"|string, s:"0"|"1"|"2"|"3"|"4"|"5"|"6"|"7"|"8"|"9"|string}}}
+         * @type {{starTemperature: number, starMass: number, starMassKG: number, starRad: number, starLum: number, starSpectral: {h:"Y"|"T"|"L"|"M"|"K"|"G"|"F"|"A"|"B"|"O"|string, s:"0"|"1"|"2"|"3"|"4"|"5"|"6"|"7"|"8"|"9"|string}, planetSystem: []}}
          */
         const informationStar = {
             starTemperature: null,
             starMass: null,
+            starMassKG: null,
             starLum: null,
             starRad: null,
-            starSpectral: { h: null, s: null }
+            starSpectral: { h: null, s: null },
+            planetSystem: null
         }
 
         /**
          * 
          * 
-         * @type {{}}
+         * @type {{massEM: number, massKG: number}}
          */
-        const planet = {}
+        const infoRoguePlanet = {
+            massEM: null,
+            massKG: null,
+            height: null,
+            orbitPosDegree: null,
+            orbitPosNorm: null,
+            moons: null
+        };
+
         /**
          * 
          * 
@@ -469,15 +564,38 @@ function galaxyPush(type, x, y, name, metadata = { resource: {}, specialresource
 
             let info = informationStar;
 
+            let minPlanets = Math.round(rng() * MAX_PLANETS_PER_SOLSYS);
+            let maxPlanets = Math.round(rng() * (MAX_PLANETS_PER_SOLSYS - minPlanets)) + minPlanets;
+
             let specs = getSolarSpectralClassData(sunMass);
 
             info.starLum = specs.lum_sol;
             info.starMass = specs.mass_sol;
+            info.starMassKG = specs.mass_sol * SUN_MASS_KG;
             info.starRad = specs.r_sol
-            info.starSpectral = {h: specs.class, s: specs.subclass};
+            info.starSpectral = { h: specs.class, s: specs.subclass };
             info.starTemperature = specs.temp;
+            info.planetSystem = generatePlanetSystemData(name, info.starMassKG, minPlanets, maxPlanets)
 
             metadata_edit1.informationType = "star";
+            metadata_edit1.informationBase = info;
+        }
+
+        if (type == "rogue_planet") {
+            // Beispielwerte, du kannst sie nach Bedarf anpassen/generieren
+            const mass = +(0.1 + rng() * 10).toFixed(3);
+            const rotation = Math.round(rng() * 360);
+            const moons = generateMoonSystemData(name, mass * EARTH_MASS_KG, Math.round(rng() * MAX_MOONS_PER_PLANET));
+
+            let info = infoRoguePlanet
+
+            info.massEM = mass
+            info.massKG = mass * EARTH_MASS_KG
+            info.orbitPosDegree = rotation
+            info.orbitPosNorm = (rotation / 360).toFixed(3)
+            info.moons = moons
+
+            metadata_edit1.informationType = "rogue_planet";
             metadata_edit1.informationBase = info;
         }
 
@@ -489,7 +607,7 @@ function galaxyPush(type, x, y, name, metadata = { resource: {}, specialresource
 
     if (metadata_edit1.resource.length != 0) { metadata_edit2.resource = metadata_edit1.resource }
     if (metadata_edit1.specialresource.length != 0) { metadata_edit2.specialresource = metadata_edit1.specialresource }
-    if (metadata_edit1.informationType != null && metadata_edit1.informationBase != null) {metadata.informationType = metadata_edit1.informationType; metadata_edit2.informationBase = metadata_edit1.informationBase}
+    if (metadata_edit1.informationType != null && metadata_edit1.informationBase != null) { metadata.informationType = metadata_edit1.informationType; metadata_edit2.informationBase = metadata_edit1.informationBase }
 
     //// const distanceToCenter = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
     const distanceToCenter = Math.hypot(x, y);
@@ -511,6 +629,110 @@ function galaxyPush(type, x, y, name, metadata = { resource: {}, specialresource
 galaxyPush("mainBlackHole")
 
 /**
+ * Die funktion Generiert ein Array mit Validen Ressourcen Werten bis zu einem Maximalen Ressourcenpunkwert
+ * 
+ * @param {string} type
+ * @param {number} max Der Maximalwert von Ressourcenpunkten, meist so im 1000er Bereich
+ * @return {{}}
+ */
+function resourcerichness(type, max) {
+    let current = 0;
+    let ressources = [];
+
+    while (current < max) {
+
+    }
+
+    // return Math.round(rng() * 1000);
+}
+
+/**
+ * Generiert ein Planetensystem (nur Daten, nicht in der Galaxie!).
+ * Jeder Planet hat: höhe (Abstand), masse, rotation (in Grad), und ggf. Monde.
+ * @param {string} parentStarName
+ * @param {number} parentStarMass In KG
+ * @param {number} minPlanets
+ * @param {number} maxPlanets
+ * @returns {Array} Array mit Planeten-Objekten
+ */
+function generatePlanetSystemData(parentStarName, parentStarMass, minPlanets = 1, maxPlanets = 10) {
+    const planets = [];
+    const planetCount = minPlanets + Math.floor(rng() * (maxPlanets - minPlanets + 1));
+    let lastDistance = 0.1 + rng() * 2; // Startabstand in AE
+
+    for (let i = 0; i < planetCount; i++) {
+        lastDistance += 2 + rng() * 5;
+        const rotation = Math.round(rng() * 360); // Rotationswinkel in Grad
+        const mass = +(0.1 + rng() * 10).toFixed(3); // Masse, z.B. 0.1 - 10 (Erdmassen)
+        const name = generateUniqueName("planet", rng);
+
+        const maxMoons = Math.round(rng() * MAX_MOONS_PER_PLANET);
+        let moons = [];
+        if (maxMoons > 0) {
+            moons = generateMoonSystemData(name, mass * EARTH_MASS_KG, maxMoons);
+        }
+
+        const OrbitalSpeed = Math.sqrt((G * parentStarMass) / (lastDistance * AE))
+        const OrbitalTimeInSec = 2 * Math.PI * Math.sqrt(Math.pow(lastDistance * AE, 3) / (G * parentStarMass));
+
+        planets.push({
+            name,
+            height: lastDistance,
+            massEM: mass,
+            massKG: mass * EARTH_MASS_KG,
+            OrbitalSpeed,
+            OrbitalTimeInSec,
+            OrbitalTimeInYears: Math.round((OrbitalTimeInSec / YEAR_IN_SEC) * 1000) / 1000,
+            orbitPosDegree: rotation,   // in Grad
+            orbitPosNorm: Math.round((rotation / 360) * 1000) / 1000,  // Normalisiert
+            moons
+        });
+
+        
+    }
+    return planets;
+}
+
+/**
+ * Generiert ein Mondsystem für einen Planeten (nur Daten).
+ * Jeder Mond hat: höhe (Abstand), masse, rotation (in Grad).
+ * @param {string} parentPlanetName
+ * @param {number} parentPlanetMass in KG
+ * @param {number} maxMoons
+ * @returns {Array} Array mit Mond-Objekten
+ */
+function generateMoonSystemData(parentPlanetName, parentPlanetMass, maxMoons = 5) {
+    const moons = [];
+    const moonCount = Math.floor(rng() * (maxMoons + 1));
+    let lastDistance = 50000 + rng() * 100000; // Startabstand in KM
+
+    for (let i = 0; i < moonCount; i++) {
+        const rotation = Math.round(rng() * 360);
+        const mass = +(0.01 + rng() * 0.5).toFixed(3); // Masse, z.B. 0.01 - 0.5 (Erdmassen)
+        const name = generateUniqueName("moon", rng);
+
+        const OrbitalSpeed = Math.sqrt((G * parentPlanetMass) / (lastDistance * 1000))
+        const OrbitalTimeInSec = 2 * Math.PI * Math.sqrt(Math.pow((lastDistance * 1000), 3) / (G * parentPlanetMass));
+
+        moons.push({
+            name,
+            parent: parentPlanetName,
+            height: lastDistance,
+            massEM: mass,
+            massKG: mass * EARTH_MASS_KG,
+            OrbitalSpeed,
+            OrbitalTimeInSec,
+            OrbitalTimeInYears: (OrbitalTimeInSec / YEAR_IN_SEC).toFixed(3),
+            orbitPosDegree: rotation,   // in Grad
+            orbitPosNorm: (rotation / 360).toFixed(3)  // Normalisiert
+        });
+
+        lastDistance += rng() * 100000
+    }
+    return moons;
+}
+
+/**
  * Hier werden per Seed alle Objekte Ausgewählt, deren Positionen Generiert & Validiert und dann Abgespeichert.
  */
 while (galaxy.length < config.count) {
@@ -527,10 +749,12 @@ while (galaxy.length < config.count) {
 
     // === nearStar ===
     if (typeConfig.preferred?.startsWith("nearStar")) {
-        
+
         if (stars.length === 0) {
             // Kein Stern = Kein nearStar.
             // macht sinn oder?
+            // würde ich so mal behaupten.
+            // denke ich zumindest.
             continue;
         }
 
@@ -562,6 +786,6 @@ while (galaxy.length < config.count) {
 }
 
 fs.writeFileSync("./public/galaxy.json", JSON.stringify(galaxy));
-console.log(rng());
 
-console.log("💫 Galaxie generiert mit", galaxy.length, "Objekten.");
+console.log("Galaxie generiert mit", galaxy.length, "Objekten.");
+console.log("Seed:", cc.string(config.seed));

@@ -246,6 +246,7 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
 
             if (found !== hoveredObject) {
                 hoveredObject = found;
+                updateInfoPanel(hoveredObject); // <--- HIER AUFRUFEN
                 draw();
             }
         }
@@ -369,6 +370,92 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
                 ctx.fillText(dist.toFixed(1), midX + 5, midY - 5);
             });
         }
+    }
+
+    function updateInfoPanel(obj) {
+        if (!obj) {
+            info_content.innerHTML = `<span>Bewege den Mauszeiger über ein Objekt...</span>`;
+            return;
+        }
+
+        let html = `<b>Name:</b> ${obj.name}<br>`;
+        html += `<b>Typ:</b> ${obj.type}<br>`;
+        html += `<b>Position:</b> x=${obj.x.toFixed(2)}, y=${obj.y.toFixed(2)}<br>`;
+        html += `<b>Distanz zum Zentrum:</b> ${obj.distanceToCenter ? obj.distanceToCenter.toFixed(2) : "-"}<br>`;
+
+        // Metadaten anzeigen, falls vorhanden
+        if (obj.metadata && obj.metadata.informationBase) {
+            const info = obj.metadata.informationBase;
+            if (obj.type === "star") {
+                html += `<hr><b>Sternendaten:</b><br>`;
+                html += `Spektralklasse: ${info.starSpectral?.h ?? "-"}-${info.starSpectral?.s ?? "-"}<br>`;
+                html += `Temperatur: ${info.starTemperature ?? "-"} °K<br>`;
+                html += `Masse: ${info.starMass?.toFixed(3) ?? "-"} Sonnenmassen<br>`;
+                html += `Radius: ${info.starRad?.toFixed(3) ?? "-"} Sonnenradien<br>`;
+                html += `Leuchtkraft: ${info.starLum?.toExponential(3) ?? "-"} L☉<br>`;
+                html += `Masse (kg): ${info.starMassKG ? info.starMassKG.toExponential(3) : "-"}<br>`;
+                // Planeten anzeigen
+                if (Array.isArray(info.planetSystem)) {
+                    html += `<hr><b>Planeten (${info.planetSystem.length}):</b><br>`;
+                    info.planetSystem.forEach((planet, idx) => {
+                        let OTD = planet.OrbitalTimeInSec / (24*3600);
+
+                        html += `<u>Planet ${idx + 1}: ${planet.name}</u><br>`;
+                        html += `&nbsp;Höhe: ${planet.height.toFixed(2)} AE<br>`;
+                        html += `&nbsp;Masse: ${planet.massEM} Erdmassen<br>`;
+                        html += `&nbsp;Umlaufzeit: ${planet.OrbitalTimeInYears} Jahre`;
+                        if (OTD < 100) {html += `(${OTD} Tage)<br>`} else {html += "<br>"}
+                        html += `&nbsp;Primäre Ressourcen: - <br>`;
+                        html += `&nbsp;Secundäre Ressourcen: - <br>`;
+                        if (planet.moons && planet.moons.length > 0) {
+                            html += `&nbsp;Monde (${planet.moons.length}):<br>`;
+                            planet.moons.forEach((moon, min) => {
+                                OTD
+                                html += `&nbsp;&nbsp;• ${moon.name} (Höhe: ${moon.height.toFixed(0)} km, Masse: ${moon.massEM} EM, Umlaufzeit: ${(moon.OrbitalTimeInSec/3600).toFixed(2)} h (${moon.OrbitalTimeInSec / (24*3600).toFixed(3)} Tage)<br>`;
+                            });
+                        }
+                        html += "<br>"
+                    });
+                }
+            }
+            
+            if (obj.type === "rogue_planet" || obj.type === "planet") {
+                html += `<hr><b>Planetendaten:</b><br>`;
+                html += `Masse: ${info.massEM ?? "-"} Erdmassen<br>`;
+                if (obj.type == "planet") html += `Höhe: ${info.height ?? "-"} AE<br>`;
+                html += `Orbitposition: ${info.orbitPosDegree ?? "-"}°<br>`;
+                if (info.moons && info.moons.length > 0) {
+                    html += `Monde (${info.moons.length}):<br>`;
+                    info.moons.forEach((moon, mi) => {
+                        html += `&nbsp;• ${moon.name} (Höhe: ${moon.height.toFixed(0)} km, Masse: ${moon.massEM} EM, Orbitposition: ${moon.orbitPosDegree}°)<br>`;
+                    });
+                }
+            }
+
+            // Weitere Typen wie Asteroidenfelder, Anomalien etc. kannst du hier ergänzen
+        }
+
+        // Ressourcen anzeigen, falls vorhanden
+        if (obj.metadata && obj.metadata.resource) {
+            const res = obj.metadata.resource;
+            if (Array.isArray(res) && res.length > 0) {
+                html += `<hr><b>Ressourcen:</b><br>`;
+                res.forEach(r => {
+                    html += `${r.res}: ${r.amount}<br>`;
+                });
+            }
+        }
+        if (obj.metadata && obj.metadata.specialresource) {
+            const res = obj.metadata.specialresource;
+            if (Array.isArray(res) && res.length > 0) {
+                html += `<b>Spezialressourcen:</b><br>`;
+                res.forEach(r => {
+                    html += `${r.res}: ${r.amount}<br>`;
+                });
+            }
+        }
+
+        info_content.innerHTML = html;
     }
 
     resize();
