@@ -27,6 +27,15 @@
             font-size: 12px;
             padding: 8px;
             border-radius: 5px;
+            pointer-events: none;
+        }
+
+        .legend span {
+            pointer-events: all;
+        }
+
+        .legend div span {
+            pointer-events: all;
         }
 
         .legend div {
@@ -111,43 +120,94 @@
     <canvas id="galaxy"></canvas>
     <div class="legend">
         <h3>Legende</h3>
-        <div id="legend.star" data-spectral-class=""><span class="dot" style="background: yellow;"></span> Stern <span
-                id="star_count">(?)</span></div>
-        <div id="legend.o_star" data-spectral-class="O"><span class="dot" style="background: lightblue;"></span> Klasse O Stern <span
-                id="o_star_count">(?)</span></div>
-        <div id="legend.b_star" data-spectral-class="B"><span class="dot" style="background: darkcyan;"></span> Klasse B Stern <span
-                id="b_star_count">(?)</span></div>
-        <div id="legend.a_star" data-spectral-class="A"><span class="dot" style="background: lightblue;"></span> Klasse A Stern <span
-                id="a_star_count">(?)</span></div>
-        <div id="legend.f_star" data-spectral-class="F"><span class="dot" style="background: white;"></span> Klasse F Stern <span
-                id="f_star_count">(?)</span></div>
-        <div id="legend.g_star" data-spectral-class="G"><span class="dot" style="background: yellow;"></span> Klasse G Stern <span
-                id="g_star_count">(?)</span></div>
-        <div id="legend.k_star" data-spectral-class="K"><span class="dot" style="background: orange;"></span> Klasse K Stern <span
-                id="k_star_count">(?)</span></div>
-        <div id="legend.m_star" data-spectral-class="M"><span class="dot" style="background: red;"></span> Klasse M Stern <span
-                id="m_star_count">(?)</span></div>
-        <div id="legend.l_star" data-spectral-class="L"><span class="dot" style="background: darkred;"></span> Klasse L Stern <span
-                id="l_star_count">(?)</span></div>
-        <div id="legend.t_star" data-spectral-class="T"><span class="dot" style="background: purple;"></span> Klasse T Stern <span
-                id="t_star_count">(?)</span></div>
-        <div id="legend.y_star" data-spectral-class="Y"><span class="dot" style="background: darkslategray;"></span> Klasse Y Stern <span
-                id="y_star_count">(?)</span></div>
+        <div id="legend.star" data-spectral-class=""><span class="dot" style="background: yellow;"></span><span> Stern
+            </span><span id="star_count">(?)</span></div>
+        <div id="legend.o_star" data-spectral-class="O">
+            <span class="dot" style="background: lightblue;"></span>
+            <span> Klasse O Stern </span>
+            <span id="o_star_count">(?)</span>
+        </div>
+        <div id="legend.b_star" data-spectral-class="B">
+            <span class="dot" style="background: darkcyan;"></span>
+            <span> Klasse B Stern </span>
+            <span id="b_star_count">(?)</span>
+        </div>
+        <div id="legend.a_star" data-spectral-class="A">
+            <span class="dot" style="background: lightblue;"></span>
+            <span> Klasse A Stern </span>
+            <span id="a_star_count">(?)</span>
+        </div>
+        <div id="legend.f_star" data-spectral-class="F">
+            <span class="dot" style="background: white;"></span>
+            <span> Klasse F Stern </span>
+            <span id="f_star_count">(?)</span>
+        </div>
+        <div id="legend.g_star" data-spectral-class="G">
+            <span class="dot" style="background: yellow;"></span>
+            <span> Klasse G Stern </span>
+            <span id="g_star_count">(?)</span>
+        </div>
+        <div id="legend.k_star" data-spectral-class="K">
+            <span class="dot" style="background: orange;"></span>
+            <span> Klasse K Stern </span>
+            <span id="k_star_count">(?)</span>
+        </div>
+        <div id="legend.m_star" data-spectral-class="M">
+            <span class="dot" style="background: red;"></span>
+            <span> Klasse M Stern </span>
+            <span id="m_star_count">(?)</span>
+        </div>
+        <div id="legend.l_star" data-spectral-class="L">
+            <span class="dot" style="background: darkred;"></span>
+            <span> Klasse L Stern </span>
+            <span id="l_star_count">(?)</span>
+        </div>
+        <div id="legend.t_star" data-spectral-class="T">
+            <span class="dot" style="background: purple;"></span>
+            <span> Klasse T Stern </span>
+            <span id="t_star_count">(?)</span>
+        </div>
+        <div id="legend.y_star" data-spectral-class="Y">
+            <span class="dot" style="background: darkslategray;"></span>
+            <span> Klasse Y Stern </span>
+            <span id="y_star_count">(?)</span>
+        </div>
 
-        <div id="legend.t1_astroid"><span class="dot" style="background: lightgray;"></span> T1 - Asteroidenhaufen <span
-                id="t1_astroid_count">(?)</span></div>
-        <div id="legend.t2_astroid"><span class="dot" style="background: gray;"></span> T2 - Asteroidenhaufen <span
-                id="t2_astroid_count">(?)</span></div>
-        <div id="legend.t3_astroid"><span class="dot" style="background: darkgreen;"></span> T3 - Asteroidenhaufen <span
-                id="t3_astroid_count">(?)</span></div>
-        <div id="legend.rogue_planet"><span class="dot" style="background: blue;"></span> Einzelgänger-Planet <span
-                id="rogue_planet_count">(?)</span></div>
-        <div id="legend.anomaly"><span class="dot" style="background: magenta;"></span> Anomalie <span
-                id="anomaly_count">(?)</span></div>
-        <div id="legend.blackHole"><span class="dot" style="background: pink;"></span> Schwarzes Loch <span
-                id="blackHole_count">(?)</span></div>
-        <div id="legend.mainBlackHole"><span class="dot" style="background: magenta;"></span> Schwarzes Loch (Zentrum)
-            <span id="mainBlackHole_count">(?)</span></div>
+        <div id="legend.t1_astroid">
+            <span class="dot" style="background: lightgray;"></span>
+            <span> T1 - Asteroidenhaufen </span>
+            <span id="t1_astroid_count">(?)</span>
+        </div>
+        <div id="legend.t2_astroid">
+            <span class="dot" style="background: gray;"></span>
+            <span> T2 - Asteroidenhaufen </span>
+            <span id="t2_astroid_count">(?)</span>
+        </div>
+        <div id="legend.t3_astroid">
+            <span class="dot" style="background: darkgreen;"></span>
+            <span> T3 - Asteroidenhaufen </span>
+            <span id="t3_astroid_count">(?)</span>
+        </div>
+        <div id="legend.rogue_planet">
+            <span class="dot" style="background: blue;"></span>
+            <span> Einzelgänger-Planet </span>
+            <span id="rogue_planet_count">(?)</span>
+        </div>
+        <div id="legend.anomaly">
+            <span class="dot" style="background: magenta;"></span>
+            <span> Anomalie </span>
+            <span id="anomaly_count">(?)</span>
+        </div>
+        <div id="legend.blackHole">
+            <span class="dot" style="background: pink;"></span>
+            <span> Schwarzes Loch </span>
+            <span id="blackHole_count">(?)</span>
+        </div>
+        <div id="legend.mainBlackHole">
+            <span class="dot" style="background: magenta;"></span>
+            <span> Schwarzes Loch (Zentrum) </span>
+            <span id="mainBlackHole_count">(?)</span>
+        </div>
         <h3>Optionen</h3>
         <div>
             <span>Momentaner Zoom: <span id="currentZoom">1</span>x</span><br>
@@ -166,7 +226,8 @@
             <span>Anklicken zum Auswählen: </span><input type="checkbox" id="clickToSelect"><br>
         </div>
         <div>
-            <span>Einheitliche Sternenfarben (Zeigt alle Sterne Gelb an): </span><input type="checkbox" id="uniformStarColor" checked><br>
+            <span>Einheitliche Sternenfarben (Zeigt alle Sterne Gelb an): </span><input type="checkbox"
+                id="uniformStarColor" checked><br>
         </div>
     </div>
 

@@ -208,14 +208,7 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
         const types = [...new Set(data.map(o => o.type))];
         types.forEach(type => {
             const div = document.createElement('div');
-            div.style.cursor = 'pointer';
-            div.style.margin = '3px';
-            div.style.padding = '2px 6px';
-            div.style.border = '1px solid white';
-            div.style.display = 'inline-flex';
-            div.style.alignItems = 'center';
-            div.style.color = 'white';
-            div.style.userSelect = 'none';
+            div.style.cursor = 'default'; // Kein Pointer auf dem ganzen Div
 
             // Dot als farbiger Kreis
             const dot = document.createElement('span');
@@ -239,17 +232,22 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
             })();
 
             div.appendChild(dot);
-            div.appendChild(document.createTextNode(type.charAt(0).toUpperCase() + type.slice(1)));
 
-            div.addEventListener('mouseenter', () => {
+            // Nur das Label ist hoverbar!
+            const label = document.createElement('span');
+            label.className = 'legend-label';
+            label.style.cursor = 'pointer';
+            label.innerText = type.charAt(0).toUpperCase() + type.slice(1);
+            div.appendChild(label);
+
+            label.addEventListener('mouseenter', () => {
                 hoveredType = type;
-                // Optional: Legendeneintrag visuell hervorheben
-                div.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                label.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
                 draw();
             });
-            div.addEventListener('mouseleave', () => {
+            label.addEventListener('mouseleave', () => {
                 hoveredType = null;
-                div.style.backgroundColor = '';
+                label.style.backgroundColor = '';
                 draw();
             });
 
@@ -273,14 +271,7 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
             const div = document.createElement('div');
             div.id = `legend.${cls.key}`;
             div.setAttribute('data-spectral-class', cls.key);
-            div.style.cursor = 'pointer';
-            div.style.margin = '3px';
-            div.style.padding = '2px 6px';
-            div.style.border = '1px solid white';
-            div.style.display = 'inline-flex';
-            div.style.alignItems = 'center';
-            div.style.color = 'white';
-            div.style.userSelect = 'none';
+            div.style.cursor = 'default';
 
             // Dot als farbiger Kreis
             const dot = document.createElement('span');
@@ -292,7 +283,13 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
             dot.style.backgroundColor = cls.color;
 
             div.appendChild(dot);
-            div.appendChild(document.createTextNode(cls.key + "-Stern"));
+
+            // Nur das Label ist hoverbar!
+            const label = document.createElement('span');
+            label.className = 'legend-label';
+            label.style.cursor = 'pointer';
+            label.innerText = cls.key + "-Stern";
+            div.appendChild(label);
 
             // Counter
             const countSpan = document.createElement('span');
@@ -300,16 +297,15 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
             countSpan.style.marginLeft = '6px';
             div.appendChild(countSpan);
 
-            // Hover-Highlight für Sternklasse
-            div.addEventListener('mouseenter', () => {
-                hoveredType = null; // Typen-Hover deaktivieren
+            label.addEventListener('mouseenter', () => {
+                hoveredType = null;
                 hoveredSpectralClass = cls.key;
-                div.style.backgroundColor = 'rgba(255,255,255,0.1)';
+                label.style.backgroundColor = 'rgba(255,255,255,0.1)';
                 draw();
             });
-            div.addEventListener('mouseleave', () => {
+            label.addEventListener('mouseleave', () => {
                 hoveredSpectralClass = null;
-                div.style.backgroundColor = '';
+                label.style.backgroundColor = '';
                 draw();
             });
 
