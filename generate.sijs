@@ -818,7 +818,7 @@ while (galaxy.length < config.count) {
     }
 }
 
-fs.writeFileSync("./public/galaxy.json", JSON.stringify(galaxy));
+fs.writeFileSync("./web/galaxy.json", JSON.stringify(galaxy));
 
 console.log("Galaxie generiert mit", galaxy.length, "Objekten.");
 console.log("Seed:", cc.string(config.seed));
