@@ -41,18 +41,23 @@
             border-radius: 50%;
         }
 
-        input,select,option {
+        input,
+        select,
+        option {
             background-color: darkslategray;
             color: white;
             border-radius: 5px;
             outline: white 2px;
         }
 
-        input:focus,select {
+        input:focus,
+        select {
             outline: none
         }
 
-        input:disabled,select:disabled,option:disabled {
+        input:disabled,
+        select:disabled,
+        option:disabled {
             background-color: rgb(23, 23, 23);
             color: #3f3f3f;
         }
@@ -67,9 +72,32 @@
             font-size: 12px;
             padding: 8px;
             border-radius: 5px;
-            max-width: 200px;
-            pointer-events: none;
-            /* Damit man nicht versehentlich draufklickt */
+            max-width: 300px;
+            max-height: 50vh;
+            /* NEU: Maximal 50% der Viewport-Höhe */
+            overflow-y: auto;
+            /* NEU: Scrollbar bei Überlauf */
+        }
+
+        /* Nur für das Info-Panel */
+        .info_panel::-webkit-scrollbar {
+            width: 10px;
+            background: #222;
+        }
+
+        .info_panel::-webkit-scrollbar-thumb {
+            background: #444;
+            border-radius: 5px;
+        }
+
+        .info_panel::-webkit-scrollbar-thumb:hover {
+            background: #666;
+        }
+
+        /* Optional: Für Firefox */
+        .info_panel {
+            scrollbar-width: thin;
+            scrollbar-color: #444 #222;
         }
 
         select {
@@ -83,25 +111,62 @@
     <canvas id="galaxy"></canvas>
     <div class="legend">
         <h3>Legende</h3>
-        <div id="legend.star"><span class="dot" style="background: yellow;"></span> Stern <span id="star_count">(?)</span></div>
-        <div id="legend.t1_astroid"><span class="dot" style="background: lightgray;"></span> T1 - Asteroidenhaufen <span id="t1_astroid_count">(?)</span></div>
-        <div id="legend.t2_astroid"><span class="dot" style="background: gray;"></span> T2 - Asteroidenhaufen <span id="t2_astroid_count">(?)</span></div>
-        <div id="legend.t3_astroid"><span class="dot" style="background: darkgreen;"></span> T3 - Asteroidenhaufen <span id="t3_astroid_count">(?)</span></div>
-        <div id="legend.rogue_planet"><span class="dot" style="background: blue;"></span> Einzelgänger-Planet <span id="rogue_planet_count">(?)</span></div>
-        <div id="legend.anomaly"><span class="dot" style="background: magenta;"></span> Anomalie <span id="anomaly_count">(?)</span></div>
-        <div id="legend.blackHole"><span class="dot" style="background: pink;"></span> Schwarzes Loch <span id="blackHole_count">(?)</span></div>
-        <div id="legend.mainBlackHole"><span class="dot" style="background: magenta;"></span> Schwarzes Loch (Zentrum) <span id="mainBlackHole_count">(?)</span></div>
+        <div id="legend.star" data-spectral-class=""><span class="dot" style="background: yellow;"></span> Stern <span
+                id="star_count">(?)</span></div>
+        <div id="legend.o_star" data-spectral-class="O"><span class="dot" style="background: lightblue;"></span> Klasse O Stern <span
+                id="o_star_count">(?)</span></div>
+        <div id="legend.b_star" data-spectral-class="B"><span class="dot" style="background: darkcyan;"></span> Klasse B Stern <span
+                id="b_star_count">(?)</span></div>
+        <div id="legend.a_star" data-spectral-class="A"><span class="dot" style="background: lightblue;"></span> Klasse A Stern <span
+                id="a_star_count">(?)</span></div>
+        <div id="legend.f_star" data-spectral-class="F"><span class="dot" style="background: white;"></span> Klasse F Stern <span
+                id="f_star_count">(?)</span></div>
+        <div id="legend.g_star" data-spectral-class="G"><span class="dot" style="background: yellow;"></span> Klasse G Stern <span
+                id="g_star_count">(?)</span></div>
+        <div id="legend.k_star" data-spectral-class="K"><span class="dot" style="background: orange;"></span> Klasse K Stern <span
+                id="k_star_count">(?)</span></div>
+        <div id="legend.m_star" data-spectral-class="M"><span class="dot" style="background: red;"></span> Klasse M Stern <span
+                id="m_star_count">(?)</span></div>
+        <div id="legend.l_star" data-spectral-class="L"><span class="dot" style="background: darkred;"></span> Klasse L Stern <span
+                id="l_star_count">(?)</span></div>
+        <div id="legend.t_star" data-spectral-class="T"><span class="dot" style="background: purple;"></span> Klasse T Stern <span
+                id="t_star_count">(?)</span></div>
+        <div id="legend.y_star" data-spectral-class="Y"><span class="dot" style="background: darkslategray;"></span> Klasse Y Stern <span
+                id="y_star_count">(?)</span></div>
+
+        <div id="legend.t1_astroid"><span class="dot" style="background: lightgray;"></span> T1 - Asteroidenhaufen <span
+                id="t1_astroid_count">(?)</span></div>
+        <div id="legend.t2_astroid"><span class="dot" style="background: gray;"></span> T2 - Asteroidenhaufen <span
+                id="t2_astroid_count">(?)</span></div>
+        <div id="legend.t3_astroid"><span class="dot" style="background: darkgreen;"></span> T3 - Asteroidenhaufen <span
+                id="t3_astroid_count">(?)</span></div>
+        <div id="legend.rogue_planet"><span class="dot" style="background: blue;"></span> Einzelgänger-Planet <span
+                id="rogue_planet_count">(?)</span></div>
+        <div id="legend.anomaly"><span class="dot" style="background: magenta;"></span> Anomalie <span
+                id="anomaly_count">(?)</span></div>
+        <div id="legend.blackHole"><span class="dot" style="background: pink;"></span> Schwarzes Loch <span
+                id="blackHole_count">(?)</span></div>
+        <div id="legend.mainBlackHole"><span class="dot" style="background: magenta;"></span> Schwarzes Loch (Zentrum)
+            <span id="mainBlackHole_count">(?)</span></div>
         <h3>Optionen</h3>
         <div>
             <span>Momentaner Zoom: <span id="currentZoom">1</span>x</span><br>
         </div>
         <div>
             <span>Namensanzeige: </span><input type="checkbox" id="showNames" checked><br>
-            <span>Namen-Zoomanzeige Distanz: </span><input type="number" min="0.00001" max="10.0000" step="0.0001" value="0.7000" id="nameDistance">
+            <span>Namen-Zoomanzeige Distanz: </span><input type="number" min="0.00001" max="10.0000" step="0.0001"
+                value="0.7000" id="nameDistance">
         </div>
         <div>
             <span>Distanzlinien: </span><input type="checkbox" id="showDistanceLines"><br>
-            <span>Maximale Diszanzlinien: </span><input type="number" value="10" step="1" min="1" , max="25" id="maxDistanceLines" disabled>
+            <span>Maximale Diszanzlinien: </span><input type="number" value="10" step="1" min="1" , max="25"
+                id="maxDistanceLines" disabled>
+        </div>
+        <div>
+            <span>Anklicken zum Auswählen: </span><input type="checkbox" id="clickToSelect"><br>
+        </div>
+        <div>
+            <span>Einheitliche Sternenfarben (Zeigt alle Sterne Gelb an): </span><input type="checkbox" id="uniformStarColor" checked><br>
         </div>
     </div>
 
@@ -110,6 +175,9 @@
         <div id="info_content">
             <span>Bewege den Mauszeiger über ein Objekt...</span>
         </div>
+    </div>
+
+    <!-- <div class="shipLegend" id="shipLegend">
         <h3>Travel time for Ship</h3>
         <div id="ship_content">
             <label for="shipSelect">Wähle ein Schiff aus<br>(Noch nicht Implementiert):</label>
@@ -121,7 +189,7 @@
                 <option value="ship_UC_Nexus" disabled>UC Nexus</option>
             </select>
         </div>
-    </div>
+    </div> -->
 
     <script src="render.js"></script>
 </body>

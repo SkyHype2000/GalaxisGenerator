@@ -1,6 +1,6 @@
 const fs = require("fs");
 const seedrandom = require("seedrandom");
-const cc = require("./color.js")
+const cc = require("./consolecolor.js")
 
 /**
  * Die Config wo alle Informationen aufgeschrieben sind.\
@@ -143,24 +143,60 @@ function generateSolarMass(x) {
 }
 
 /**
- * Alle Validen Werte für jeden Spektrum.
+ * Alle Validen Werte für jedesSpektrum.
  *
  * Hier habe ich natürlich einige Simplifikationen durchgeführt, besonders bei der Klasse `M`, `L`, `T` und `Y`.
  * 
- * @type {{class:string, tempmin:number, tempmax: number, massmin: number, massmax: number}[]}
+ * @type {{class: string, name: string, color: string, tempmin:number, tempmax: number, massmin: number, massmax: number}[]}
  */
 const VALID_SPECTRAL_CLASS_VALUES = [
-    { class: "O", tempmin: 30000, tempmax: 60000, massmin: 16, massmax: Infinity },
-    { class: "B", tempmin: 10000, tempmax: 30000, massmin: 2.1, massmax: 16 },
-    { class: "A", tempmin: 7500, tempmax: 10000, massmin: 1.7, massmax: 2.1 },
-    { class: "F", tempmin: 6000, tempmax: 7500, massmin: 1.1, massmax: 1.7 },
-    { class: "G", tempmin: 5300, tempmax: 6000, massmin: 0.8, massmax: 1.1 },
-    { class: "K", tempmin: 3500, tempmax: 5300, massmin: 0.5, massmax: 0.8 },
-    { class: "M", tempmin: 2500, tempmax: 3500, massmin: 0.03, massmax: 0.5 },
-    { class: "L", tempmin: 1300, tempmax: 2500, massmin: 0.05, massmax: 0.03 },
-    { class: "T", tempmin: 800, tempmax: 1300, massmin: 0.01, massmax: 0.03 },
-    { class: "Y", tempmin: 0, tempmax: 800, massmin: 0.0083, massmax: 0.01 },
+    { class: "O", name: "Blau-Weißer Riese", color: "lightblue", tempmin: 30000, tempmax: 60000, massmin: 16, massmax: 100 },
+    { class: "B", name: "Blauer Unterriese", color: "cyan", tempmin: 10000, tempmax: 30000, massmin: 2.1, massmax: 16 },
+    { class: "A", name: "Blau-Weißer HRS", color: "lightblue", tempmin: 7500, tempmax: 10000, massmin: 1.7, massmax: 2.1 },
+    { class: "F", name: "Weißer HRS", color: "white", tempmin: 6000, tempmax: 7500, massmin: 1.1, massmax: 1.7 },
+    { class: "G", name: "Gelber Zwergstern", color: "yellow", tempmin: 5300, tempmax: 6000, massmin: 0.8, massmax: 1.1 },
+    { class: "K", name: "Orangener Zwergstern", color: "orange", tempmin: 3500, tempmax: 5300, massmin: 0.5, massmax: 0.8 },
+    { class: "M", name: "Roter Zwergstern", color: "red", tempmin: 2500, tempmax: 3500, massmin: 0.05, massmax: 0.5 },
+    { class: "L", name: "Brauner Zwergstern", color: "darkred", tempmin: 1300, tempmax: 2500, massmin: 0.03, massmax: 0.05 },
+    { class: "T", name: "Kalter Brauner Zwergstern", color: "darkpurple", tempmin: 800, tempmax: 1300, massmin: 0.01, massmax: 0.03 },
+    { class: "Y", name: "Extrem Kalter Brauner Zwergstern/Gasriese", color: "darkslategray", tempmin: 0, tempmax: 800, massmin: 0.0083, massmax: 0.01 },
 ]
+
+/**
+ * Alle Validen Werte für jedes Sub-Spektrum.
+ * 
+ * @type {{class: string, name: string, color: string, tempmin:number, tempmax: number, massmin: number, massmax: number}[]}
+ */
+const VALID_SUBSPECTRAL_CLASS_VALUES = [
+
+]
+function initSubspectralClassValues() {
+    for (let i = 0; i < VALID_SPECTRAL_CLASS_VALUES.length; i++) {
+        const e_i = VALID_SPECTRAL_CLASS_VALUES[i];
+        for (let j = 0; j < 10; j++) {
+
+            const tempmin = e_i.tempmin + ((e_i.tempmax - e_i.tempmin) / 10) * j;
+            const tempmax = e_i.tempmin + ((e_i.tempmax - e_i.tempmin) / 10) * (j + 1);
+
+            const massmin = e_i.massmin + ((e_i.massmax - e_i.massmin) / 10) * j;
+            const massmax = e_i.massmin + ((e_i.massmax - e_i.massmin) / 10) * (j + 1);
+
+            let data = {
+                class: e_i.class + "-" + j,
+                name: e_i.name,
+                color: e_i.color,
+                tempmin,
+                tempmax,
+                massmin,
+                massmax,
+            }
+            VALID_SUBSPECTRAL_CLASS_VALUES.push(data)
+            console.log(JSON.stringify(data));
+        }
+    }
+    fs.writeFileSync("./src/VALID_SUBSPECTRAL_CLASS_VALUES.json", JSON.stringify(VALID_SUBSPECTRAL_CLASS_VALUES, "", 4))
+}
+initSubspectralClassValues();
 
 /**
  * Die Luminosität der Sonne in Watt
@@ -188,33 +224,30 @@ const M_SOL = 1.989 * Math.pow(10, 30); // KG
  * Sehr Simpel Gehalten, ich meine wir brauchen hier keine Wissenschaftliche Simulation.
  * 
  * @param mass Die Masse des STerns
- * @returns {{class:string, subclass:string, temp:number, mass_sol: number, lum_sol: number, r_sol: number}}
+ * @returns {{class: string, subclass: string, name: string, color: string, temp: number, mass_sol: number, lum_sol: number, r_sol: number}}
  */
 function getSolarSpectralClassData(mass) {
-    /**@type {{class:string, subclass:string, temp:number, mass_sol: number, lum_sol: number, r_sol: number}} */
+    /**@type {{class: string, subclass: string, name: string, color: string, temp: number, mass_sol: number, lum_sol: number, r_sol: number}} */
     let returnData = {};
 
     returnData.mass_sol = mass;
 
-    /**@type {{class:string, tempmin:number, tempmax: number, massmin: number, massmax: number}} */
+    /**@type {{class: string, name: string, color: string, tempmin:number, tempmax: number, massmin: number, massmax: number}} */
     let currentClass = null
 
-    for (let i = 0; i < VALID_SPECTRAL_CLASS_VALUES.length; i++) {
-        const specs = VALID_SPECTRAL_CLASS_VALUES[i]
-        if (mass >= specs.massmin && mass <= specs.massmax) { currentClass = specs; returnData.class = specs.class; break; }
+    for (let i = 0; i < VALID_SUBSPECTRAL_CLASS_VALUES.length; i++) {
+        const e = VALID_SUBSPECTRAL_CLASS_VALUES[i];
+        if (mass >= e.massmin && mass < e.massmax) {
+            currentClass = e
+            returnData.class = e.class
+            returnData.name = e.name
+            returnData.color = e.color
+            break;
+        }
     }
 
-    for (let i = 0; i < 10; i++) {
-        const min = 0;
-        const max = currentClass.tempmax - currentClass.tempmin;
-        const relmass = mass - currentClass.massmin;
-
-        const massPartStepSize = max / 10;
-
-        if (relmass >= (min + massPartStepSize * i) && relmass <= (min + massPartStepSize * (i + 1))) returnData.subclass = i;
-    }
-
-    returnData.temp = Math.round((rng() * (currentClass.tempmax - currentClass.tempmin)) + currentClass.tempmin);
+    const temp = Math.round((rng() * (currentClass.tempmax - currentClass.tempmin)) + currentClass.tempmin);
+    returnData.temp = temp;
 
     returnData.r_sol = Math.pow(returnData.mass_sol, 0.8);
 
@@ -573,7 +606,7 @@ function galaxyPush(type, x, y, name, metadata = { resource: {}, specialresource
             info.starMass = specs.mass_sol;
             info.starMassKG = specs.mass_sol * SUN_MASS_KG;
             info.starRad = specs.r_sol
-            info.starSpectral = { h: specs.class, s: specs.subclass };
+            info.starSpectral = { h: specs.class.split("-")[0], s: specs.class.split("-")[1], name: specs.name, color: specs.color };
             info.starTemperature = specs.temp;
             info.planetSystem = generatePlanetSystemData(name, info.starMassKG, minPlanets, maxPlanets)
 

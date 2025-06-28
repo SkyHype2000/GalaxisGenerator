@@ -17,10 +17,14 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
 
     let hoveredType = null;
     let hoveredObject = null;
+    let selectedObject = null;
+    let hoveredSpectralClass = null;
 
     let NAME_VANISH_DISTANCE = 0.70;
     let SHOW_NAMES = true;
     let SHOW_LINE_DISTANCE = false;
+    let CLICK_TO_SELECT = false;
+    let UNIFORM_STAR_COLOR = true;
 
     const canvas = document.getElementById("galaxy");
     const ctx = canvas.getContext("2d");
@@ -40,6 +44,8 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
     const showNames = document.getElementById('showNames');
     const showDistanceLines = document.getElementById('showDistanceLines');
     const maxDistanceLines = document.getElementById('maxDistanceLines');
+    const clickToSelect = document.getElementById('clickToSelect');
+    const uniformStarColor = document.getElementById('uniformStarColor');
 
     const currentZoom = document.getElementById('currentZoom');
     currentZoom.innerText = zoom.toFixed(5);
@@ -66,7 +72,16 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
     maxDistanceLines.addEventListener('change', () => {
         OBJECT_DISTANCE_VISUALIZATION_LIMIT = Math.round(maxDistanceLines.value);
         draw();
+    })
 
+    clickToSelect.addEventListener('change', () => {
+        CLICK_TO_SELECT = clickToSelect.checked;
+        draw();
+    })
+
+    uniformStarColor.addEventListener('change', () => {
+        UNIFORM_STAR_COLOR = uniformStarColor.checked;
+        draw();
     })
 
     let object_count = {
@@ -95,6 +110,46 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
         }
     }
 
+    // Sternklassen zählen
+    const spectralClassMap = {
+        O: 'o_star_count',
+        B: 'b_star_count',
+        A: 'a_star_count',
+        F: 'f_star_count',
+        G: 'g_star_count',
+        K: 'k_star_count',
+        M: 'm_star_count',
+        L: 'l_star_count',
+        T: 't_star_count',
+        Y: 'y_star_count'
+    };
+    const spectralClassCounts = {
+        O: 0, B: 0, A: 0, F: 0, G: 0, K: 0, M: 0, L: 0, T: 0, Y: 0
+    };
+
+    data.forEach(obj => {
+        if (
+            obj.type === "star" &&
+            obj.metadata &&
+            obj.metadata.informationBase &&
+            obj.metadata.informationBase.starSpectral &&
+            obj.metadata.informationBase.starSpectral.h
+        ) {
+            const h = obj.metadata.informationBase.starSpectral.h;
+            if (spectralClassCounts.hasOwnProperty(h)) {
+                spectralClassCounts[h]++;
+            }
+        }
+    });
+
+    // HTML aktualisieren
+    Object.entries(spectralClassMap).forEach(([klass, elemId]) => {
+        const elem = document.getElementById(elemId);
+        if (elem) {
+            elem.innerText = `(${spectralClassCounts[klass]})`;
+        }
+    });
+
     const star_count = document.getElementById('star_count');
     star_count.innerText = `(${object_count.star})`;
     const t1_astroid_count = document.getElementById('t1_astroid_count');
@@ -118,20 +173,26 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
 
     legendDivs.forEach(div => {
         div.addEventListener('mouseenter', () => {
-            const id = div.id;
-
-            // ID beginnt immer mit "legend."
-            if (id.startsWith("legend.")) {
-                hoveredType = id.split(".")[1]; // z.B. "legend.star" => "star"
-            } else {
+            const spectralClass = div.getAttribute('data-spectral-class');
+            if (spectralClass) {
                 hoveredType = null;
+                hoveredSpectralClass = spectralClass;
+            } else {
+                const id = div.id;
+                if (id.startsWith("legend.")) {
+                    hoveredType = id.split(".")[1];
+                    hoveredSpectralClass = null;
+                } else {
+                    hoveredType = null;
+                    hoveredSpectralClass = null;
+                }
             }
-
             draw();
         });
 
         div.addEventListener('mouseleave', () => {
             hoveredType = null;
+            hoveredSpectralClass = null;
             draw();
         });
     });
@@ -194,6 +255,66 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
 
             legend.appendChild(div);
         });
+
+        // Sternklassen-Legende
+        const spectralClasses = [
+            { key: 'O', color: '#9bb0ff' },
+            { key: 'B', color: '#aabfff' },
+            { key: 'A', color: '#cad7ff' },
+            { key: 'F', color: '#f8f7ff' },
+            { key: 'G', color: '#fff4ea' },
+            { key: 'K', color: '#ffd2a1' },
+            { key: 'M', color: '#ffcc6f' },
+            { key: 'L', color: '#ff9900' },
+            { key: 'T', color: '#cc6600' },
+            { key: 'Y', color: '#660066' }
+        ];
+        spectralClasses.forEach(cls => {
+            const div = document.createElement('div');
+            div.id = `legend.${cls.key}`;
+            div.setAttribute('data-spectral-class', cls.key);
+            div.style.cursor = 'pointer';
+            div.style.margin = '3px';
+            div.style.padding = '2px 6px';
+            div.style.border = '1px solid white';
+            div.style.display = 'inline-flex';
+            div.style.alignItems = 'center';
+            div.style.color = 'white';
+            div.style.userSelect = 'none';
+
+            // Dot als farbiger Kreis
+            const dot = document.createElement('span');
+            dot.className = 'dot';
+            dot.style.width = '12px';
+            dot.style.height = '12px';
+            dot.style.borderRadius = '50%';
+            dot.style.marginRight = '6px';
+            dot.style.backgroundColor = cls.color;
+
+            div.appendChild(dot);
+            div.appendChild(document.createTextNode(cls.key + "-Stern"));
+
+            // Counter
+            const countSpan = document.createElement('span');
+            countSpan.id = `${cls.key.toLowerCase()}_star_count`;
+            countSpan.style.marginLeft = '6px';
+            div.appendChild(countSpan);
+
+            // Hover-Highlight für Sternklasse
+            div.addEventListener('mouseenter', () => {
+                hoveredType = null; // Typen-Hover deaktivieren
+                hoveredSpectralClass = cls.key;
+                div.style.backgroundColor = 'rgba(255,255,255,0.1)';
+                draw();
+            });
+            div.addEventListener('mouseleave', () => {
+                hoveredSpectralClass = null;
+                div.style.backgroundColor = '';
+                draw();
+            });
+
+            legend.appendChild(div);
+        });
     }
 
     function resize() {
@@ -215,7 +336,7 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
             offsetX = e.clientX - dragStartX;
             offsetY = e.clientY - dragStartY;
             draw();
-        } else {
+        } else if (!CLICK_TO_SELECT || !selectedObject) {
             const mouseX = e.clientX;
             const mouseY = e.clientY;
             let found = null;
@@ -223,19 +344,11 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
             for (const obj of data) {
                 const x = obj.x * zoom + offsetX;
                 const y = obj.y * zoom + offsetY;
-
-                // Größe des Objekts (wie beim Zeichnen)
                 const baseSize = 6;
                 let scaleFactor = 1;
-                if (hoveredType) {
-                    scaleFactor = (obj.type === hoveredType) ? 2 : 1;
-                }
-                if (hoveredObject && obj === hoveredObject) {
-                    scaleFactor = 3;
-                }
+                if (hoveredType) scaleFactor = (obj.type === hoveredType) ? 2 : 1;
+                if (hoveredObject && obj === hoveredObject) scaleFactor = 3;
                 const size = Math.max(Math.min(baseSize * scaleFactor, MAX_OBJECT_SIZE), MAX_OBJECT_SIZE);
-
-                // Hitbox Radius flexibel zwischen MIN_OBJECT_SIZE und MAX_OBJECT_SIZE
                 const hitRadius = Math.max(MAX_OBJECT_SIZE + (zoom * 1), size);
 
                 if (Math.abs(x - mouseX) < hitRadius && Math.abs(y - mouseY) < hitRadius) {
@@ -246,16 +359,49 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
 
             if (found !== hoveredObject) {
                 hoveredObject = found;
-                updateInfoPanel(hoveredObject); // <--- HIER AUFRUFEN
+                if (!CLICK_TO_SELECT) selectedObject = null;
+                updateInfoPanel(hoveredObject || selectedObject);
                 draw();
             }
+        }
+    });
+
+    // Klick: Objekt auswählen, Panel bleibt sichtbar und scrollbar
+    canvas.addEventListener("mouseup", e => {
+        isDragging = false;
+        if (CLICK_TO_SELECT) {
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
+            let found = null;
+
+            for (const obj of data) {
+                const x = obj.x * zoom + offsetX;
+                const y = obj.y * zoom + offsetY;
+                const baseSize = 6;
+                let scaleFactor = 1;
+                if (hoveredType) scaleFactor = (obj.type === hoveredType) ? 2 : 1;
+                if (hoveredObject && obj === hoveredObject) scaleFactor = 3;
+                const size = Math.max(Math.min(baseSize * scaleFactor, MAX_OBJECT_SIZE), MAX_OBJECT_SIZE);
+                const hitRadius = Math.max(MAX_OBJECT_SIZE + (zoom * 1), size);
+
+                if (Math.abs(x - mouseX) < hitRadius && Math.abs(y - mouseY) < hitRadius) {
+                    found = obj;
+                    break;
+                }
+            }
+
+            selectedObject = found;
+            hoveredObject = found; // <--- Diese Zeile sorgt für das korrekte Umschalten!
+            updateInfoPanel(selectedObject || hoveredObject);
+            draw();
         }
     });
 
     canvas.addEventListener("mouseup", () => isDragging = false);
     canvas.addEventListener("mouseleave", () => {
         isDragging = false;
-        hoveredObject = null;
+        if (!CLICK_TO_SELECT) hoveredObject = null;
+        updateInfoPanel(selectedObject || hoveredObject);
         draw();
     });
 
@@ -295,7 +441,25 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
             let alpha = 1;
             let size = MIN_OBJECT_HOVER_SIZE * zoom;
 
-            if (hoveredType) {
+            // 1. Sternklassen-Hover hat Vorrang, betrifft aber nur Sterne!
+            if (hoveredSpectralClass) {
+                if (obj.type === "star") {
+                    const h = obj.metadata?.informationBase?.starSpectral?.h;
+                    if (h === hoveredSpectralClass) {
+                        alpha = 1;
+                        size = MAX_OBJECT_HOVER_SIZE * zoom;
+                    } else {
+                        alpha = 0.15;
+                        size = MIN_OBJECT_HOVER_SIZE * zoom;
+                    }
+                } else {
+                    // Alle anderen Typen werden ausgegraut!
+                    alpha = 0.05;
+                    size = MIN_OBJECT_HOVER_SIZE * zoom;
+                }
+            }
+            // 2. Typen-Hover (nur wenn keine Sternklasse gehovt wird)
+            else if (hoveredType) {
                 if (obj.type === hoveredType) {
                     alpha = 1;
                     size = MAX_OBJECT_HOVER_SIZE * zoom;
@@ -305,9 +469,10 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
                 }
             }
 
+            // 3. Einzelobjekt-Hover/Select
             if (hoveredObject && obj === hoveredObject) {
                 alpha = 1;
-                size = MAX_OBJECT_HOVER_SIZE * 1.5 * zoom; // noch größer beim Objekt-Hover
+                size = MAX_OBJECT_HOVER_SIZE * 1.5 * zoom;
             }
 
             size = Math.max(Math.min(size, 20), 1.5); // Clamp MIN & MAX
@@ -315,7 +480,16 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
             ctx.globalAlpha = alpha;
 
             switch (obj.type) {
-                case 'star': ctx.fillStyle = 'yellow'; break;
+                case 'star':
+                    // Wenn Farbinformation vorhanden, nutze sie, sonst fallback auf 'yellow'
+                    ctx.fillStyle = (
+                        obj.metadata &&
+                        obj.metadata.informationBase &&
+                        obj.metadata.informationBase.starSpectral &&
+                        obj.metadata.informationBase.starSpectral.color &&
+                        !UNIFORM_STAR_COLOR
+                    ) ? obj.metadata.informationBase.starSpectral.color : 'yellow';
+                    break;
                 case 't1_astroid': ctx.fillStyle = 'lightgray'; break;
                 case 't2_astroid': ctx.fillStyle = 'gray'; break;
                 case 't3_astroid': ctx.fillStyle = 'darkgreen'; break;
@@ -332,9 +506,17 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
             ctx.closePath();
 
             // Namen anzeigen, wenn entweder zoom > threshold oder Objekt gehighlightet
-            if ((zoom > NAME_VANISH_DISTANCE || (hoveredType && obj.type === hoveredType) || (hoveredObject && obj === hoveredObject)) && SHOW_NAMES) {
+            // Namen anzeigen, wenn einer der Hover-Fälle zutrifft
+            if (
+                SHOW_NAMES && (
+                    zoom > NAME_VANISH_DISTANCE ||
+                    (hoveredType && obj.type === hoveredType) ||
+                    (hoveredObject && obj === hoveredObject) ||
+                    (hoveredSpectralClass && obj.type === "star" && obj.metadata?.informationBase?.starSpectral?.h === hoveredSpectralClass)
+                )
+            ) {
                 ctx.fillStyle = (obj.type === 'anomaly') ? 'magenta' : 'white';
-                ctx.fillStyle = (obj.type === 'mainBlackHole') ? 'magenta' : 'white';
+                ctx.fillStyle = (obj.type === 'mainBlackHole') ? 'magenta' : ctx.fillStyle;
                 ctx.font = `${FONT_SIZE}px monospace`;
                 ctx.fillText(obj.name, x + size + 3, y - size - 3);
             }
@@ -370,6 +552,8 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
                 ctx.fillText(dist.toFixed(1), midX + 5, midY - 5);
             });
         }
+
+        updateInfoPanel(selectedObject || hoveredObject);
     }
 
     function updateInfoPanel(obj) {
@@ -380,54 +564,54 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
 
         let html = `<b>Name:</b> ${obj.name}<br>`;
         html += `<b>Typ:</b> ${obj.type}<br>`;
-        html += `<b>Position:</b> x=${obj.x.toFixed(2)}, y=${obj.y.toFixed(2)}<br>`;
-        html += `<b>Distanz zum Zentrum:</b> ${obj.distanceToCenter ? obj.distanceToCenter.toFixed(2) : "-"}<br>`;
+        html += `<b>Position:</b> x=${obj.x.toFixed(2)}, y=${obj.y.toFixed(2)} (Lj)<br>`;
+        html += `<b>Distanz zum Zentrum:</b> ${obj.distanceToCenter ? obj.distanceToCenter.toFixed(2) : "-"} Lj<br>`;
 
         // Metadaten anzeigen, falls vorhanden
         if (obj.metadata && obj.metadata.informationBase) {
             const info = obj.metadata.informationBase;
             if (obj.type === "star") {
                 html += `<hr><b>Sternendaten:</b><br>`;
-                html += `Spektralklasse: ${info.starSpectral?.h ?? "-"}-${info.starSpectral?.s ?? "-"}<br>`;
-                html += `Temperatur: ${info.starTemperature ?? "-"} °K<br>`;
+                html += `Spektralklasse: ${info.starSpectral?.h ?? "-"}-${info.starSpectral?.s ?? "-"} (${info.starSpectral?.name ?? "-"})<br>`;
+                html += `Temperatur: ${info.starTemperature ?? "-"} °K (${info.starSpectral?.color ?? "-"})<br>`;
                 html += `Masse: ${info.starMass?.toFixed(3) ?? "-"} Sonnenmassen<br>`;
                 html += `Radius: ${info.starRad?.toFixed(3) ?? "-"} Sonnenradien<br>`;
-                html += `Leuchtkraft: ${info.starLum?.toExponential(3) ?? "-"} L☉<br>`;
+                html += `Leuchtkraft: ${info.starLum?.toFixed(5) ?? "-"} L☉<br>`;
                 html += `Masse (kg): ${info.starMassKG ? info.starMassKG.toExponential(3) : "-"}<br>`;
                 // Planeten anzeigen
                 if (Array.isArray(info.planetSystem)) {
                     html += `<hr><b>Planeten (${info.planetSystem.length}):</b><br>`;
                     info.planetSystem.forEach((planet, idx) => {
-                        let OTD = planet.OrbitalTimeInSec / (24*3600);
+                        let OTD = planet.OrbitalTimeInSec / (24 * 3600);
 
                         html += `<u>Planet ${idx + 1}: ${planet.name}</u><br>`;
                         html += `&nbsp;Höhe: ${planet.height.toFixed(2)} AE<br>`;
                         html += `&nbsp;Masse: ${planet.massEM} Erdmassen<br>`;
                         html += `&nbsp;Umlaufzeit: ${planet.OrbitalTimeInYears} Jahre`;
-                        if (OTD < 100) {html += `(${OTD} Tage)<br>`} else {html += "<br>"}
+                        if (OTD < 100) { html += `(${OTD} Tage)<br>` } else { html += "<br>" }
                         html += `&nbsp;Primäre Ressourcen: - <br>`;
-                        html += `&nbsp;Secundäre Ressourcen: - <br>`;
+                        html += `&nbsp;Sekundäre Ressourcen: - <br>`;
                         if (planet.moons && planet.moons.length > 0) {
                             html += `&nbsp;Monde (${planet.moons.length}):<br>`;
                             planet.moons.forEach((moon, min) => {
-                                OTD
-                                html += `&nbsp;&nbsp;• ${moon.name} (Höhe: ${moon.height.toFixed(0)} km, Masse: ${moon.massEM} EM, Umlaufzeit: ${(moon.OrbitalTimeInSec/3600).toFixed(2)} h (${moon.OrbitalTimeInSec / (24*3600).toFixed(3)} Tage)<br>`;
+                                html += `&nbsp;&nbsp;• ${moon.name} (Höhe: ${moon.height.toFixed(0)} km, Masse: ${moon.massEM} EM, Umlaufzeit: ${(moon.OrbitalTimeInSec / 3600).toFixed(2)} h (${(moon.OrbitalTimeInSec / (24 * 3600)).toFixed(3)} Tage)<br>`;
                             });
                         }
                         html += "<br>"
                     });
                 }
             }
-            
+
             if (obj.type === "rogue_planet" || obj.type === "planet") {
                 html += `<hr><b>Planetendaten:</b><br>`;
                 html += `Masse: ${info.massEM ?? "-"} Erdmassen<br>`;
                 if (obj.type == "planet") html += `Höhe: ${info.height ?? "-"} AE<br>`;
-                html += `Orbitposition: ${info.orbitPosDegree ?? "-"}°<br>`;
+                html += `&nbsp;Primäre Ressourcen: - <br>`;
+                html += `&nbsp;Sekundäre Ressourcen: - <br>`;
                 if (info.moons && info.moons.length > 0) {
                     html += `Monde (${info.moons.length}):<br>`;
                     info.moons.forEach((moon, mi) => {
-                        html += `&nbsp;• ${moon.name} (Höhe: ${moon.height.toFixed(0)} km, Masse: ${moon.massEM} EM, Orbitposition: ${moon.orbitPosDegree}°)<br>`;
+                        html += `&nbsp;&nbsp;• ${moon.name} (Höhe: ${moon.height.toFixed(0)} km, Masse: ${moon.massEM} EM, Umlaufzeit: ${(moon.OrbitalTimeInSec / 3600).toFixed(2)} h (${(moon.OrbitalTimeInSec / (24 * 3600).toFixed(3)).toFixed(3)} Tage)<br>`;
                     });
                 }
             }
