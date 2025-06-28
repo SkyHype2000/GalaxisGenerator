@@ -403,24 +403,40 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
 
     canvas.addEventListener("wheel", e => {
         e.preventDefault();
-        const zoomIntensity = 0.1;
-        const mouseX = e.offsetX;
-        const mouseY = e.offsetY;
-        const zoomDirection = e.deltaY > 0 ? -1 : 1;
-        const scale = 1 + zoomDirection * zoomIntensity;
 
-        const worldX = (mouseX - offsetX) / zoom;
-        const worldY = (mouseY - offsetY) / zoom;
+        // STRG gedrückt: Zoom
+        if (e.ctrlKey) {
+            const zoomIntensity = 0.1;
+            const mouseX = e.offsetX;
+            const mouseY = e.offsetY;
+            const zoomDirection = e.deltaY > 0 ? -1 : 1;
+            const scale = 1 + zoomDirection * zoomIntensity;
 
-        zoom *= scale;
-        if (zoom < MAX_ZOOM_DISTANCE) zoom = MAX_ZOOM_DISTANCE;
-        if (zoom > MIN_ZOOM_DISTANCE) zoom = MIN_ZOOM_DISTANCE;
+            const worldX = (mouseX - offsetX) / zoom;
+            const worldY = (mouseY - offsetY) / zoom;
 
-        offsetX = mouseX - worldX * zoom;
-        offsetY = mouseY - worldY * zoom;
+            zoom *= scale;
+            if (zoom < MAX_ZOOM_DISTANCE) zoom = MAX_ZOOM_DISTANCE;
+            if (zoom > MIN_ZOOM_DISTANCE) zoom = MIN_ZOOM_DISTANCE;
 
-        currentZoom.innerText = zoom.toFixed(10);
+            offsetX = mouseX - worldX * zoom;
+            offsetY = mouseY - worldY * zoom;
 
+            currentZoom.innerText = zoom.toFixed(10);
+            draw();
+            return;
+        }
+
+        // SHIFT gedrückt: Horizontal scrollen
+        if (e.shiftKey) {
+            // e.deltaY > 0: nach rechts, < 0: nach links
+            offsetX -= e.deltaY * 2; // Faktor ggf. anpassen
+            draw();
+            return;
+        }
+
+        // Standard: Vertikal scrollen
+        offsetY -= e.deltaY * 2; // Faktor ggf. anpassen
         draw();
     });
 
