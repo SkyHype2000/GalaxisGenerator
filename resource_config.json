@@ -1,8 +1,0 @@
-[
-    {
-        "type": "normal:solid",
-        "canAccure": ["astroidfield_t1_astroid"],
-        "name": "iron_ore",
-        "chance": 0.9
-    }
-]

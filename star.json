@@ -1,0 +1,79 @@
+{
+    "type": "star",
+    "x": 17313.567962832793,
+    "y": -70143.5618572551,
+    "name": "Dravok",
+    "distanceToCenter": 72248.72943952857,
+    "metadata": {
+        "informationBase": {
+            "starTemperature": 2792,
+            "starMass": 0.15185700899033416,
+            "starMassKG": 3.0195247667638044e+29,
+            "starLum": 0.002672066439488042,
+            "starRad": 0.22138483765813324,
+            "starSpectral": {
+                "h": "M",
+                "s": "2",
+                "name": "Roter Zwergstern",
+                "color": "red"
+            },
+            "planetSystem": [
+                {
+                    "name": "Korsol",
+                    "temperature": 50.5624,
+                    "albedo": 0.25179,
+                    "height": 1.3548768798540194,
+                    "massEM": 0.039,
+                    "massKG": 2.32908e+23,
+                    "OrbitalSpeed": 9971.47805804383,
+                    "OrbitalTimeInSec": 127716078.26412441,
+                    "OrbitalTimeInYears": 4.047,
+                    "orbitPosDegree": 67.48,
+                    "orbitPosNorm": 0.18744,
+                    "moons": []
+                },
+                {
+                    "name": "Quakrefla",
+                    "temperature": 44.71248,
+                    "albedo": 0.16878,
+                    "height": 1.826181477679587,
+                    "massEM": 6.566,
+                    "massKG": 3.9212152e+25,
+                    "OrbitalSpeed": 8588.898828794718,
+                    "OrbitalTimeInSec": 199853485.5040654,
+                    "OrbitalTimeInYears": 6.333,
+                    "orbitPosDegree": 34.73,
+                    "orbitPosNorm": 0.09647,
+                    "moons": []
+                },
+                {
+                    "name": "Zanluropl",
+                    "temperature": 42.96468,
+                    "albedo": 0.19662,
+                    "height": 1.9443785386416013,
+                    "massEM": 0.245,
+                    "massKG": 1.46314e+24,
+                    "OrbitalSpeed": 8323.750317214668,
+                    "OrbitalTimeInSec": 219566993.30191723,
+                    "OrbitalTimeInYears": 6.958,
+                    "orbitPosDegree": 36.66,
+                    "orbitPosNorm": 0.10183,
+                    "moons": [
+                        {
+                            "name": "Bexqirfra",
+                            "parent": "Zanluropl",
+                            "height": 71263.43997250866,
+                            "massEM": 0.0001261015,
+                            "massKG": 753078158000000100000,
+                            "OrbitalSpeed": 1170.610492019926,
+                            "OrbitalTimeInSec": 382502.46518952184,
+                            "OrbitalTimeInYears": 0.012,
+                            "orbitPosDegree": 60,
+                            "orbitPosNorm": 0.167
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

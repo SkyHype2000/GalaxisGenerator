@@ -1,0 +1,46 @@
+const res = require('./resources.jsdb.js')
+
+const allResources = res.allResources;
+
+const groupedByFound = {}; // z.B. "planet:atmosphere": []
+
+for (const res of allResources) {
+    const found = res.found;
+    if (!groupedByFound[found]) groupedByFound[found] = [];
+
+    const alreadyExists = groupedByFound[found].some(
+        r => r.short === res.short && r.group === res.group
+    );
+
+    if (!alreadyExists) {
+        groupedByFound[found].push(res);
+    }
+}
+
+function mergeTypes(allResourcesByFound) {
+    // Definiert welche Basistypen wir vererben wollen
+    const inheritMap = {
+        planet: ['planet:atmosphere', 'planet:noAtmosphere'],
+        moon: ['moon:atmosphere', 'moon:noAtmosphere']
+    };
+
+    for (const baseType in inheritMap) {
+        const baseResources = allResourcesByFound[baseType] || [];
+
+        for (const target of inheritMap[baseType]) {
+            if (!allResourcesByFound[target]) allResourcesByFound[target] = [];
+
+            baseResources.forEach(res => {
+                if (!allResourcesByFound[target].some(r => r.id === res.id)) {
+                    allResourcesByFound[target].push(res);
+                }
+            });
+        }
+    }
+
+    return allResourcesByFound;
+}
+
+const sortedGroups = mergeTypes(groupedByFound);
+
+console.log(sortedGroups);

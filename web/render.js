@@ -430,13 +430,13 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
         // SHIFT gedrückt: Horizontal scrollen
         if (e.shiftKey) {
             // e.deltaY > 0: nach rechts, < 0: nach links
-            offsetX -= e.deltaY * 2; // Faktor ggf. anpassen
+            offsetX -= e.deltaY * 0.5; // Faktor ggf. anpassen
             draw();
             return;
         }
 
         // Standard: Vertikal scrollen
-        offsetY -= e.deltaY * 2; // Faktor ggf. anpassen
+        offsetY -= e.deltaY * 0.5; // Faktor ggf. anpassen
         draw();
     });
 
@@ -561,7 +561,7 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
                 const midX = (x1 + x2) / 2;
                 const midY = (y1 + y2) / 2;
                 ctx.font = '10px monospace';
-                ctx.fillText(dist.toFixed(1), midX + 5, midY - 5);
+                ctx.fillText(dist.toFixed(1) + " Lj", midX + 5, midY - 5);
             });
         }
 
@@ -597,6 +597,7 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
                         let OTD = planet.OrbitalTimeInSec / (24 * 3600);
 
                         html += `<u>Planet ${idx + 1}: ${planet.name}</u><br>`;
+                        html += `&nbsp;Temperatur: ${planet.temperature.toFixed(3)} °K (${(planet.temperature - 273.15).toFixed(3)}°C)<br>`;
                         html += `&nbsp;Höhe: ${planet.height.toFixed(2)} AE<br>`;
                         html += `&nbsp;Masse: ${planet.massEM} Erdmassen<br>`;
                         html += `&nbsp;Umlaufzeit: ${planet.OrbitalTimeInYears} Jahre`;
