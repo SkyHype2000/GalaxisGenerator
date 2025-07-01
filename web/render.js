@@ -36,10 +36,6 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
     const info_panel = document.getElementById('info_panel');
     const info_content = document.getElementById('info_content');
 
-    const ship_content = document.getElementById('ship_content');
-    const shipvalues = document.getElementById('shipvalues');
-    const shipSelect = document.getElementById('shipSelect');
-
     const nameShowDistance = document.getElementById('nameDistance');
     const showNames = document.getElementById('showNames');
     const showDistanceLines = document.getElementById('showDistanceLines');
@@ -110,7 +106,6 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
         }
     }
 
-    // Sternklassen zählen
     const spectralClassMap = {
         O: 'o_star_count',
         B: 'b_star_count',
@@ -197,12 +192,10 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
         });
     });
 
-    // Helper: Abstand zweier Punkte
     function dist(a, b) {
         return Math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2);
     }
 
-    // Legend mit farbigen Punkten & Hover Highlight
     function createLegend() {
         legend.innerHTML = '';
         const types = [...new Set(data.map(o => o.type))];
@@ -362,7 +355,6 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
         }
     });
 
-    // Klick: Objekt auswählen, Panel bleibt sichtbar und scrollbar
     canvas.addEventListener("mouseup", e => {
         isDragging = false;
         if (CLICK_TO_SELECT) {
@@ -404,7 +396,6 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
     canvas.addEventListener("wheel", e => {
         e.preventDefault();
 
-        // STRG gedrückt: Zoom
         if (e.ctrlKey) {
             const zoomIntensity = 0.1;
             const mouseX = e.offsetX;
@@ -427,16 +418,14 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
             return;
         }
 
-        // SHIFT gedrückt: Horizontal scrollen
         if (e.shiftKey) {
-            // e.deltaY > 0: nach rechts, < 0: nach links
-            offsetX -= e.deltaY * 0.5; // Faktor ggf. anpassen
+            offsetX -= e.deltaY * 0.5; // Faktor
             draw();
             return;
         }
 
         // Standard: Vertikal scrollen
-        offsetY -= e.deltaY * 0.5; // Faktor ggf. anpassen
+        offsetY -= e.deltaY * 0.5; // Faktor
         draw();
     });
 
@@ -465,12 +454,11 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
                         size = MIN_OBJECT_HOVER_SIZE * zoom;
                     }
                 } else {
-                    // Alle anderen Typen werden ausgegraut!
                     alpha = 0.05;
                     size = MIN_OBJECT_HOVER_SIZE * zoom;
                 }
             }
-            // 2. Typen-Hover (nur wenn keine Sternklasse gehovt wird)
+            
             else if (hoveredType) {
                 if (obj.type === hoveredType) {
                     alpha = 1;
@@ -481,19 +469,17 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
                 }
             }
 
-            // 3. Einzelobjekt-Hover/Select
             if (hoveredObject && obj === hoveredObject) {
                 alpha = 1;
                 size = MAX_OBJECT_HOVER_SIZE * 1.5 * zoom;
             }
 
-            size = Math.max(Math.min(size, 20), 1.5); // Clamp MIN & MAX
+            size = Math.max(Math.min(size, 20), 1.5);
 
             ctx.globalAlpha = alpha;
 
             switch (obj.type) {
                 case 'star':
-                    // Wenn Farbinformation vorhanden, nutze sie, sonst fallback auf 'yellow'
                     ctx.fillStyle = (
                         obj.metadata &&
                         obj.metadata.informationBase &&
@@ -579,7 +565,6 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
         html += `<b>Position:</b> x=${obj.x.toFixed(2)}, y=${obj.y.toFixed(2)} (Lj)<br>`;
         html += `<b>Distanz zum Zentrum:</b> ${obj.distanceToCenter ? obj.distanceToCenter.toFixed(2) : "-"} Lj<br>`;
 
-        // Metadaten anzeigen, falls vorhanden
         if (obj.metadata && obj.metadata.informationBase) {
             const info = obj.metadata.informationBase;
             if (obj.type === "star") {
