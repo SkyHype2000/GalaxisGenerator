@@ -1,4 +1,7 @@
-const res = require('./resources.jsdb.js')
+const fs = require("fs");
+const res = require('./resources.jsdb.js');
+const { PNG } = require('pngjs'); // npm install pngjs
+const path = require('path');
 
 const allResources = res.allResources;
 
@@ -17,6 +20,14 @@ for (const res of allResources) {
     }
 }
 
+/**
+ * 
+ * @param {res.resource[]} allResourcesByFound
+ * @returns {{"planet:atmosphere":res.resource[], "planet:noAtmosphere":res.resource[], planet:res.resource[],
+ * "moon:atmosphere":res.resource[], "moon:noAtmosphere":res.resource[],
+ * stellar_astroid:res.resource[], interstellar_t1_astroid:res.resource[], interstellar_t2_astroid:res.resource[], interstellar_t3_astroid:res.resource[],
+ * gas_planet:res.resource[], interstellar_space:res.resource[], neutron_star:res.resource[], none:res.resource[]}}
+ */
 function mergeTypes(allResourcesByFound) {
     // Definiert welche Basistypen wir vererben wollen
     const inheritMap = {
@@ -43,4 +54,141 @@ function mergeTypes(allResourcesByFound) {
 
 const sortedGroups = mergeTypes(groupedByFound);
 
-console.log(sortedGroups);
+/**
+ * Erstellt ein Mapping von Ressourcen-ID zu Index und zurück.
+ * @param {res.resource[]} resources
+ * @returns {{idToIndex: Object, indexToId: Object}}
+ */
+function createResourceIndexMap(resources) {
+    const idToIndex = {};
+    const indexToId = {};
+    resources.forEach((r, i) => {
+        idToIndex[r.id] = i;
+        indexToId[i] = r.id;
+    });
+    return { idToIndex, indexToId };
+}
+
+/**
+ * Generiert eine resourceMap für einen bestimmten Typ.
+ * @param {string} foundType
+ * @param {number} size
+ * @returns {{legend: string[], map: number[][]}}
+ */
+function generateResourceMap(foundType, size = 1000) {
+    const resources = sortedGroups[foundType];
+    if (!resources || resources.length === 0) throw new Error("Keine Ressourcen für diesen Typ!");
+
+    // Legend: "null" immer an erster Stelle
+    const legend = ["null", ...resources.map(r => r.id)];
+
+    // Wie oft kommt jede Ressource vor?
+    const totalPoints = size * size;
+    let flatList = [];
+
+    // Index 0 = null, alle anderen wie in legend
+    let usedPoints = 0;
+    for (let i = 1; i < legend.length; i++) {
+        const res = resources[i - 1];
+        const count = Math.floor(totalPoints * res.chance);
+        for (let j = 0; j < count; j++) flatList.push(i);
+        usedPoints += count;
+    }
+
+    // Rest mit 0 (null) auffüllen
+    while (flatList.length < totalPoints) flatList.push(0);
+
+    // Optional: Shuffle, falls du die Verteilung nicht blockweise willst
+    // for (let i = flatList.length - 1; i > 0; i--) {
+    //     const j = Math.floor(Math.random() * (i + 1));
+    //     [flatList[i], flatList[j]] = [flatList[j], flatList[i]];
+    // }
+
+    // In 2D-Array umwandeln
+    const map = [];
+    for (let y = 0; y < size; y++) {
+        map[y] = [];
+        for (let x = 0; x < size; x++) {
+            map[y][x] = flatList[y * size + x];
+        }
+    }
+
+    return { legend, map };
+}
+
+/**
+ * Exportiert eine Map als PNG.
+ * @param {number[][]} map
+ * @param {string[]} legend
+ * @param {string} filename
+ */
+function exportMapToPNG(map, legend, filename) {
+    // Vor jedem Schreiben:
+    if (!path.extname(filename)) {
+        console.warn('WARNUNG: Datei ohne Endung:', filename);
+    }
+
+    const width = map[0].length;
+    const height = map.length;
+    const png = new PNG({ width, height });
+
+    // Farbpalette wie gehabt
+    const palette = [
+        [0, 0, 0], [255, 255, 255], [255, 0, 0], [0, 255, 0], [0, 0, 255],
+        [255, 255, 0], [0, 255, 255], [255, 0, 255], [128, 128, 128], [255, 128, 0],
+    ];
+
+    // Map zeichnen
+    for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+            const idx = (width * y + x) << 2;
+            const val = map[y][x];
+            const color = palette[val % palette.length];
+            png.data[idx] = color[0];
+            png.data[idx + 1] = color[1];
+            png.data[idx + 2] = color[2];
+            png.data[idx + 3] = 255;
+        }
+    }
+
+    png.pack().pipe(fs.createWriteStream(filename));
+}
+
+const foundTypes = [
+    "planet:atmosphere",
+    "planet:noAtmosphere",
+    "moon:atmosphere",
+    "moon:noAtmosphere",
+    "stellar_astroid",
+    "interstellar_t1_astroid",
+    "interstellar_t2_astroid",
+    "interstellar_t3_astroid",
+    "gas_planet",
+    "interstellar_space",
+    "neutron_star",
+    "test",
+    "none"
+];
+
+for (let i = 0; i < foundTypes.length; i++) {
+    const type = foundTypes[i];
+    try {
+        const resources = sortedGroups[type];
+        if (!resources || resources.length === 0) {
+            console.warn(`Kein Export für ${type}, da keine Ressourcen vorhanden.`);
+            continue;
+        }
+
+        const result = generateResourceMap(type, 1000);
+        const resultString = JSON.stringify(result);
+
+        if (resultString.length > 0 && resultString != "") {
+            fs.writeFileSync(`./src/resmap/resourceMap_${type.replaceAll(":", "_")}.json`, resultString);
+            console.log(`resourceMap für ${type} generiert und gespeichert. ${resultString.length} ${result.map.length}-${result.map[result.map.length - 1].length}`);
+            exportMapToPNG(result.map, result.legend, `./src/resmap/resourceMap_${type.replaceAll(":", "_")}.png`);
+            console.log(`PNG für ${type} exportiert.`);
+        }
+    } catch (e) {
+        console.warn(`resourceMap für ${type} konnte nicht generiert werden: ${e.message}`);
+    }
+}

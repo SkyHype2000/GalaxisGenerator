@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "pngjs": "^7.0.0",
     "seedrandom": "^3.0.5"
   },
   "name": "galaxisgenerator",
