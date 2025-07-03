@@ -56,6 +56,8 @@ const sortedGroups = mergeTypes(groupedByFound);
 
 /**
  * Erstellt ein Mapping von Ressourcen-ID zu Index und zurück.
+ * 
+ * tbh kann ich mich nicht mehr daran erinnern wieso ich die Funktion geschrieben habe
  * @param {res.resource[]} resources
  * @returns {{idToIndex: Object, indexToId: Object}}
  */
@@ -80,7 +82,7 @@ function generateResourceMap(foundType, size = 1000) {
     if (!resources || resources.length === 0) throw new Error("Keine Ressourcen für diesen Typ!");
 
     // Legend: "null" immer an erster Stelle
-    const legend = ["null", ...resources.map(r => r.id)];
+    const legend = ["nothing", ...resources.map(r => r.id)];
 
     // Wie oft kommt jede Ressource vor?
     const totalPoints = size * size;

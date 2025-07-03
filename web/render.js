@@ -25,6 +25,7 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
     let SHOW_LINE_DISTANCE = false;
     let CLICK_TO_SELECT = false;
     let UNIFORM_STAR_COLOR = true;
+    let DETAILED_RESOURCE_NAMES = false;
 
     const canvas = document.getElementById("galaxy");
     const ctx = canvas.getContext("2d");
@@ -42,6 +43,7 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
     const maxDistanceLines = document.getElementById('maxDistanceLines');
     const clickToSelect = document.getElementById('clickToSelect');
     const uniformStarColor = document.getElementById('uniformStarColor');
+    const detailResourceNames = document.getElementById('detailResourceNames');
 
     const currentZoom = document.getElementById('currentZoom');
     currentZoom.innerText = zoom.toFixed(5);
@@ -77,6 +79,11 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
 
     uniformStarColor.addEventListener('change', () => {
         UNIFORM_STAR_COLOR = uniformStarColor.checked;
+        draw();
+    })
+
+    detailResourceNames.addEventListener('change', () => {
+        DETAILED_RESOURCE_NAMES = detailResourceNames.checked;
         draw();
     })
 
@@ -458,7 +465,7 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
                     size = MIN_OBJECT_HOVER_SIZE * zoom;
                 }
             }
-            
+
             else if (hoveredType) {
                 if (obj.type === hoveredType) {
                     alpha = 1;
@@ -581,14 +588,35 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
                     info.planetSystem.forEach((planet, idx) => {
                         let OTD = planet.OrbitalTimeInSec / (24 * 3600);
 
+                        let resString = "";
+                        // Detaillierte Ressourcenanzeige: Name statt Short, wenn aktiviert
+                        const resourceLabel = DETAILED_RESOURCE_NAMES ? "name" : "short";
+
+                        // Ressourcen sortieren: Erst nach Anteil (p) absteigend, "nothing" immer ans Ende
+                        const sortedResources = [...planet.resources].sort((a, b) => {
+                            if (a.id === "nothing") return 1;
+                            if (b.id === "nothing") return -1;
+                            return b.p - a.p;
+                        });
+
+                        for (let i = 0; i < sortedResources.length; i++) {
+                            const e = sortedResources[i];
+                            if (e.id != "nothing") {
+                                resString += `${e[resourceLabel]} (${(e.p*100).toFixed(1)}%), `;
+                            } else if (e.id == "nothing" && e.p > 0) {
+                                resString += `Anderes (${(e.p*100).toFixed(1)}%)`;
+                            }
+                        }
+                        // Optional: letztes Komma entfernen
+                        if (resString.endsWith(", ")) resString = resString.slice(0, -2);
+
                         html += `<u>Planet ${idx + 1}: ${planet.name}</u><br>`;
                         html += `&nbsp;Temperatur: ${planet.temperature.toFixed(3)} °K (${(planet.temperature - 273.15).toFixed(3)}°C)<br>`;
                         html += `&nbsp;Höhe: ${planet.height.toFixed(2)} AE<br>`;
                         html += `&nbsp;Masse: ${planet.massEM} Erdmassen<br>`;
                         html += `&nbsp;Umlaufzeit: ${planet.OrbitalTimeInYears} Jahre`;
                         if (OTD < 100) { html += `(${OTD} Tage)<br>` } else { html += "<br>" }
-                        html += `&nbsp;Primäre Ressourcen: - <br>`;
-                        html += `&nbsp;Sekundäre Ressourcen: - <br>`;
+                        html += `&nbsp;Ressourcen:<br>&nbsp;${resString}<br>`;
                         if (planet.moons && planet.moons.length > 0) {
                             html += `&nbsp;Monde (${planet.moons.length}):<br>`;
                             planet.moons.forEach((moon, min) => {
@@ -604,8 +632,7 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
                 html += `<hr><b>Planetendaten:</b><br>`;
                 html += `Masse: ${info.massEM ?? "-"} Erdmassen<br>`;
                 if (obj.type == "planet") html += `Höhe: ${info.height ?? "-"} AE<br>`;
-                html += `&nbsp;Primäre Ressourcen: - <br>`;
-                html += `&nbsp;Sekundäre Ressourcen: - <br>`;
+                html += `&nbsp;Ressourcen: - <br>`;
                 if (info.moons && info.moons.length > 0) {
                     html += `Monde (${info.moons.length}):<br>`;
                     info.moons.forEach((moon, mi) => {
@@ -615,26 +642,6 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
             }
 
             // Weitere Typen wie Asteroidenfelder, Anomalien etc. kannst du hier ergänzen
-        }
-
-        // Ressourcen anzeigen, falls vorhanden
-        if (obj.metadata && obj.metadata.resource) {
-            const res = obj.metadata.resource;
-            if (Array.isArray(res) && res.length > 0) {
-                html += `<hr><b>Ressourcen:</b><br>`;
-                res.forEach(r => {
-                    html += `${r.res}: ${r.amount}<br>`;
-                });
-            }
-        }
-        if (obj.metadata && obj.metadata.specialresource) {
-            const res = obj.metadata.specialresource;
-            if (Array.isArray(res) && res.length > 0) {
-                html += `<b>Spezialressourcen:</b><br>`;
-                res.forEach(r => {
-                    html += `${r.res}: ${r.amount}<br>`;
-                });
-            }
         }
 
         info_content.innerHTML = html;

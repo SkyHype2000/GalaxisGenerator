@@ -121,7 +121,7 @@ function generateAnomalyName() {
 function generateSolarMass(x) {
     // Der Minimalwert Basierend auf dem Minimalen wert über 0 vom Seed
     if (x <= 0) x = 0.0000000000000001;
-    
+
     // Naja einfach den Wert auf 1 Setzen wenn es über 1 Geht, eigentlich unwahrscheinlich wenn man nur den seed selbst verwendet
     if (x > 1) x = 1.0000000000000000;
 
@@ -136,7 +136,7 @@ function generateSolarMass(x) {
  * @type {{class: string, name: string, color: string, tempmin:number, tempmax: number, massmin: number, massmax: number}[]}
  */
 const VALID_SPECTRAL_CLASS_VALUES = [
-    { class: "O", name: "Blau-Weißer Riese", color: "lightblue", tempmin: 30000, tempmax: 60000, massmin: 16, massmax: 100 },
+    { class: "O", name: "Blau-Weißer Riese", color: "lightblue", tempmin: 30000, tempmax: 60000, massmin: 16, massmax: 9999 },
     { class: "B", name: "Blauer Unterriese", color: "cyan", tempmin: 10000, tempmax: 30000, massmin: 2.1, massmax: 16 },
     { class: "A", name: "Blau-Weißer HRS", color: "lightblue", tempmin: 7500, tempmax: 10000, massmin: 1.7, massmax: 2.1 },
     { class: "F", name: "Weißer HRS", color: "white", tempmin: 6000, tempmax: 7500, massmin: 1.1, massmax: 1.7 },
@@ -231,8 +231,16 @@ function getSolarSpectralClassData(mass) {
         }
     }
 
-    const temp = Math.round((rng() * (currentClass.tempmax - currentClass.tempmin)) + currentClass.tempmin);
-    returnData.temp = temp;
+    try {
+        const temp = Math.round((rng() * (currentClass.tempmax - currentClass.tempmin)) + currentClass.tempmin);
+        returnData.temp = temp;
+    } catch (error) {
+        console.log(cc.yellow(mass));
+        console.log(cc.yellow(JSON.stringify(returnData)));
+        console.log(cc.yellow(currentClass));
+
+        throw new Error(error)
+    }
 
     returnData.r_sol = Math.pow(returnData.mass_sol, 0.8);
 
@@ -294,69 +302,62 @@ function generateUniqueName(type) {
         name = generateName(type);
         tries++;
         if (tries > 100) {
-            name += `-ZU${Math.floor(rng() * 100)}`;
+            name += `-ZU${Math.floor(rng() * 1000)}`;
         }
     } while (usedNames.has(name));
     usedNames.add(name);
     return name;
 }
 
+
+
 /**
+ * Generiert die Ressourcen eines Bestimmten Typs
  *
- * @param {"gas_planet"|"interstellar_space"|"interstellar_t1_astroid"|"interstellar_t2_astroid"|"interstellar_t3_astroid"|"moon_atmosphere"|"moon_noAdmosphere"} type Der Planetentyp für den die Ressourcen generiert werden sollen
- * @param {number} trys Die anzahl der Versuche die es durchführt
+ * @param {"gas_planet"|"interstellar_space"|"interstellar_t1_astroid"|"interstellar_t2_astroid"|"interstellar_t3_astroid"|"moon_atmosphere"|"moon_noAdmosphere"|"neutron_star"|
+ * "none"|"planet_atmosphere"|"planet_noAtmosphere"|"stellar_astroid"|"test"} type Der Planetentyp für den die Ressourcen generiert werden sollen
+ * @param {1000|number} tries Die anzahl der Versuche die es durchführt
+ * @returns {{name:string, id:string, short:string, group:string, density:number, p:number, n:number, v:number}[]}
  */
-function GenerateResources(type, trys = 1000) {
-    const path = `./src/resmap/resourceMap_${type}.json`
-    console.log("Path: " + path);
+function GenerateResources(type, tries = 1000) {
     /**@type {{legend: string[], map: number[][]}} */
-    const map = require(path);
-    console.log("Resource Map: " + type);
-    console.log(map.legend);
+    const typeData = require(`./src/resmap/resourceMap_${type}.json`)
 
-    let final = {null: 0}
-    
-    for (let i = 0; i < trys; i++) {
-        const x = Math.floor(rng() * (1000-1));
-        const y = Math.floor(rng() * (1000-1));
-
-        const current = map.map[x][y]
-        const current_res = map.legend[current]
-        if (!final[current_res]) final[current_res] = 0
-
-        if (current == 0) {
-            final.null++;
-            continue;
-        }
-
-        console.log(`Current: ${x}-${y} i:${current}; res:${current_res}`);
-        final[current_res] += 1
-        if (current_res == undefined) throw new Error("undefined?");
+    let values = {
+        values: {
+            nothing: 0
+        },
+        resources: []
     }
 
-    console.log(final);
+    for (let i = 0; i < tries; i++) {
+        const pos_x = Math.floor(rng() * (1000-1))
+        const pos_y = Math.floor(rng() * (1000-1))
 
-    let math = {};
-    let all = 0;
-    console.log(math);
+        const c = typeData.map[pos_x][pos_y];
 
-    Object.entries(final).forEach((e, i) => {
-        math[e[0]] = +(e[1] / trys * 100).toFixed(2);
-        all += math[e[0]];
+        if (values.values[typeData.legend[c]] == null) values.values[typeData.legend[c]] = 0;
+
+        values.values[typeData.legend[c]]++;
+    }
+
+    Object.entries(values.values).forEach((e, i) => {
+        const r = res.getResourceByID(e[0]);
+        const p = +(e[1] / tries).toFixed(5);
+        values.resources.push(r.webInformation().toJSON(p, e[1], tries));
     })
 
-    console.log(`Komplett: ${all}`);
-    console.log(math);
+    return values.resources;
 }
 
 /**
  * Validiert die Distanz zwischen Objekten, sodass Objekte nicht zu nah und auch nicht zu weit voneinander sind,
  * basierend auf der config.
  * 
- * @param distance 
- * @param angle 
- * @param chosenType 
- * @returns 
+ * @param {number} distance 
+ * @param {number} angle 
+ * @param {number} chosenType 
+ * @returns {{ tooClose:boolean, x:number, y:number, dx:number, dy:number }}
  */
 function validateDistance(distance, angle, chosenType) {
     const { x, y } = polarToCartesian(distance, angle)
@@ -445,15 +446,6 @@ function getRandomObjectType(objectType) {
 
     return all[(rng() * (all.length - 1))];
 }
-
-/**
- * Alle Validen Objekte die zur Generierung Verwendet werden dürfen.
- * 
- * stellar_astroid, planet, moon und gas_giant sind zwar valide Objekte, werden aber nur in Sternensystemen generiert
- * 
- * @type {string[]}
- */
-const VALID_SPACE_OBJECTS = ["mainBlackHole", "star", "planet", "moon", "stellar_astroid", "t1_astroid", "t2_astroid", "t3_astroid", "rogue_planet", "anomaly", "blackHole", "gas_giant"]
 
 /** 
  * Zulässige Sterneneigenschaften:\
@@ -574,7 +566,7 @@ function galaxyPush(type, x, y, name) {
         y = 0;
         name = config.mainBlackHoleName;
     }
-    
+
     if (metadata_edit1.informationType != null && metadata_edit1.informationBase != null) { metadata.informationType = metadata_edit1.informationType; metadata_edit2.informationBase = metadata_edit1.informationBase }
 
     const distanceToCenter = Math.hypot(x, y);
@@ -603,7 +595,7 @@ galaxyPush("mainBlackHole")
  * @param {number} parentStarLum In W
  * @param {number} minPlanets
  * @param {number} maxPlanets
- * @returns {{name:string,temperature:number,albedo:number,height:number,massEM:number,massKG:number,OrbitalSpeed:number,OrbitalTimeInSec:number,OrbitalTimeInYears:number,orbitPosDegree:number,orbitPosNorm:number}[]} Array mit Planeten-Objekten
+ * @returns {{name:string,temperature:number,albedo:number,height:number,massEM:number,massKG:number,OrbitalSpeed:number,OrbitalTimeInSec:number,OrbitalTimeInYears:number,orbitPosDegree:number,orbitPosNorm:number,resources:any,moons:any[]}[]} Array mit Planeten-Objekten
  */
 function generatePlanetSystemData(parentStarName, parentStarMass, parentStarLum, minPlanets = 1, maxPlanets = 10) {
     const planets = [];
@@ -613,11 +605,12 @@ function generatePlanetSystemData(parentStarName, parentStarMass, parentStarLum,
     for (let i = 0; i < planetCount; i++) {
         lastDistance += rng() * 1.5;
         const rotation = +(rng() * 360).toFixed(2); // Rotationswinkel in Grad
+        const planetType = !!Math.round(rng());
         const mass = +((0.0025 + (rng() ** 4.5)) * 10).toFixed(3);
         const name = generateUniqueName("planet");
-        const albedo = +(0.05 + (rng() * (0.3-0.05))).toFixed(5)
-        
-        const temperature = +((Math.pow((parentStarLum * (1-albedo))/(16 * Math.PI * Math.pow(lastDistance * AE, 2) * O), 0.25))).toFixed(5)
+        const albedo = +(0.05 + (rng() * (0.3 - 0.05))).toFixed(5)
+
+        const temperature = +((Math.pow((parentStarLum * (1 - albedo)) / (16 * Math.PI * Math.pow(lastDistance * AE, 2) * O), 0.25))).toFixed(5)
 
         const maxMoons = Math.round(rng() * MAX_MOONS_PER_PLANET);
         let moons = [];
@@ -627,6 +620,9 @@ function generatePlanetSystemData(parentStarName, parentStarMass, parentStarLum,
 
         const OrbitalSpeed = Math.sqrt((G * parentStarMass) / (lastDistance * AE))
         const OrbitalTimeInSec = 2 * Math.PI * Math.sqrt(Math.pow(lastDistance * AE, 3) / (G * parentStarMass));
+
+        // Ressourcen für diesen Planeten generieren
+        let resources = GenerateResources(planetType ? "planet_noAtmosphere" : "planet_atmosphere", 1000);
 
         planets.push({
             name,
@@ -640,10 +636,9 @@ function generatePlanetSystemData(parentStarName, parentStarMass, parentStarLum,
             OrbitalTimeInYears: +(OrbitalTimeInSec / YEAR_IN_SEC).toFixed(3),
             orbitPosDegree: rotation,   // in Grad
             orbitPosNorm: +(rotation / 360).toFixed(5),  // Normalisiert
-            moons
+            moons,
+            resources // <-- Ressourcen anhängen
         });
-
-        
     }
     return planets;
 }
@@ -654,7 +649,7 @@ function generatePlanetSystemData(parentStarName, parentStarMass, parentStarLum,
  * @param {string} parentPlanetName
  * @param {number} parentPlanetMass in KG
  * @param {number} maxMoons
- * @returns {{name:string,height:number,massEM:number,massKG:number,OrbitalSpeed:number,OrbitalTimeInSec:number,OrbitalTimeInYears:number,orbitPosDegree:number,orbitPosNorm:number}[]} Array mit Mond-Objekten
+ * @returns {{name:string,height:number,massEM:number,massKG:number,OrbitalSpeed:number,OrbitalTimeInSec:number,OrbitalTimeInYears:number,orbitPosDegree:number,orbitPosNorm:number,resources:res.webResourceInformation.json}[]} Array mit Mond-Objekten
  */
 function generateMoonSystemData(parentPlanetName, parentPlanetMass, maxMoons = 5) {
     const moons = [];
@@ -662,12 +657,20 @@ function generateMoonSystemData(parentPlanetName, parentPlanetMass, maxMoons = 5
     let lastDistance = 50000 + rng() * 100000; // Startabstand in KM
 
     for (let i = 0; i < moonCount; i++) {
+        /**
+         * Ob der Mond eine Atmosphäre hat oder nicht. 0 = Nein, 1 = Ja
+         */
+        const moonType = !!Math.round(rng());
         const rotation = Math.round(rng() * 360);
         const mass = +((0.0025 + (rng() ** 4.5)) * 0.05).toFixed(10);
         const name = generateUniqueName("moon");
 
         const OrbitalSpeed = Math.sqrt((G * parentPlanetMass) / (lastDistance * 1000))
         const OrbitalTimeInSec = 2 * Math.PI * Math.sqrt(Math.pow((lastDistance * 1000), 3) / (G * parentPlanetMass));
+
+        let resources = GenerateResources(moonType ? "moon_noAtmosphere" : "moon_atmosphere", 1000);
+        //// console.log(resources);
+        
 
         moons.push({
             name,
@@ -679,7 +682,8 @@ function generateMoonSystemData(parentPlanetName, parentPlanetMass, maxMoons = 5
             OrbitalTimeInSec,
             OrbitalTimeInYears: +(OrbitalTimeInSec / YEAR_IN_SEC).toFixed(3),
             orbitPosDegree: rotation,   // in Grad
-            orbitPosNorm: +(rotation / 360).toFixed(3)  // Normalisiert
+            orbitPosNorm: +(rotation / 360).toFixed(3),  // Normalisiert
+            resources // <-- Ressourcen anhängen
         });
 
         lastDistance += rng() * 100000
@@ -741,6 +745,11 @@ while (galaxy.length < config.count) {
 }
 
 //// GenerateResources("planet_atmosphere")
+
+//// console.log(GenerateResources("interstellar_t2_astroid"));
+//// console.log(GenerateResources("interstellar_t2_astroid"));
+//// console.log(GenerateResources("interstellar_t2_astroid"));
+
 
 fs.writeFileSync("./web/galaxy.json", JSON.stringify(galaxy));
 

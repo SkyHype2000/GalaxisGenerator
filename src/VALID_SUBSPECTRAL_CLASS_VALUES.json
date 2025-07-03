@@ -6,7 +6,7 @@
         "tempmin": 30000,
         "tempmax": 33000,
         "massmin": 16,
-        "massmax": 24.4
+        "massmax": 1014.3
     },
     {
         "class": "O-1",
@@ -14,8 +14,8 @@
         "color": "lightblue",
         "tempmin": 33000,
         "tempmax": 36000,
-        "massmin": 24.4,
-        "massmax": 32.8
+        "massmin": 1014.3,
+        "massmax": 2012.6
     },
     {
         "class": "O-2",
@@ -23,8 +23,8 @@
         "color": "lightblue",
         "tempmin": 36000,
         "tempmax": 39000,
-        "massmin": 32.8,
-        "massmax": 41.2
+        "massmin": 2012.6,
+        "massmax": 3010.8999999999996
     },
     {
         "class": "O-3",
@@ -32,8 +32,8 @@
         "color": "lightblue",
         "tempmin": 39000,
         "tempmax": 42000,
-        "massmin": 41.2,
-        "massmax": 49.6
+        "massmin": 3010.8999999999996,
+        "massmax": 4009.2
     },
     {
         "class": "O-4",
@@ -41,8 +41,8 @@
         "color": "lightblue",
         "tempmin": 42000,
         "tempmax": 45000,
-        "massmin": 49.6,
-        "massmax": 58
+        "massmin": 4009.2,
+        "massmax": 5007.5
     },
     {
         "class": "O-5",
@@ -50,8 +50,8 @@
         "color": "lightblue",
         "tempmin": 45000,
         "tempmax": 48000,
-        "massmin": 58,
-        "massmax": 66.4
+        "massmin": 5007.5,
+        "massmax": 6005.799999999999
     },
     {
         "class": "O-6",
@@ -59,8 +59,8 @@
         "color": "lightblue",
         "tempmin": 48000,
         "tempmax": 51000,
-        "massmin": 66.4,
-        "massmax": 74.80000000000001
+        "massmin": 6005.799999999999,
+        "massmax": 7004.099999999999
     },
     {
         "class": "O-7",
@@ -68,8 +68,8 @@
         "color": "lightblue",
         "tempmin": 51000,
         "tempmax": 54000,
-        "massmin": 74.80000000000001,
-        "massmax": 83.2
+        "massmin": 7004.099999999999,
+        "massmax": 8002.4
     },
     {
         "class": "O-8",
@@ -77,8 +77,8 @@
         "color": "lightblue",
         "tempmin": 54000,
         "tempmax": 57000,
-        "massmin": 83.2,
-        "massmax": 91.60000000000001
+        "massmin": 8002.4,
+        "massmax": 9000.699999999999
     },
     {
         "class": "O-9",
@@ -86,8 +86,8 @@
         "color": "lightblue",
         "tempmin": 57000,
         "tempmax": 60000,
-        "massmin": 91.60000000000001,
-        "massmax": 100
+        "massmin": 9000.699999999999,
+        "massmax": 9999
     },
     {
         "class": "B-0",

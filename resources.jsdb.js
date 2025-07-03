@@ -1,3 +1,5 @@
+const { number } = require("./consolecolor.jsdb");
+
 /**
  * Die Liste an Allen Ressourcen damit man sie am Ende nicht Separat nochmal erstellen muss,\
  * wird sie direkt beim einspeichern der Einzelnen Elemente erstellt.
@@ -48,6 +50,56 @@ class resource {
 
         allResources.push(this);
     }
+
+    /**
+     * Gibt den WEB-INFORMATION Teil zurück der für Webseiten verwendet werden kann
+     */
+    webInformation() {
+        return new webResourceInformation(this)
+    }
+}
+
+class webResourceInformation {
+    /**
+     * Eine Komprimierte Version die für webseiten verwendet werden können
+     * 
+     * @param {resource} resourceInfo Die Ressource
+     */
+    constructor(resourceInfo) {
+        this.name = resourceInfo.name;
+        this.id = resourceInfo.id;
+        this.short = resourceInfo.short;
+        this.group = resourceInfo.group;
+        this.density = resourceInfo.density;
+    }
+
+    /**
+     * Gibt den Web-Wert mit allen Nützlichen Informationen zurück
+     * 
+     * @param {number} p Die Prozentinformation - aka. wieviel Prozent der Ressource drin Steckt
+     * @param {number} n Der Wert wieviele Ressourcen dort drin stecken
+     * @param {number} v Der Maximalwert von allen Ressourcen
+     * @returns {{name:string, id:string, short:string, group:string, density:number, p:number, n:number, v:number}}
+     */
+    toJSON(p, n, v) {
+        return {
+            name: this.name, id: this.id, short: this.short, group: this.group, density: this.density, p, n, v
+        }
+    }
+}
+
+/**
+ * Gibt die Ressource Basierend auf der ID zurück
+ * 
+ * @param {string} id 
+ * @returns {resource|null}
+ */
+function getResourceByID(id) {
+    for (let i = 0; i < allResources.length; i++) {
+        const e = allResources[i];
+        if (e.id === id) return e;
+    }
+    return null;
 }
 
 //* EISENERZ
@@ -149,9 +201,13 @@ const test_2 = new resource("Test3", "test2", "test2", "test2", "Testressource 3
 const test_3 = new resource("Test4", "test3", "test3", "test3", "Testressource 4 - für die resMap", 1, 0.005, "solid", "test");
 const test_4 = new resource("Test5", "test4", "test4", "test4", "Testressource 5 - für die resMap", 1, 0.001, "solid", "test");
 const test_5 = new resource("Test6", "test5", "test5", "test5", "Testressource 6 - für die resMap", 1, 0.0005, "solid", "test");
+const nothing = new resource("Nothing", "nothing", "dev", "nothing", "Indikator für ein Hauch von Garnix", 0, 0, "exotic", "everywhere")
 
 module.exports = {
     resource,
+    webResourceInformation,
+
+    getResourceByID,
     allResources,
 
     iron_ore_0a,
