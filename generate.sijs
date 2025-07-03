@@ -115,12 +115,13 @@ function generateAnomalyName() {
 /**
  * Gibt den Sonnenmassenwert basierend auf x zurück.
  * 
- * @param x {number} wert zwischen `0.0000000000000001` - `1.0000000000000000`
+ * @param {number} x wert zwischen `0.0000000000000001` - `1.0000000000000000`
  * @returns {number} wert zwischen `0.0086` - `100`
  */
 function generateSolarMass(x) {
     // Der Minimalwert Basierend auf dem Minimalen wert über 0 vom Seed
     if (x <= 0) x = 0.0000000000000001;
+    
     // Naja einfach den Wert auf 1 Setzen wenn es über 1 Geht, eigentlich unwahrscheinlich wenn man nur den seed selbst verwendet
     if (x > 1) x = 1.0000000000000000;
 
@@ -298,6 +299,54 @@ function generateUniqueName(type) {
     } while (usedNames.has(name));
     usedNames.add(name);
     return name;
+}
+
+/**
+ *
+ * @param {"gas_planet"|"interstellar_space"|"interstellar_t1_astroid"|"interstellar_t2_astroid"|"interstellar_t3_astroid"|"moon_atmosphere"|"moon_noAdmosphere"} type Der Planetentyp für den die Ressourcen generiert werden sollen
+ * @param {number} trys Die anzahl der Versuche die es durchführt
+ */
+function GenerateResources(type, trys = 1000) {
+    const path = `./src/resmap/resourceMap_${type}.json`
+    console.log("Path: " + path);
+    /**@type {{legend: string[], map: number[][]}} */
+    const map = require(path);
+    console.log("Resource Map: " + type);
+    console.log(map.legend);
+
+    let final = {null: 0}
+    
+    for (let i = 0; i < trys; i++) {
+        const x = Math.floor(rng() * (1000-1));
+        const y = Math.floor(rng() * (1000-1));
+
+        const current = map.map[x][y]
+        const current_res = map.legend[current]
+        if (!final[current_res]) final[current_res] = 0
+
+        if (current == 0) {
+            final.null++;
+            continue;
+        }
+
+        console.log(`Current: ${x}-${y} i:${current}; res:${current_res}`);
+        final[current_res] += 1
+        if (current_res == undefined) throw new Error("undefined?");
+    }
+
+    console.log(final);
+
+    let math = {};
+    let all = 0;
+    console.log(math);
+
+    Object.entries(final).forEach((e, i) => {
+        math[e[0]] = +(e[1] / trys * 100).toFixed(2);
+        all += math[e[0]];
+    })
+
+    console.log(`Komplett: ${all}`);
+    console.log(math);
 }
 
 /**
@@ -690,6 +739,8 @@ while (galaxy.length < config.count) {
         galaxyPush(chosenType, x, y, generateUniqueName(chosenType));
     }
 }
+
+//// GenerateResources("planet_atmosphere")
 
 fs.writeFileSync("./web/galaxy.json", JSON.stringify(galaxy));
 

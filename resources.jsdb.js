@@ -22,7 +22,7 @@ class resource {
      * @param {number} density Die Dichte der Ressource in kg/m^3
      * @param {number} chance Die Wahrscheinlichkeit der Ressource
      * @param {"solid"|"liquid"|"gas"|"antimatter"|"exotic"|"plastic_bag"} type Typ der Ressource
-     * @param {"none"|"stellar_astroid"|"interstellar_t1_astroid"|"interstellar_t2_astroid"|"interstellar_t3_astroid"|"planet"|"moon"|"star"|"gas_planet"|"stellar_space"|"interstellar_space"|
+     * @param {"none"|"stellar_astroid"|"interstellar_t1_astroid"|"interstellar_t2_astroid"|"interstellar_t3_astroid"|"planet"|"moon"|"star"|"gas_planet"|"stellar_space"|"interstellar_space"|"antimatter_anomaly"|
      * "neutron_star"|"planet:noAtmosphere"|"planet:atmosphere"|"moon:noAtmosphere"|"moon:atmosphere"} found Wo es gefunden werden kann, bei mehreren Punkten müssen mehrere Objekte erstellt werden.
      */
     constructor(name, id, group, short, description, density, chance, type, found) {
@@ -51,12 +51,12 @@ class resource {
 }
 
 //* EISENERZ
-/**Eisenerz das auf Planeten gefunden werden kann. */
-const iron_ore_0a = new resource("Eisenerz", "iron_ore_0a", "iron_ore", "Fe2O3", "Eisenerz das auf Planeten gefunden werden kann.", 4800, 0.01, "solid", "planet:atmosphere");
+/**Hämatit das auf Planeten gefunden werden kann. */
+const iron_ore_0a = new resource("Hämatit", "iron_ore_0a", "iron_ore", "Fe2O3", "Hämatit(Eisenerz) das auf Planeten gefunden werden kann.", 4800, 0.01, "solid", "planet:atmosphere");
 /**Elementares Eisen das auf Atmosphärenlosen Planeten gefunden werden kann. */
 const iron_ore_0b = new resource("Eisen", "iron_ore_0b", "iron_ore", "Fe", "Elementares Eisen das auf Atmosphärenlosen Planeten gefunden werden kann.", 4800, 0.01, "solid", "planet:noAtmosphere");
-/**Eisenerz das auf Monden gefunden werden kann. */
-const iron_ore_0c = new resource("Eisenerz", "iron_ore_0c", "iron_ore", "Fe2O3", "Eisenerz das auf Monden gefunden werden kann.", 4800, 0.01, "solid", "moon:atmosphere");
+/**Hämatit das auf Monden gefunden werden kann. */
+const iron_ore_0c = new resource("Hämatit", "iron_ore_0c", "iron_ore", "Fe2O3", "Hämatit(Eisenerz) das auf Monden gefunden werden kann.", 4800, 0.01, "solid", "moon:atmosphere");
 /**Elementares Eisen das auf Atmosphärenlosen Monden gefunden werden kann. */
 const iron_ore_0d = new resource("Eisen", "iron_ore_0d", "iron_ore", "Fe", "Elementares Eisen das auf Atmosphärenlosen Monden gefunden werden kann.", 4800, 0.01, "solid", "moon:noAtmosphere");
 /**Elementares Eisen das auf Stellaren Asteroiden gefunden werden kann. */
@@ -124,23 +124,23 @@ const ammonia_ice = new resource("Ammoniumeis", "solid_ammonia", "ammonia", "amm
 
 //* ANTIMATERIE
 /**Antimaterie-Elektronen oder Positronen, die in der Nähe von Gasriesen gefunden werden können. */
-const positrons_0 = new resource("Positronen", "positrons_0", "positrons", "e+", "Antimaterie-Elektronen oder Positronen, die in der Nähe von Gasriesen gefunden werden können.", 0e-1000, 0.1e-20, "antimatter", "gas_planet");
+const positrons_0 = new resource("Positronen", "positrons_0", "positrons", "e+", "Antimaterie-Elektronen oder Positronen, die in der Nähe von Massiven Gasriesen gefunden werden können.", 0e-1000, 0.001, "antimatter", "gas_planet");
 /**Antimaterie-Elektronen oder Positronen, die im Interstellaren Raum gefunden werden können. */
-const positrons_1 = new resource("Positronen", "positrons_1", "positrons", "e+", "Antimaterie-Elektronen oder Positronen, die im Interstellaren Raum gefunden werden können.", 0e-1000, 0.1e-18, "antimatter", "interstellar_space");
+const positrons_1 = new resource("Positronen", "positrons_1", "positrons", "e+", "Antimaterie-Elektronen oder Positronen, die im Interstellaren Raum gefunden werden können.", 0e-1000, 0.00001, "antimatter", "interstellar_space");
+/**Antimaterie-Elektronen oder Positronen, die in Interstelarren Anti-Materie Clustern gefunden werden können. */
+const positrons_2 = new resource("Positronen", "positrons_2", "positrons", "e+", "Antimaterie-Elektronen oder Positronen, die in Interstelarren Anti-Materie Clustern gefunden werden können.", 0e-1000, 0.001, "antimatter", "antimatter_anomaly");
 /**Antimaterie-Protonen, die im Interstellaren Raum gefunden werden können. */
-const anti_protons = new resource("Anti-Protonen", "anti_protons", "anti_protons", "p-", "Antimaterie-Protonen, die im Interstellaren Raum gefunden werden können.", 2.3e14, 0.1e-18, "antimatter", "interstellar_space");
+const anti_protons = new resource("Anti-Protonen", "anti_protons", "anti_protons", "p-", "Antimaterie-Protonen, die im Interstellaren Raum gefunden werden können.", 2.3e14, 0, "antimatter", "interstellar_space");
 /**Antimaterie-Neutronen, die im Interstellaren Raum gefunden werden können. */
-const anti_neutrons = new resource("Anti-Neutronen", "anti_neutrons", "anti_neutrons", "nn'", "Antimaterie-Neutronen, die im Interstellaren Raum gefunden werden können.", 2.2e14, 0.1e-18, "antimatter", "interstellar_space");
+const anti_neutrons = new resource("Anti-Neutronen", "anti_neutrons", "anti_neutrons", "nn'", "Antimaterie-Neutronen, die im Interstellaren Raum gefunden werden können.", 2.2e14, 0, "antimatter", "interstellar_space");
 /**Antimaterie-Wasserstof, eine unglaublich Seltene form von Anti-Materie, die im Interstellaren Raum gefunden werden können. */
-const anti_hydrogen = new resource("Anti-Wasserstoff", "anti_hydrogen", "anti_hydrogen", "H'", "Antimaterie-Wasserstof, eine unglaublich Seltene form von Anti-Materie, die im Interstellaren Raum gefunden werden können.", 0.08988, 0.1e-25, "antimatter", "interstellar_space");
+const anti_hydrogen = new resource("Anti-Wasserstoff", "anti_hydrogen", "anti_hydrogen", "H'", "Antimaterie-Wasserstof, eine unglaublich Seltene form von Anti-Materie, die im Interstellaren Raum gefunden werden können.", 0.08988, 0, "antimatter", "interstellar_space");
 
 //* EXOTISCH
 /**Neutronium oder Neutroniummaterie, eine Materie die aus reinen Neutronen besteht. */
 const neutronium_matter = new resource("Neutronium-Materie", "neutronium", "neutronium", "nn", "Neutronium oder Neutroniummaterie, eine Materie die aus reinen Neutronen besteht.", 2.2e14, 0.25, "exotic", "neutron_star");
-/**Protonium oder Protoniummaterie, eine Materie die aus reinen Protonen besteht. */
-const protonium_matter = new resource("Protonium-Materie", "protonium", "protonium", "p+", "Protonium oder Protoniummaterie, eine Materie die aus reinen Protonen besteht.", 2.3e14, 0.0, "exotic", "none");
 /**Nukleare Pasta, Extrem dichte Materie die in einem Neutronenstern vorkommt. */
-const nuclear_pasta = new resource("Nukleare Pasta", "nuclear_pasta", "nuclear_pasta", "nnn", "Nukleare Pasta, Extrem dichte Materie die in einem Neutronenstern vorkommt.", 2.3e17, 0.75, "exotic", "neutron_star");
+const nuclear_pasta = new resource("Nukleare Pasta", "nuclear_pasta", "nuclear_pasta", "nnn", "Nukleare Pasta, Extrem dichte Materie die in der Äußeren Kruste eines Neutronensterns vorkommt.", 2.3e17, 0.75, "exotic", "neutron_star");
 
 /**Testressource - wird für die resourcemap verwendet*/
 const test_0 = new resource("Test1", "test0", "test0", "test0", "Testressource 1 - für die resMap", 1, 0.10, "solid", "test");
@@ -197,6 +197,5 @@ module.exports = {
     anti_hydrogen,
 
     neutronium_matter,
-    protonium_matter,
     nuclear_pasta
 }

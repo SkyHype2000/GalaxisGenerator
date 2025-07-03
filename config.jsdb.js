@@ -8,7 +8,7 @@ const seed = "Main";
  * Der Radius der Galaxie in Lichtjahren
  * @type {number}
  */
-const radius = 100000;
+const radius = 1000000;
 /**
  * Die Anzahl der Objekte innerhalb der Galaxie\
  * Beeinflusst nicht die Stellaren Objekte!
@@ -108,6 +108,12 @@ const types = {
         minDistance: 1000,
         maxDistance: 0,
         preferred: "deepSpace-2000",
+    },
+    antimatter_anomaly: {
+        chance: 0.0001,
+        minDistance: 3000,
+        maxDistance: 0,
+        preferred: "deepSpace-5000",
     },
     blackHole: {
         chance: 0.001,
