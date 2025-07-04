@@ -25,6 +25,8 @@
                     "height": 0.7768727866433234,
                     "massEM": 3.21,
                     "massKG": 1.917012e+25,
+                    "r": 12414670.101048771,
+                    "d": 2391.832,
                     "OrbitalSpeed": 13827.94746870852,
                     "OrbitalTimeInSec": 52807726.20474702,
                     "OrbitalTimeInYears": 1.673,
@@ -37,6 +39,8 @@
                             "height": 88061.74579426204,
                             "massEM": 0.0009549966,
                             "massKG": 5.7032396952e+21,
+                            "r": 826794.3277025567,
+                            "d": 2409.0208000000002,
                             "OrbitalSpeed": 3811.7256276746816,
                             "OrbitalTimeInSec": 145159.5212629806,
                             "OrbitalTimeInYears": 0.005,
@@ -44,24 +48,14 @@
                             "orbitPosNorm": 0.222,
                             "resources": [
                                 {
-                                    "name": "Nothing",
-                                    "id": "nothing",
-                                    "short": "nothing",
-                                    "group": "dev",
-                                    "density": 0,
-                                    "p": 0.19,
-                                    "n": 188,
-                                    "v": 1000
-                                },
-                                {
                                     "name": "Siliziumdioxid",
                                     "id": "silica_1",
                                     "short": "SiO2",
                                     "group": "silica",
                                     "density": 2320,
-                                    "p": 0.79,
+                                    "p": 0.97044,
                                     "n": 788,
-                                    "v": 1000
+                                    "v": 812
                                 },
                                 {
                                     "name": "Hämatit",
@@ -69,9 +63,9 @@
                                     "short": "Fe2O3",
                                     "group": "iron_ore",
                                     "density": 4800,
-                                    "p": 0.01,
+                                    "p": 0.00985,
                                     "n": 8,
-                                    "v": 1000
+                                    "v": 812
                                 },
                                 {
                                     "name": "Kupfersulfid (Chalkosin)",
@@ -79,9 +73,9 @@
                                     "short": "Cu2S",
                                     "group": "copper_ore",
                                     "density": 5600,
-                                    "p": 0.02,
+                                    "p": 0.0197,
                                     "n": 16,
-                                    "v": 1000
+                                    "v": 812
                                 }
                             ]
                         },
@@ -91,6 +85,8 @@
                             "height": 164196.66029344723,
                             "massEM": 0.0026412839,
                             "massKG": 1.57737474508e+22,
+                            "r": 1167788.7395262308,
+                            "d": 2364.5768,
                             "OrbitalSpeed": 2791.4709833437673,
                             "OrbitalTimeInSec": 369582.22012680507,
                             "OrbitalTimeInYears": 0.012,
@@ -98,24 +94,14 @@
                             "orbitPosNorm": 0.431,
                             "resources": [
                                 {
-                                    "name": "Nothing",
-                                    "id": "nothing",
-                                    "short": "nothing",
-                                    "group": "dev",
-                                    "density": 0,
-                                    "p": 0.21,
-                                    "n": 206,
-                                    "v": 1000
-                                },
-                                {
                                     "name": "Siliziumdioxid",
                                     "id": "silica_1",
                                     "short": "SiO2",
                                     "group": "silica",
                                     "density": 2320,
-                                    "p": 0.78,
+                                    "p": 0.98489,
                                     "n": 782,
-                                    "v": 1000
+                                    "v": 794
                                 },
                                 {
                                     "name": "Hämatit",
@@ -123,9 +109,9 @@
                                     "short": "Fe2O3",
                                     "group": "iron_ore",
                                     "density": 4800,
-                                    "p": 0.01,
+                                    "p": 0.0063,
                                     "n": 5,
-                                    "v": 1000
+                                    "v": 794
                                 },
                                 {
                                     "name": "Kupfersulfid (Chalkosin)",
@@ -133,9 +119,9 @@
                                     "short": "Cu2S",
                                     "group": "copper_ore",
                                     "density": 5600,
-                                    "p": 0.01,
+                                    "p": 0.00882,
                                     "n": 7,
-                                    "v": 1000
+                                    "v": 794
                                 }
                             ]
                         },
@@ -145,6 +131,8 @@
                             "height": 199150.16628786002,
                             "massEM": 0.0220031883,
                             "massKG": 1.314030405276e+23,
+                            "r": 2357953.064407092,
+                            "d": 2392.8272,
                             "OrbitalSpeed": 2534.6905219904297,
                             "OrbitalTimeInSec": 493668.7094090053,
                             "OrbitalTimeInYears": 0.016,
@@ -152,24 +140,14 @@
                             "orbitPosNorm": 0.464,
                             "resources": [
                                 {
-                                    "name": "Nothing",
-                                    "id": "nothing",
-                                    "short": "nothing",
-                                    "group": "dev",
-                                    "density": 0,
-                                    "p": 0.2,
-                                    "n": 198,
-                                    "v": 1000
-                                },
-                                {
                                     "name": "Siliziumdioxid",
                                     "id": "silica_1",
                                     "short": "SiO2",
                                     "group": "silica",
                                     "density": 2320,
-                                    "p": 0.78,
+                                    "p": 0.97506,
                                     "n": 782,
-                                    "v": 1000
+                                    "v": 802
                                 },
                                 {
                                     "name": "Eisen",
@@ -177,9 +155,9 @@
                                     "short": "Fe",
                                     "group": "iron_ore",
                                     "density": 4800,
-                                    "p": 0.01,
+                                    "p": 0.01122,
                                     "n": 9,
-                                    "v": 1000
+                                    "v": 802
                                 },
                                 {
                                     "name": "Kupfer",
@@ -187,33 +165,23 @@
                                     "short": "Cu",
                                     "group": "copper_ore",
                                     "density": 5600,
-                                    "p": 0.01,
+                                    "p": 0.01372,
                                     "n": 11,
-                                    "v": 1000
+                                    "v": 802
                                 }
                             ]
                         }
                     ],
                     "resources": [
                         {
-                            "name": "Nothing",
-                            "id": "nothing",
-                            "short": "nothing",
-                            "group": "dev",
-                            "density": 0,
-                            "p": 0.19,
-                            "n": 187,
-                            "v": 1000
-                        },
-                        {
                             "name": "Siliziumdioxid",
                             "id": "silica_0",
                             "short": "SiO2",
                             "group": "silica",
                             "density": 2320,
-                            "p": 0.79,
+                            "p": 0.9754,
                             "n": 793,
-                            "v": 1000
+                            "v": 813
                         },
                         {
                             "name": "Eisen",
@@ -221,9 +189,9 @@
                             "short": "Fe",
                             "group": "iron_ore",
                             "density": 4800,
-                            "p": 0.01,
+                            "p": 0.01107,
                             "n": 9,
-                            "v": 1000
+                            "v": 813
                         },
                         {
                             "name": "Kupfer",
@@ -231,9 +199,9 @@
                             "short": "Cu",
                             "group": "copper_ore",
                             "density": 5600,
-                            "p": 0.01,
+                            "p": 0.01353,
                             "n": 11,
-                            "v": 1000
+                            "v": 813
                         }
                     ]
                 },
@@ -244,6 +212,8 @@
                     "height": 1.4428345826512687,
                     "massEM": 0.309,
                     "massKG": 1.845348e+24,
+                    "r": 5664309.202155773,
+                    "d": 2424.0904,
                     "OrbitalSpeed": 10146.690272827458,
                     "OrbitalTimeInSec": 133658757.57503344,
                     "OrbitalTimeInYears": 4.235,
@@ -252,24 +222,14 @@
                     "moons": [],
                     "resources": [
                         {
-                            "name": "Nothing",
-                            "id": "nothing",
-                            "short": "nothing",
-                            "group": "dev",
-                            "density": 0,
-                            "p": 0.19,
-                            "n": 186,
-                            "v": 1000
-                        },
-                        {
                             "name": "Siliziumdioxid",
                             "id": "silica_0",
                             "short": "SiO2",
                             "group": "silica",
                             "density": 2320,
-                            "p": 0.79,
+                            "p": 0.96437,
                             "n": 785,
-                            "v": 1000
+                            "v": 814
                         },
                         {
                             "name": "Hämatit",
@@ -277,9 +237,9 @@
                             "short": "Fe2O3",
                             "group": "iron_ore",
                             "density": 4800,
-                            "p": 0.01,
+                            "p": 0.01597,
                             "n": 13,
-                            "v": 1000
+                            "v": 814
                         },
                         {
                             "name": "Kupfersulfid (Chalkosin)",
@@ -287,9 +247,9 @@
                             "short": "Cu2S",
                             "group": "copper_ore",
                             "density": 5600,
-                            "p": 0.02,
+                            "p": 0.01966,
                             "n": 16,
-                            "v": 1000
+                            "v": 814
                         }
                     ]
                 },
@@ -300,6 +260,8 @@
                     "height": 2.5609586769415364,
                     "massEM": 1.48,
                     "massKG": 8.83856e+24,
+                    "r": 9546349.327880401,
+                    "d": 2425.3864,
                     "OrbitalSpeed": 7616.078117592736,
                     "OrbitalTimeInSec": 316065040.14654356,
                     "OrbitalTimeInYears": 10.015,
@@ -308,24 +270,14 @@
                     "moons": [],
                     "resources": [
                         {
-                            "name": "Nothing",
-                            "id": "nothing",
-                            "short": "nothing",
-                            "group": "dev",
-                            "density": 0,
-                            "p": 0.19,
-                            "n": 187,
-                            "v": 1000
-                        },
-                        {
                             "name": "Siliziumdioxid",
                             "id": "silica_0",
                             "short": "SiO2",
                             "group": "silica",
                             "density": 2320,
-                            "p": 0.78,
+                            "p": 0.96187,
                             "n": 782,
-                            "v": 1000
+                            "v": 813
                         },
                         {
                             "name": "Eisen",
@@ -333,9 +285,9 @@
                             "short": "Fe",
                             "group": "iron_ore",
                             "density": 4800,
-                            "p": 0.02,
+                            "p": 0.0246,
                             "n": 20,
-                            "v": 1000
+                            "v": 813
                         },
                         {
                             "name": "Kupfer",
@@ -343,9 +295,9 @@
                             "short": "Cu",
                             "group": "copper_ore",
                             "density": 5600,
-                            "p": 0.01,
+                            "p": 0.01353,
                             "n": 11,
-                            "v": 1000
+                            "v": 813
                         }
                     ]
                 },
@@ -356,6 +308,8 @@
                     "height": 2.9858710076497283,
                     "massEM": 0.025,
                     "massKG": 1.4930000000000001e+23,
+                    "r": 2461411.7355674063,
+                    "d": 2390.1128000000003,
                     "OrbitalSpeed": 7053.377927239188,
                     "OrbitalTimeInSec": 397904790.5759774,
                     "OrbitalTimeInYears": 12.609,
@@ -368,6 +322,8 @@
                             "height": 114097.24945511365,
                             "massEM": 0.0004428942,
                             "massKG": 2.6449641624000004e+21,
+                            "r": 641760.5052254295,
+                            "d": 2388.9784,
                             "OrbitalSpeed": 295.5256479370607,
                             "OrbitalTimeInSec": 2425827.2213268406,
                             "OrbitalTimeInYears": 0.077,
@@ -375,24 +331,14 @@
                             "orbitPosNorm": 0.061,
                             "resources": [
                                 {
-                                    "name": "Nothing",
-                                    "id": "nothing",
-                                    "short": "nothing",
-                                    "group": "dev",
-                                    "density": 0,
-                                    "p": 0.19,
-                                    "n": 187,
-                                    "v": 1000
-                                },
-                                {
                                     "name": "Siliziumdioxid",
                                     "id": "silica_1",
                                     "short": "SiO2",
                                     "group": "silica",
                                     "density": 2320,
-                                    "p": 0.79,
+                                    "p": 0.97417,
                                     "n": 792,
-                                    "v": 1000
+                                    "v": 813
                                 },
                                 {
                                     "name": "Kupfersulfid (Chalkosin)",
@@ -400,9 +346,9 @@
                                     "short": "Cu2S",
                                     "group": "copper_ore",
                                     "density": 5600,
-                                    "p": 0.01,
+                                    "p": 0.00615,
                                     "n": 5,
-                                    "v": 1000
+                                    "v": 813
                                 },
                                 {
                                     "name": "Hämatit",
@@ -410,9 +356,9 @@
                                     "short": "Fe2O3",
                                     "group": "iron_ore",
                                     "density": 4800,
-                                    "p": 0.02,
+                                    "p": 0.01968,
                                     "n": 16,
-                                    "v": 1000
+                                    "v": 813
                                 }
                             ]
                         },
@@ -422,6 +368,8 @@
                             "height": 149697.24911667797,
                             "massEM": 0.0003803115,
                             "massKG": 2.2712202780000002e+21,
+                            "r": 609117.2059453614,
+                            "d": 2399.2088,
                             "OrbitalSpeed": 258.00365346953924,
                             "OrbitalTimeInSec": 3645590.066367649,
                             "OrbitalTimeInYears": 0.116,
@@ -429,24 +377,14 @@
                             "orbitPosNorm": 0.792,
                             "resources": [
                                 {
-                                    "name": "Nothing",
-                                    "id": "nothing",
-                                    "short": "nothing",
-                                    "group": "dev",
-                                    "density": 0,
-                                    "p": 0.18,
-                                    "n": 179,
-                                    "v": 1000
-                                },
-                                {
                                     "name": "Siliziumdioxid",
                                     "id": "silica_1",
                                     "short": "SiO2",
                                     "group": "silica",
                                     "density": 2320,
-                                    "p": 0.8,
+                                    "p": 0.97199,
                                     "n": 798,
-                                    "v": 1000
+                                    "v": 821
                                 },
                                 {
                                     "name": "Kupfer",
@@ -454,9 +392,9 @@
                                     "short": "Cu",
                                     "group": "copper_ore",
                                     "density": 5600,
-                                    "p": 0.01,
+                                    "p": 0.01218,
                                     "n": 10,
-                                    "v": 1000
+                                    "v": 821
                                 },
                                 {
                                     "name": "Eisen",
@@ -464,33 +402,23 @@
                                     "short": "Fe",
                                     "group": "iron_ore",
                                     "density": 4800,
-                                    "p": 0.01,
+                                    "p": 0.01583,
                                     "n": 13,
-                                    "v": 1000
+                                    "v": 821
                                 }
                             ]
                         }
                     ],
                     "resources": [
                         {
-                            "name": "Nothing",
-                            "id": "nothing",
-                            "short": "nothing",
-                            "group": "dev",
-                            "density": 0,
-                            "p": 0.17,
-                            "n": 167,
-                            "v": 1000
-                        },
-                        {
                             "name": "Siliziumdioxid",
                             "id": "silica_0",
                             "short": "SiO2",
                             "group": "silica",
                             "density": 2320,
-                            "p": 0.81,
+                            "p": 0.97599,
                             "n": 813,
-                            "v": 1000
+                            "v": 833
                         },
                         {
                             "name": "Eisen",
@@ -498,9 +426,9 @@
                             "short": "Fe",
                             "group": "iron_ore",
                             "density": 4800,
-                            "p": 0.01,
+                            "p": 0.0108,
                             "n": 9,
-                            "v": 1000
+                            "v": 833
                         },
                         {
                             "name": "Kupfer",
@@ -508,9 +436,9 @@
                             "short": "Cu",
                             "group": "copper_ore",
                             "density": 5600,
-                            "p": 0.01,
+                            "p": 0.01321,
                             "n": 11,
-                            "v": 1000
+                            "v": 833
                         }
                     ]
                 },
@@ -521,6 +449,8 @@
                     "height": 3.731532548294672,
                     "massEM": 0.471,
                     "massKG": 2.812812e+24,
+                    "r": 6531846.986378188,
+                    "d": 2409.5952,
                     "OrbitalSpeed": 6309.414482145082,
                     "OrbitalTimeInSec": 555908681.298773,
                     "OrbitalTimeInYears": 17.616,
@@ -533,6 +463,8 @@
                             "height": 83975.12198610799,
                             "massEM": 0.0002663161,
                             "massKG": 1.5904397492e+21,
+                            "r": 542107.1029241947,
+                            "d": 2383.2704,
                             "OrbitalSpeed": 1495.1951967636564,
                             "OrbitalTimeInSec": 352884.5289055119,
                             "OrbitalTimeInYears": 0.011,
@@ -540,24 +472,14 @@
                             "orbitPosNorm": 0.842,
                             "resources": [
                                 {
-                                    "name": "Nothing",
-                                    "id": "nothing",
-                                    "short": "nothing",
-                                    "group": "dev",
-                                    "density": 0,
-                                    "p": 0.18,
-                                    "n": 182,
-                                    "v": 1000
-                                },
-                                {
                                     "name": "Siliziumdioxid",
                                     "id": "silica_1",
                                     "short": "SiO2",
                                     "group": "silica",
                                     "density": 2320,
-                                    "p": 0.8,
+                                    "p": 0.97922,
                                     "n": 801,
-                                    "v": 1000
+                                    "v": 818
                                 },
                                 {
                                     "name": "Kupfer",
@@ -565,9 +487,9 @@
                                     "short": "Cu",
                                     "group": "copper_ore",
                                     "density": 5600,
-                                    "p": 0.01,
+                                    "p": 0.01467,
                                     "n": 12,
-                                    "v": 1000
+                                    "v": 818
                                 },
                                 {
                                     "name": "Eisen",
@@ -575,33 +497,23 @@
                                     "short": "Fe",
                                     "group": "iron_ore",
                                     "density": 4800,
-                                    "p": 0.01,
+                                    "p": 0.00611,
                                     "n": 5,
-                                    "v": 1000
+                                    "v": 818
                                 }
                             ]
                         }
                     ],
                     "resources": [
                         {
-                            "name": "Nothing",
-                            "id": "nothing",
-                            "short": "nothing",
-                            "group": "dev",
-                            "density": 0,
-                            "p": 0.19,
-                            "n": 191,
-                            "v": 1000
-                        },
-                        {
                             "name": "Siliziumdioxid",
                             "id": "silica_0",
                             "short": "SiO2",
                             "group": "silica",
                             "density": 2320,
-                            "p": 0.78,
+                            "p": 0.96786,
                             "n": 783,
-                            "v": 1000
+                            "v": 809
                         },
                         {
                             "name": "Hämatit",
@@ -609,9 +521,9 @@
                             "short": "Fe2O3",
                             "group": "iron_ore",
                             "density": 4800,
-                            "p": 0.02,
+                            "p": 0.01978,
                             "n": 16,
-                            "v": 1000
+                            "v": 809
                         },
                         {
                             "name": "Kupfersulfid (Chalkosin)",
@@ -619,9 +531,9 @@
                             "short": "Cu2S",
                             "group": "copper_ore",
                             "density": 5600,
-                            "p": 0.01,
+                            "p": 0.01236,
                             "n": 10,
-                            "v": 1000
+                            "v": 809
                         }
                     ]
                 },
@@ -632,6 +544,8 @@
                     "height": 4.321863294010163,
                     "massEM": 1.897,
                     "massKG": 1.1328884000000001e+25,
+                    "r": 10411903.408539506,
+                    "d": 2396.1176,
                     "OrbitalSpeed": 5862.693130490482,
                     "OrbitalTimeInSec": 692913692.2912838,
                     "OrbitalTimeInYears": 21.957,
@@ -644,6 +558,8 @@
                             "height": 70010.8174302854,
                             "massEM": 0.000145766,
                             "massKG": 870514552000000000000,
+                            "r": 444270.90741517255,
+                            "d": 2369.9752000000003,
                             "OrbitalSpeed": 3286.350288916727,
                             "OrbitalTimeInSec": 133853.941530561,
                             "OrbitalTimeInYears": 0.004,
@@ -651,24 +567,14 @@
                             "orbitPosNorm": 0.958,
                             "resources": [
                                 {
-                                    "name": "Nothing",
-                                    "id": "nothing",
-                                    "short": "nothing",
-                                    "group": "dev",
-                                    "density": 0,
-                                    "p": 0.16,
-                                    "n": 161,
-                                    "v": 1000
-                                },
-                                {
                                     "name": "Siliziumdioxid",
                                     "id": "silica_1",
                                     "short": "SiO2",
                                     "group": "silica",
                                     "density": 2320,
-                                    "p": 0.82,
+                                    "p": 0.98331,
                                     "n": 825,
-                                    "v": 1000
+                                    "v": 839
                                 },
                                 {
                                     "name": "Kupfer",
@@ -676,9 +582,9 @@
                                     "short": "Cu",
                                     "group": "copper_ore",
                                     "density": 5600,
-                                    "p": 0.01,
+                                    "p": 0.01073,
                                     "n": 9,
-                                    "v": 1000
+                                    "v": 839
                                 },
                                 {
                                     "name": "Eisen",
@@ -686,9 +592,9 @@
                                     "short": "Fe",
                                     "group": "iron_ore",
                                     "density": 4800,
-                                    "p": 0.01,
+                                    "p": 0.00596,
                                     "n": 5,
-                                    "v": 1000
+                                    "v": 839
                                 }
                             ]
                         },
@@ -698,6 +604,8 @@
                             "height": 103319.05427917575,
                             "massEM": 0.0103958114,
                             "massKG": 6.20837856808e+22,
+                            "r": 1839883.3602662166,
+                            "d": 2379.6807999999996,
                             "OrbitalSpeed": 2705.2425872062286,
                             "OrbitalTimeInSec": 239968.41054798863,
                             "OrbitalTimeInYears": 0.008,
@@ -705,24 +613,14 @@
                             "orbitPosNorm": 0.392,
                             "resources": [
                                 {
-                                    "name": "Nothing",
-                                    "id": "nothing",
-                                    "short": "nothing",
-                                    "group": "dev",
-                                    "density": 0,
-                                    "p": 0.17,
-                                    "n": 171,
-                                    "v": 1000
-                                },
-                                {
                                     "name": "Siliziumdioxid",
                                     "id": "silica_1",
                                     "short": "SiO2",
                                     "group": "silica",
                                     "density": 2320,
-                                    "p": 0.81,
+                                    "p": 0.97829,
                                     "n": 811,
-                                    "v": 1000
+                                    "v": 829
                                 },
                                 {
                                     "name": "Eisen",
@@ -730,9 +628,9 @@
                                     "short": "Fe",
                                     "group": "iron_ore",
                                     "density": 4800,
-                                    "p": 0.01,
+                                    "p": 0.01448,
                                     "n": 12,
-                                    "v": 1000
+                                    "v": 829
                                 },
                                 {
                                     "name": "Kupfer",
@@ -740,33 +638,23 @@
                                     "short": "Cu",
                                     "group": "copper_ore",
                                     "density": 5600,
-                                    "p": 0.01,
+                                    "p": 0.00724,
                                     "n": 6,
-                                    "v": 1000
+                                    "v": 829
                                 }
                             ]
                         }
                     ],
                     "resources": [
                         {
-                            "name": "Nothing",
-                            "id": "nothing",
-                            "short": "nothing",
-                            "group": "dev",
-                            "density": 0,
-                            "p": 0.2,
-                            "n": 199,
-                            "v": 1000
-                        },
-                        {
                             "name": "Siliziumdioxid",
                             "id": "silica_0",
                             "short": "SiO2",
                             "group": "silica",
                             "density": 2320,
-                            "p": 0.78,
+                            "p": 0.97253,
                             "n": 779,
-                            "v": 1000
+                            "v": 801
                         },
                         {
                             "name": "Hämatit",
@@ -774,9 +662,9 @@
                             "short": "Fe2O3",
                             "group": "iron_ore",
                             "density": 4800,
-                            "p": 0.01,
+                            "p": 0.01748,
                             "n": 14,
-                            "v": 1000
+                            "v": 801
                         },
                         {
                             "name": "Kupfersulfid (Chalkosin)",
@@ -784,9 +672,9 @@
                             "short": "Cu2S",
                             "group": "copper_ore",
                             "density": 5600,
-                            "p": 0.01,
+                            "p": 0.00999,
                             "n": 8,
-                            "v": 1000
+                            "v": 801
                         }
                     ]
                 },
@@ -797,6 +685,8 @@
                     "height": 5.634540341748989,
                     "massEM": 0.249,
                     "massKG": 1.487028e+24,
+                    "r": 5291622.790532061,
+                    "d": 2395.8736,
                     "OrbitalSpeed": 5134.562315354445,
                     "OrbitalTimeInSec": 1031478889.5663196,
                     "OrbitalTimeInYears": 32.686,
@@ -805,24 +695,14 @@
                     "moons": [],
                     "resources": [
                         {
-                            "name": "Nothing",
-                            "id": "nothing",
-                            "short": "nothing",
-                            "group": "dev",
-                            "density": 0,
-                            "p": 0.21,
-                            "n": 208,
-                            "v": 1000
-                        },
-                        {
                             "name": "Siliziumdioxid",
                             "id": "silica_0",
                             "short": "SiO2",
                             "group": "silica",
                             "density": 2320,
-                            "p": 0.77,
+                            "p": 0.97348,
                             "n": 771,
-                            "v": 1000
+                            "v": 792
                         },
                         {
                             "name": "Kupfer",
@@ -830,9 +710,9 @@
                             "short": "Cu",
                             "group": "copper_ore",
                             "density": 5600,
-                            "p": 0.01,
+                            "p": 0.01263,
                             "n": 10,
-                            "v": 1000
+                            "v": 792
                         },
                         {
                             "name": "Eisen",
@@ -840,9 +720,9 @@
                             "short": "Fe",
                             "group": "iron_ore",
                             "density": 4800,
-                            "p": 0.01,
+                            "p": 0.01389,
                             "n": 11,
-                            "v": 1000
+                            "v": 792
                         }
                     ]
                 },
@@ -853,6 +733,8 @@
                     "height": 6.621990242631982,
                     "massEM": 0.737,
                     "massKG": 4.401364e+24,
+                    "r": 7584785.622898172,
+                    "d": 2408.0679999999998,
                     "OrbitalSpeed": 4736.291319626077,
                     "OrbitalTimeInSec": 1314181683.2115748,
                     "OrbitalTimeInYears": 41.644,
@@ -861,24 +743,14 @@
                     "moons": [],
                     "resources": [
                         {
-                            "name": "Nothing",
-                            "id": "nothing",
-                            "short": "nothing",
-                            "group": "dev",
-                            "density": 0,
-                            "p": 0.19,
-                            "n": 187,
-                            "v": 1000
-                        },
-                        {
                             "name": "Siliziumdioxid",
                             "id": "silica_0",
                             "short": "SiO2",
                             "group": "silica",
                             "density": 2320,
-                            "p": 0.79,
+                            "p": 0.96925,
                             "n": 788,
-                            "v": 1000
+                            "v": 813
                         },
                         {
                             "name": "Kupfer",
@@ -886,9 +758,9 @@
                             "short": "Cu",
                             "group": "copper_ore",
                             "density": 5600,
-                            "p": 0.01,
+                            "p": 0.01476,
                             "n": 12,
-                            "v": 1000
+                            "v": 813
                         },
                         {
                             "name": "Eisen",
@@ -896,9 +768,9 @@
                             "short": "Fe",
                             "group": "iron_ore",
                             "density": 4800,
-                            "p": 0.01,
+                            "p": 0.01599,
                             "n": 13,
-                            "v": 1000
+                            "v": 813
                         }
                     ]
                 },
@@ -909,6 +781,8 @@
                     "height": 7.766003976581782,
                     "massEM": 5.963,
                     "massKG": 3.5611036e+25,
+                    "r": 15216385.435826026,
+                    "d": 2413.0232,
                     "OrbitalSpeed": 4373.54773570533,
                     "OrbitalTimeInSec": 1669048734.9750805,
                     "OrbitalTimeInYears": 52.889,
@@ -921,6 +795,8 @@
                             "height": 78223.44287510954,
                             "massEM": 0.0009745586,
                             "massKG": 5.8200639592e+21,
+                            "r": 835384.5191838541,
+                            "d": 2383.3064,
                             "OrbitalSpeed": 5512.222032310354,
                             "OrbitalTimeInSec": 89164.11277865185,
                             "OrbitalTimeInYears": 0.003,
@@ -928,24 +804,14 @@
                             "orbitPosNorm": 0.911,
                             "resources": [
                                 {
-                                    "name": "Nothing",
-                                    "id": "nothing",
-                                    "short": "nothing",
-                                    "group": "dev",
-                                    "density": 0,
-                                    "p": 0.17,
-                                    "n": 168,
-                                    "v": 1000
-                                },
-                                {
                                     "name": "Siliziumdioxid",
                                     "id": "silica_1",
                                     "short": "SiO2",
                                     "group": "silica",
                                     "density": 2320,
-                                    "p": 0.81,
+                                    "p": 0.97837,
                                     "n": 814,
-                                    "v": 1000
+                                    "v": 832
                                 },
                                 {
                                     "name": "Kupfer",
@@ -953,9 +819,9 @@
                                     "short": "Cu",
                                     "group": "copper_ore",
                                     "density": 5600,
-                                    "p": 0.01,
+                                    "p": 0.01202,
                                     "n": 10,
-                                    "v": 1000
+                                    "v": 832
                                 },
                                 {
                                     "name": "Eisen",
@@ -963,33 +829,23 @@
                                     "short": "Fe",
                                     "group": "iron_ore",
                                     "density": 4800,
-                                    "p": 0.01,
+                                    "p": 0.00962,
                                     "n": 8,
-                                    "v": 1000
+                                    "v": 832
                                 }
                             ]
                         }
                     ],
                     "resources": [
                         {
-                            "name": "Nothing",
-                            "id": "nothing",
-                            "short": "nothing",
-                            "group": "dev",
-                            "density": 0,
-                            "p": 0.2,
-                            "n": 196,
-                            "v": 1000
-                        },
-                        {
                             "name": "Siliziumdioxid",
                             "id": "silica_0",
                             "short": "SiO2",
                             "group": "silica",
                             "density": 2320,
-                            "p": 0.78,
+                            "p": 0.96891,
                             "n": 779,
-                            "v": 1000
+                            "v": 804
                         },
                         {
                             "name": "Kupfersulfid (Chalkosin)",
@@ -997,9 +853,9 @@
                             "short": "Cu2S",
                             "group": "copper_ore",
                             "density": 5600,
-                            "p": 0.02,
+                            "p": 0.0199,
                             "n": 16,
-                            "v": 1000
+                            "v": 804
                         },
                         {
                             "name": "Hämatit",
@@ -1007,9 +863,9 @@
                             "short": "Fe2O3",
                             "group": "iron_ore",
                             "density": 4800,
-                            "p": 0.01,
+                            "p": 0.01119,
                             "n": 9,
-                            "v": 1000
+                            "v": 804
                         }
                     ]
                 },
@@ -1020,6 +876,8 @@
                     "height": 9.146191846344946,
                     "massEM": 2.654,
                     "massKG": 1.5849688e+25,
+                    "r": 11627561.875880145,
+                    "d": 2406.9447999999998,
                     "OrbitalSpeed": 4030.069372212167,
                     "OrbitalTimeInSec": 2133207319.178981,
                     "OrbitalTimeInYears": 67.597,
@@ -1028,24 +886,14 @@
                     "moons": [],
                     "resources": [
                         {
-                            "name": "Nothing",
-                            "id": "nothing",
-                            "short": "nothing",
-                            "group": "dev",
-                            "density": 0,
-                            "p": 0.2,
-                            "n": 204,
-                            "v": 1000
-                        },
-                        {
                             "name": "Siliziumdioxid",
                             "id": "silica_0",
                             "short": "SiO2",
                             "group": "silica",
                             "density": 2320,
-                            "p": 0.77,
+                            "p": 0.96859,
                             "n": 771,
-                            "v": 1000
+                            "v": 796
                         },
                         {
                             "name": "Hämatit",
@@ -1053,9 +901,9 @@
                             "short": "Fe2O3",
                             "group": "iron_ore",
                             "density": 4800,
-                            "p": 0.02,
+                            "p": 0.0201,
                             "n": 16,
-                            "v": 1000
+                            "v": 796
                         },
                         {
                             "name": "Kupfersulfid (Chalkosin)",
@@ -1063,9 +911,9 @@
                             "short": "Cu2S",
                             "group": "copper_ore",
                             "density": 5600,
-                            "p": 0.01,
+                            "p": 0.01131,
                             "n": 9,
-                            "v": 1000
+                            "v": 796
                         }
                     ]
                 }

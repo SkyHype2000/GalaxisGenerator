@@ -588,39 +588,53 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
                     info.planetSystem.forEach((planet, idx) => {
                         let OTD = planet.OrbitalTimeInSec / (24 * 3600);
 
-                        let resString = "";
+                        let planetResString = "";
                         // Detaillierte Ressourcenanzeige: Name statt Short, wenn aktiviert
                         const resourceLabel = DETAILED_RESOURCE_NAMES ? "name" : "short";
-
                         // Ressourcen sortieren: Erst nach Anteil (p) absteigend, "nothing" immer ans Ende
-                        const sortedResources = [...planet.resources].sort((a, b) => {
-                            if (a.id === "nothing") return 1;
-                            if (b.id === "nothing") return -1;
-                            return b.p - a.p;
-                        });
-
+                        const sortedResources = [...planet.resources].sort((a, b) => { return b.p - a.p; });
                         for (let i = 0; i < sortedResources.length; i++) {
                             const e = sortedResources[i];
                             if (e.id != "nothing") {
-                                resString += `${e[resourceLabel]} (${(e.p*100).toFixed(1)}%), `;
-                            } else if (e.id == "nothing" && e.p > 0) {
-                                resString += `Anderes (${(e.p*100).toFixed(1)}%)`;
+                                planetResString += `${e[resourceLabel]} (${(e.p * 100).toFixed(1)}%), `;
                             }
                         }
                         // Optional: letztes Komma entfernen
-                        if (resString.endsWith(", ")) resString = resString.slice(0, -2);
+                        if (planetResString.endsWith(", ")) planetResString = planetResString.slice(0, -2);
 
                         html += `<u>Planet ${idx + 1}: ${planet.name}</u><br>`;
                         html += `&nbsp;Temperatur: ${planet.temperature.toFixed(3)} °K (${(planet.temperature - 273.15).toFixed(3)}°C)<br>`;
-                        html += `&nbsp;Höhe: ${planet.height.toFixed(2)} AE<br>`;
-                        html += `&nbsp;Masse: ${planet.massEM} Erdmassen<br>`;
+                        html += `&nbsp;Orbitale Höhe: ${planet.height.toFixed(2)} AE<br>`;
+                        html += `&nbsp;Masse: ${planet.massEM} Erdmassen (${planet.massKG.toExponential(3)} kg)<br>`;
+                        html += `&nbsp;Dichte: ${planet.d.toFixed(2)} kg/m³)<br>`;
+                        html += `&nbsp;Radius: ${(planet.r / 1000).toFixed(2)} km<br>`;
                         html += `&nbsp;Umlaufzeit: ${planet.OrbitalTimeInYears} Jahre`;
-                        if (OTD < 100) { html += `(${OTD} Tage)<br>` } else { html += "<br>" }
-                        html += `&nbsp;Ressourcen:<br>&nbsp;${resString}<br>`;
+                        if (OTD < 100) { html += `(${OTD.toFixed(3)} Tage)<br>` } else { html += "<br>" }
+                        html += `&nbsp;Ressourcen:<br>&nbsp;${planetResString}<br>`;
                         if (planet.moons && planet.moons.length > 0) {
+                            // Optional: letztes Komma entfernen
+                            if (planetResString.endsWith(", ")) planetResString = planetResString.slice(0, -2);
                             html += `&nbsp;Monde (${planet.moons.length}):<br>`;
                             planet.moons.forEach((moon, min) => {
-                                html += `&nbsp;&nbsp;• ${moon.name} (Höhe: ${moon.height.toFixed(0)} km, Masse: ${moon.massEM} EM, Umlaufzeit: ${(moon.OrbitalTimeInSec / 3600).toFixed(2)} h (${(moon.OrbitalTimeInSec / (24 * 3600)).toFixed(3)} Tage)<br>`;
+                                let moonResString = "";
+                                // Detaillierte Ressourcenanzeige: Name statt Short, wenn aktiviert
+                                const resourceLabel = DETAILED_RESOURCE_NAMES ? "name" : "short";
+                                // Ressourcen sortieren: Erst nach Anteil (p) absteigend, "nothing" immer ans Ende
+                                const sortedResources = [...moon.resources].sort((a, b) => { return b.p - a.p; });
+                                for (let i = 0; i < sortedResources.length; i++) {
+                                    const e = sortedResources[i];
+                                    if (e.id != "nothing") {
+                                        moonResString += `${e[resourceLabel]} (${(e.p * 100).toFixed(1)}%), `;
+                                    }
+                                }
+
+                                html += `&nbsp;&nbsp;- ${moon.name}<br>`
+                                html += `&nbsp;&nbsp;&nbsp;&nbsp;Höhe: ${moon.height.toFixed(0)} km<br>`
+                                html += `&nbsp;&nbsp;&nbsp;&nbsp;Masse: ${moon.massEM} Erdmassen (${moon.massKG.toExponential(3)} kg)<br>`
+                                html += `&nbsp;&nbsp;&nbsp;&nbsp;Dichte: ${(moon.d).toFixed(2)} kg/m³<br>`
+                                html += `&nbsp;&nbsp;&nbsp;&nbsp;Radius: ${(moon.r / 1000).toFixed(2)} km<br>`
+                                html += `&nbsp;&nbsp;&nbsp;&nbsp;Umlaufzeit: ${(moon.OrbitalTimeInSec / 3600).toFixed(2)} h (${(moon.OrbitalTimeInSec / (24 * 3600)).toFixed(3)} Tage)<br>`;
+                                html += `&nbsp;&nbsp;&nbsp;&nbsp;Ressourcen: ${moonResString}<br>`;
                             });
                         }
                         html += "<br>"

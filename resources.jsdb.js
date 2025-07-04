@@ -122,11 +122,11 @@ const iron_ore_4 = new resource("Eisen", "iron_ore_4", "iron_ore", "Fe", "Elemen
 
 //* KUPFERERZ
 /**Chalkosin das auf Planeten Gefunden werden kann. */
-const copper_ore_0a = new resource("Kupfersulfid (Chalkosin)", "copper_ore_0a", "copper_ore", "Cu2S", "Chalkosin das auf Planeten Gefunden werden kann.", 5600, 0.01, "solid", "planet:atmosphere");
+const copper_ore_0a = new resource("Chalkosin", "copper_ore_0a", "copper_ore", "Cu2S", "Chalkosin das auf Planeten Gefunden werden kann.", 5600, 0.01, "solid", "planet:atmosphere");
 /**Chalkosin das auf Atmosphärenlosen Planeten Gefunden werden kann. */
 const copper_ore_0b = new resource("Kupfer", "copper_ore_0b", "copper_ore", "Cu", "Elementares Kupfer das auf Atmosphärenlosen Planeten Gefunden werden kann.", 5600, 0.01, "solid", "planet:noAtmosphere");
 /**Chalkosin das auf Monden Gefunden werden kann. */
-const copper_ore_0c = new resource("Kupfersulfid (Chalkosin)", "copper_ore_0c", "copper_ore", "Cu2S", "Chalkosin das auf Monden Gefunden werden kann.", 5600, 0.01, "solid", "moon:atmosphere");
+const copper_ore_0c = new resource("Chalkosin", "copper_ore_0c", "copper_ore", "Cu2S", "Chalkosin das auf Monden Gefunden werden kann.", 5600, 0.01, "solid", "moon:atmosphere");
 /**Chalkosin das auf Atmosphärenlosen Monden Gefunden werden kann. */
 const copper_ore_0d = new resource("Kupfer", "copper_ore_0d", "copper_ore", "Cu", "Elementares Kupfer das auf Atmosphärenlosen Monden Gefunden werden kann.", 5600, 0.01, "solid", "moon:noAtmosphere");
 /**Chalkosin das auf Stellaren Asteroiden Gefunden werden kann. */
@@ -140,17 +140,17 @@ const copper_ore_4 = new resource("Kupfer", "copper_ore_4", "copper_ore", "Cu", 
 
 //* SILIZIUMDIOXID
 /**Siliziumdioxid das auf Planeten Gefunden werden kann. */
-const silica_0 = new resource("Siliziumdioxid", "silica_0", "silica", "SiO2", "Siliziumdioxid das auf Planeten Gefunden werden kann.", 2320, 0.8, "solid", "planet");
+const silica_0 = new resource("Siliziumdioxid", "silica_0", "silica", "SiO2", "Siliziumdioxid das auf Planeten Gefunden werden kann.", 2650, 0.5, "solid", "planet");
 /**Siliziumdioxid das auf Planeten Gefunden werden kann. */
-const silica_1 = new resource("Siliziumdioxid", "silica_1", "silica", "SiO2", "Siliziumdioxid das auf Monden Gefunden werden kann.", 2320, 0.8, "solid", "moon");
+const silica_1 = new resource("Siliziumdioxid", "silica_1", "silica", "SiO2", "Siliziumdioxid das auf Monden Gefunden werden kann.", 2650, 0.5, "solid", "moon");
 /**Siliziumdioxid das auf Stellaren Asteroiden Gefunden werden kann. */
-const silica_2 = new resource("Siliziumdioxid", "silica_2", "silica", "SiO2", "Siliziumdioxid das auf Stellaren Asteroiden Gefunden werden kann.", 2320, 0.8, "solid", "stellar_astroid");
+const silica_2 = new resource("Siliziumdioxid", "silica_2", "silica", "SiO2", "Siliziumdioxid das auf Stellaren Asteroiden Gefunden werden kann.", 2650, 0.5, "solid", "stellar_astroid");
 /**Siliziumdioxid das auf Interstellaren T1 Asteroiden Gefunden werden kann. */
-const silica_3 = new resource("Siliziumdioxid", "silica_3", "silica", "SiO2", "Siliziumdioxid das auf Interstellaren T1 Asteroiden Gefunden werden kann.", 2320, 0.8, "solid", "interstellar_t1_astroid");
+const silica_3 = new resource("Siliziumdioxid", "silica_3", "silica", "SiO2", "Siliziumdioxid das auf Interstellaren T1 Asteroiden Gefunden werden kann.", 2650, 0.5, "solid", "interstellar_t1_astroid");
 /**Siliziumdioxid das auf Interstellaren T2 Asteroiden Gefunden werden kann. */
-const silica_4 = new resource("Siliziumdioxid", "silica_4", "silica", "SiO2", "Siliziumdioxid das auf Interstellaren T2 Asteroiden Gefunden werden kann.", 2320, 0.8, "solid", "interstellar_t2_astroid");
+const silica_4 = new resource("Siliziumdioxid", "silica_4", "silica", "SiO2", "Siliziumdioxid das auf Interstellaren T2 Asteroiden Gefunden werden kann.", 2650, 0.5, "solid", "interstellar_t2_astroid");
 /**Siliziumdioxid das auf Interstellaren T3 Asteroiden Gefunden werden kann. */
-const silica_5 = new resource("Siliziumdioxid", "silica_5", "silica", "SiO2", "Siliziumdioxid das auf Interstellaren T3 Asteroiden Gefunden werden kann.", 2320, 0.8, "solid", "interstellar_t3_astroid");
+const silica_5 = new resource("Siliziumdioxid", "silica_5", "silica", "SiO2", "Siliziumdioxid das auf Interstellaren T3 Asteroiden Gefunden werden kann.", 2650, 0.5, "solid", "interstellar_t3_astroid");
 
 //* WASSER
 /**Wassereis das auf Stellaren Asteroiden Gefunden werden kann. */
@@ -201,7 +201,7 @@ const test_2 = new resource("Test3", "test2", "test2", "test2", "Testressource 3
 const test_3 = new resource("Test4", "test3", "test3", "test3", "Testressource 4 - für die resMap", 1, 0.005, "solid", "test");
 const test_4 = new resource("Test5", "test4", "test4", "test4", "Testressource 5 - für die resMap", 1, 0.001, "solid", "test");
 const test_5 = new resource("Test6", "test5", "test5", "test5", "Testressource 6 - für die resMap", 1, 0.0005, "solid", "test");
-const nothing = new resource("Nothing", "nothing", "dev", "nothing", "Indikator für ein Hauch von Garnix", 0, 0, "exotic", "everywhere")
+const nothing = new resource("Nothing", "nothing", "dev", "nothing", "Indikator für ein Hauch von Garnix", 1, 1, "exotic", "everywhere")
 
 module.exports = {
     resource,
@@ -209,6 +209,7 @@ module.exports = {
 
     getResourceByID,
     allResources,
+    nothing,
 
     iron_ore_0a,
     iron_ore_0b,
