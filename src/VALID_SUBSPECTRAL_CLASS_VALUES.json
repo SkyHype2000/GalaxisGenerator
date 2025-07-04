@@ -24,7 +24,7 @@
         "tempmin": 36000,
         "tempmax": 39000,
         "massmin": 2012.6,
-        "massmax": 3010.8999999999996
+        "massmax": 3010.9
     },
     {
         "class": "O-3",
@@ -32,7 +32,7 @@
         "color": "lightblue",
         "tempmin": 39000,
         "tempmax": 42000,
-        "massmin": 3010.8999999999996,
+        "massmin": 3010.9,
         "massmax": 4009.2
     },
     {
@@ -51,7 +51,7 @@
         "tempmin": 45000,
         "tempmax": 48000,
         "massmin": 5007.5,
-        "massmax": 6005.799999999999
+        "massmax": 6005.8
     },
     {
         "class": "O-6",
@@ -59,8 +59,8 @@
         "color": "lightblue",
         "tempmin": 48000,
         "tempmax": 51000,
-        "massmin": 6005.799999999999,
-        "massmax": 7004.099999999999
+        "massmin": 6005.8,
+        "massmax": 7004.1
     },
     {
         "class": "O-7",
@@ -68,7 +68,7 @@
         "color": "lightblue",
         "tempmin": 51000,
         "tempmax": 54000,
-        "massmin": 7004.099999999999,
+        "massmin": 7004.1,
         "massmax": 8002.4
     },
     {
@@ -78,7 +78,7 @@
         "tempmin": 54000,
         "tempmax": 57000,
         "massmin": 8002.4,
-        "massmax": 9000.699999999999
+        "massmax": 9000.7
     },
     {
         "class": "O-9",
@@ -86,7 +86,7 @@
         "color": "lightblue",
         "tempmin": 57000,
         "tempmax": 60000,
-        "massmin": 9000.699999999999,
+        "massmin": 9000.7,
         "massmax": 9999
     },
     {
@@ -105,7 +105,7 @@
         "tempmin": 12000,
         "tempmax": 14000,
         "massmin": 3.49,
-        "massmax": 4.880000000000001
+        "massmax": 4.88
     },
     {
         "class": "B-2",
@@ -113,7 +113,7 @@
         "color": "cyan",
         "tempmin": 14000,
         "tempmax": 16000,
-        "massmin": 4.880000000000001,
+        "massmin": 4.88,
         "massmax": 6.27
     },
     {
@@ -168,7 +168,7 @@
         "tempmin": 26000,
         "tempmax": 28000,
         "massmin": 13.22,
-        "massmax": 14.610000000000001
+        "massmax": 14.61
     },
     {
         "class": "B-9",
@@ -176,8 +176,8 @@
         "color": "cyan",
         "tempmin": 28000,
         "tempmax": 30000,
-        "massmin": 14.610000000000001,
-        "massmax": 16.000000000000004
+        "massmin": 14.61,
+        "massmax": 16
     },
     {
         "class": "A-0",
@@ -276,7 +276,7 @@
         "tempmin": 6000,
         "tempmax": 6150,
         "massmin": 1.1,
-        "massmax": 1.1600000000000001
+        "massmax": 1.16
     },
     {
         "class": "F-1",
@@ -284,7 +284,7 @@
         "color": "white",
         "tempmin": 6150,
         "tempmax": 6300,
-        "massmin": 1.1600000000000001,
+        "massmin": 1.16,
         "massmax": 1.22
     },
     {
@@ -366,7 +366,7 @@
         "tempmin": 5300,
         "tempmax": 5370,
         "massmin": 0.8,
-        "massmax": 0.8300000000000001
+        "massmax": 0.83
     },
     {
         "class": "G-1",
@@ -374,8 +374,8 @@
         "color": "yellow",
         "tempmin": 5370,
         "tempmax": 5440,
-        "massmin": 0.8300000000000001,
-        "massmax": 0.8600000000000001
+        "massmin": 0.83,
+        "massmax": 0.86
     },
     {
         "class": "G-2",
@@ -383,8 +383,8 @@
         "color": "yellow",
         "tempmin": 5440,
         "tempmax": 5510,
-        "massmin": 0.8600000000000001,
-        "massmax": 0.8900000000000001
+        "massmin": 0.86,
+        "massmax": 0.89
     },
     {
         "class": "G-3",
@@ -392,7 +392,7 @@
         "color": "yellow",
         "tempmin": 5510,
         "tempmax": 5580,
-        "massmin": 0.8900000000000001,
+        "massmin": 0.89,
         "massmax": 0.92
     },
     {
@@ -402,7 +402,7 @@
         "tempmin": 5580,
         "tempmax": 5650,
         "massmin": 0.92,
-        "massmax": 0.9500000000000001
+        "massmax": 0.95
     },
     {
         "class": "G-5",
@@ -410,8 +410,8 @@
         "color": "yellow",
         "tempmin": 5650,
         "tempmax": 5720,
-        "massmin": 0.9500000000000001,
-        "massmax": 0.9800000000000001
+        "massmin": 0.95,
+        "massmax": 0.98
     },
     {
         "class": "G-6",
@@ -419,7 +419,7 @@
         "color": "yellow",
         "tempmin": 5720,
         "tempmax": 5790,
-        "massmin": 0.9800000000000001,
+        "massmin": 0.98,
         "massmax": 1.01
     },
     {
@@ -474,7 +474,7 @@
         "tempmin": 3860,
         "tempmax": 4040,
         "massmin": 0.56,
-        "massmax": 0.5900000000000001
+        "massmax": 0.59
     },
     {
         "class": "K-3",
@@ -482,7 +482,7 @@
         "color": "orange",
         "tempmin": 4040,
         "tempmax": 4220,
-        "massmin": 0.5900000000000001,
+        "massmin": 0.59,
         "massmax": 0.62
     },
     {
@@ -510,7 +510,7 @@
         "tempmin": 4580,
         "tempmax": 4760,
         "massmin": 0.68,
-        "massmax": 0.7100000000000001
+        "massmax": 0.71
     },
     {
         "class": "K-7",
@@ -518,7 +518,7 @@
         "color": "orange",
         "tempmin": 4760,
         "tempmax": 4940,
-        "massmin": 0.7100000000000001,
+        "massmin": 0.71,
         "massmax": 0.74
     },
     {
@@ -573,7 +573,7 @@
         "tempmin": 2800,
         "tempmax": 2900,
         "massmin": 0.185,
-        "massmax": 0.22999999999999998
+        "massmax": 0.23
     },
     {
         "class": "M-4",
@@ -581,8 +581,8 @@
         "color": "red",
         "tempmin": 2900,
         "tempmax": 3000,
-        "massmin": 0.22999999999999998,
-        "massmax": 0.27499999999999997
+        "massmin": 0.23,
+        "massmax": 0.275
     },
     {
         "class": "M-5",
@@ -590,7 +590,7 @@
         "color": "red",
         "tempmin": 3000,
         "tempmax": 3100,
-        "massmin": 0.27499999999999997,
+        "massmin": 0.275,
         "massmax": 0.32
     },
     {
@@ -618,7 +618,7 @@
         "tempmin": 3300,
         "tempmax": 3400,
         "massmin": 0.41,
-        "massmax": 0.45499999999999996
+        "massmax": 0.455
     },
     {
         "class": "M-9",
@@ -626,8 +626,8 @@
         "color": "red",
         "tempmin": 3400,
         "tempmax": 3500,
-        "massmin": 0.45499999999999996,
-        "massmax": 0.49999999999999994
+        "massmin": 0.455,
+        "massmax": 0.5
     },
     {
         "class": "L-0",
@@ -654,7 +654,7 @@
         "tempmin": 1540,
         "tempmax": 1660,
         "massmin": 0.034,
-        "massmax": 0.036000000000000004
+        "massmax": 0.036
     },
     {
         "class": "L-3",
@@ -662,7 +662,7 @@
         "color": "darkred",
         "tempmin": 1660,
         "tempmax": 1780,
-        "massmin": 0.036000000000000004,
+        "massmin": 0.036,
         "massmax": 0.038
     },
     {
@@ -690,7 +690,7 @@
         "tempmin": 2020,
         "tempmax": 2140,
         "massmin": 0.042,
-        "massmax": 0.044000000000000004
+        "massmax": 0.044
     },
     {
         "class": "L-7",
@@ -698,7 +698,7 @@
         "color": "darkred",
         "tempmin": 2140,
         "tempmax": 2260,
-        "massmin": 0.044000000000000004,
+        "massmin": 0.044,
         "massmax": 0.046
     },
     {
@@ -735,7 +735,7 @@
         "tempmin": 850,
         "tempmax": 900,
         "massmin": 0.012,
-        "massmax": 0.013999999999999999
+        "massmax": 0.014
     },
     {
         "class": "T-2",
@@ -743,7 +743,7 @@
         "color": "darkpurple",
         "tempmin": 900,
         "tempmax": 950,
-        "massmin": 0.013999999999999999,
+        "massmin": 0.014,
         "massmax": 0.016
     },
     {
@@ -762,7 +762,7 @@
         "tempmin": 1000,
         "tempmax": 1050,
         "massmin": 0.018,
-        "massmax": 0.019999999999999997
+        "massmax": 0.02
     },
     {
         "class": "T-5",
@@ -770,7 +770,7 @@
         "color": "darkpurple",
         "tempmin": 1050,
         "tempmax": 1100,
-        "massmin": 0.019999999999999997,
+        "massmin": 0.02,
         "massmax": 0.022
     },
     {
@@ -780,7 +780,7 @@
         "tempmin": 1100,
         "tempmax": 1150,
         "massmin": 0.022,
-        "massmax": 0.023999999999999997
+        "massmax": 0.024
     },
     {
         "class": "T-7",
@@ -788,8 +788,8 @@
         "color": "darkpurple",
         "tempmin": 1150,
         "tempmax": 1200,
-        "massmin": 0.023999999999999997,
-        "massmax": 0.025999999999999995
+        "massmin": 0.024,
+        "massmax": 0.026
     },
     {
         "class": "T-8",
@@ -797,8 +797,8 @@
         "color": "darkpurple",
         "tempmin": 1200,
         "tempmax": 1250,
-        "massmin": 0.025999999999999995,
-        "massmax": 0.027999999999999997
+        "massmin": 0.026,
+        "massmax": 0.028
     },
     {
         "class": "T-9",
@@ -806,7 +806,7 @@
         "color": "darkpurple",
         "tempmin": 1250,
         "tempmax": 1300,
-        "massmin": 0.027999999999999997,
+        "massmin": 0.028,
         "massmax": 0.03
     },
     {

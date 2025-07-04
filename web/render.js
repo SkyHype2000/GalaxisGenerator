@@ -273,7 +273,6 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
             div.setAttribute('data-spectral-class', cls.key);
             div.style.cursor = 'default';
 
-            // Dot als farbiger Kreis
             const dot = document.createElement('span');
             dot.className = 'dot';
             dot.style.width = '12px';
@@ -284,7 +283,6 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
 
             div.appendChild(dot);
 
-            // Nur das Label ist hoverbar!
             const label = document.createElement('span');
             label.className = 'legend-label';
             label.style.cursor = 'pointer';
@@ -386,7 +384,7 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
             }
 
             selectedObject = found;
-            hoveredObject = found; // <--- Diese Zeile sorgt für das korrekte Umschalten!
+            hoveredObject = found;
             updateInfoPanel(selectedObject || hoveredObject);
             draw();
         }
@@ -425,13 +423,14 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
             return;
         }
 
+        // Horizontal SCrollen
         if (e.shiftKey) {
             offsetX -= e.deltaY * 0.5; // Faktor
             draw();
             return;
         }
 
-        // Standard: Vertikal scrollen
+        // Vertikal scrollen
         offsetY -= e.deltaY * 0.5; // Faktor
         draw();
     });
@@ -449,7 +448,6 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
             let alpha = 1;
             let size = MIN_OBJECT_HOVER_SIZE * zoom;
 
-            // 1. Sternklassen-Hover hat Vorrang, betrifft aber nur Sterne!
             if (hoveredSpectralClass) {
                 if (obj.type === "star") {
                     const h = obj.metadata?.informationBase?.starSpectral?.h;
@@ -510,8 +508,6 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
             ctx.fill();
             ctx.closePath();
 
-            // Namen anzeigen, wenn entweder zoom > threshold oder Objekt gehighlightet
-            // Namen anzeigen, wenn einer der Hover-Fälle zutrifft
             if (
                 SHOW_NAMES && (
                     zoom > NAME_VANISH_DISTANCE ||
@@ -582,16 +578,14 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
                 html += `Radius: ${info.starRad?.toFixed(3) ?? "-"} Sonnenradien<br>`;
                 html += `Leuchtkraft: ${info.starLum?.toFixed(5) ?? "-"} L☉<br>`;
                 html += `Masse (kg): ${info.starMassKG ? info.starMassKG.toExponential(3) : "-"}<br>`;
-                // Planeten anzeigen
+                
                 if (Array.isArray(info.planetSystem)) {
                     html += `<hr><b>Planeten (${info.planetSystem.length}):</b><br>`;
                     info.planetSystem.forEach((planet, idx) => {
                         let OTD = planet.OrbitalTimeInSec / (24 * 3600);
 
                         let planetResString = "";
-                        // Detaillierte Ressourcenanzeige: Name statt Short, wenn aktiviert
                         const resourceLabel = DETAILED_RESOURCE_NAMES ? "name" : "short";
-                        // Ressourcen sortieren: Erst nach Anteil (p) absteigend, "nothing" immer ans Ende
                         const sortedResources = [...planet.resources].sort((a, b) => { return b.p - a.p; });
                         for (let i = 0; i < sortedResources.length; i++) {
                             const e = sortedResources[i];
@@ -599,8 +593,6 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
                                 planetResString += `${e[resourceLabel]} (${(e.p * 100).toFixed(1)}%), `;
                             }
                         }
-                        // Optional: letztes Komma entfernen
-                        if (planetResString.endsWith(", ")) planetResString = planetResString.slice(0, -2);
 
                         html += `<u>Planet ${idx + 1}: ${planet.name}</u><br>`;
                         html += `&nbsp;Temperatur: ${planet.temperature.toFixed(3)} °K (${(planet.temperature - 273.15).toFixed(3)}°C)<br>`;
@@ -654,8 +646,6 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
                     });
                 }
             }
-
-            // Weitere Typen wie Asteroidenfelder, Anomalien etc. kannst du hier ergänzen
         }
 
         info_content.innerHTML = html;

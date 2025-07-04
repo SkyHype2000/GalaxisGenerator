@@ -1,0 +1,155 @@
+# Sternenklassen
+
+Ich bin nicht so Gut im erklären, aber ich versuche mein bestes.
+
+## Kategorien
+
+Insgesammt gibt es 10 Spektralklassen die in Haupt und Subtypen aufgeteilt sind.
+
+### Spektralklassen
+
+(Daten können offensichtlich von der Realität abweichen, vieles wurde simpler gemacht.)
+
+Das sind die Daten die ich im Code verwendet habe.
+
+| Spektralklasse | Subtypen  | Oberflächentemperatur in °K | Farbe                      | Gewicht ($M_{sol}$) |
+| -------------- | --------- | --------------------------- | -------------------------- | ------------------- |
+| `O`            | `O0 - O9` | 30.000 °K - 60.000 °K       | Blau-Weiß                  | `16 - 100+`         |
+| `B`            | `B0 - B9` | 10.000 °K - 30.000 °K       | Blau                       | `2.1 - 16`          |
+| `A`            | `A0 - B9` | 7.500 °K - 10.000 °K        | Blau-Weiß                  | `1.7 -2.1`          |
+| `F`            | `F0 - F9` | 6.000 °K - 7.500 °K         | Weiß                       | `1.1 - 1.7`         |
+| `G`            | `G0 - G9` | 5.300 °K - 6.000 °K         | Gelb                       | `0.8 - 1.1`         |
+| `K`            | `K0 - K9` | 3.500 °K - 5.300 °K         | Orange                     | `0.5 - 0.8`         |
+| `M`            | `M0 - M9` | 2.500 °K - 3.500 °K         | Rot                        | `0.05 - 0.5`        |
+| `L`            | `L0 - L9` | 1.300 °K - 2.500 °K         | Dunkelrot bis Violett      | `0.03 - 0.05`       |
+| `T`            | `T0 - L9` | < 1.300 °K                  | Sehr Dunkelrot bis Schwarz | `0.01 - 0.03`       |
+| `Y`            | `Y0 - Y9` | < 800 °K                    | Schwarz                    | `0.0083 - 0.01`     |
+
+Im Code sieht es denn so aus:
+
+```js
+const VALID_SPECTRAL_CLASS_VALUES = [
+    { class: "O", name: "Blau-Weißer Riese", color: "lightblue", tempmin: 30000, tempmax: 60000, massmin: 16, massmax: 9999 },
+    { class: "B", name: "Blauer Unterriese", color: "cyan", tempmin: 10000, tempmax: 30000, massmin: 2.1, massmax: 16 },
+    { class: "A", name: "Blau-Weißer HRS", color: "lightblue", tempmin: 7500, tempmax: 10000, massmin: 1.7, massmax: 2.1 },
+    { class: "F", name: "Weißer HRS", color: "white", tempmin: 6000, tempmax: 7500, massmin: 1.1, massmax: 1.7 },
+    { class: "G", name: "Gelber Zwergstern", color: "yellow", tempmin: 5300, tempmax: 6000, massmin: 0.8, massmax: 1.1 },
+    { class: "K", name: "Orangener Zwergstern", color: "orange", tempmin: 3500, tempmax: 5300, massmin: 0.5, massmax: 0.8 },
+    { class: "M", name: "Roter Zwergstern", color: "red", tempmin: 2500, tempmax: 3500, massmin: 0.05, massmax: 0.5 },
+    { class: "L", name: "Brauner Zwergstern", color: "darkred", tempmin: 1300, tempmax: 2500, massmin: 0.03, massmax: 0.05 },
+    { class: "T", name: "Kalter Brauner Zwergstern", color: "darkpurple", tempmin: 800, tempmax: 1300, massmin: 0.01, massmax: 0.03 },
+    { class: "Y", name: "Extrem Kalter Brauner Zwergstern/Gasriese", color: "darkslategray", tempmin: 0, tempmax: 800, massmin: 0.0083, massmax: 0.01 },
+]
+```
+
+Tatsächliche Daten: [`Wikipedia Artikel: Spektralklasse`](https://de.wikipedia.org/wiki/Spektralklasse)
+
+Eine Funktion, dass dann `VALID_SUBSPECTRAL_CLASS_VALUES` initalisiert, sorgt dafür, dass jeder Subspektren generiert werden, sodass es dann von der Nächsten Funktion verwendet werden kann.
+
+<details>
+<summary><b>Am ende sieht es also so aus</b></summary>
+
+```json
+{"class":"O-0","name":"Blau-Weißer Riese","color":"lightblue","tempmin":30000,"tempmax":33000,"massmin":16,"massmax":1014.3}
+{"class":"O-1","name":"Blau-Weißer Riese","color":"lightblue","tempmin":33000,"tempmax":36000,"massmin":1014.3,"massmax":2012.6}
+{"class":"O-2","name":"Blau-Weißer Riese","color":"lightblue","tempmin":36000,"tempmax":39000,"massmin":2012.6,"massmax":3010.9}
+{"class":"O-3","name":"Blau-Weißer Riese","color":"lightblue","tempmin":39000,"tempmax":42000,"massmin":3010.9,"massmax":4009.2}
+{"class":"O-4","name":"Blau-Weißer Riese","color":"lightblue","tempmin":42000,"tempmax":45000,"massmin":4009.2,"massmax":5007.5}
+{"class":"O-5","name":"Blau-Weißer Riese","color":"lightblue","tempmin":45000,"tempmax":48000,"massmin":5007.5,"massmax":6005.8}
+{"class":"O-6","name":"Blau-Weißer Riese","color":"lightblue","tempmin":48000,"tempmax":51000,"massmin":6005.8,"massmax":7004.1}
+{"class":"O-7","name":"Blau-Weißer Riese","color":"lightblue","tempmin":51000,"tempmax":54000,"massmin":7004.1,"massmax":8002.4}
+{"class":"O-8","name":"Blau-Weißer Riese","color":"lightblue","tempmin":54000,"tempmax":57000,"massmin":8002.4,"massmax":9000.7}
+{"class":"O-9","name":"Blau-Weißer Riese","color":"lightblue","tempmin":57000,"tempmax":60000,"massmin":9000.7,"massmax":9999}
+{"class":"B-0","name":"Blauer Unterriese","color":"cyan","tempmin":10000,"tempmax":12000,"massmin":2.1,"massmax":3.49}
+{"class":"B-1","name":"Blauer Unterriese","color":"cyan","tempmin":12000,"tempmax":14000,"massmin":3.49,"massmax":4.88}
+{"class":"B-2","name":"Blauer Unterriese","color":"cyan","tempmin":14000,"tempmax":16000,"massmin":4.88,"massmax":6.27}
+{"class":"B-3","name":"Blauer Unterriese","color":"cyan","tempmin":16000,"tempmax":18000,"massmin":6.27,"massmax":7.66}
+{"class":"B-4","name":"Blauer Unterriese","color":"cyan","tempmin":18000,"tempmax":20000,"massmin":7.66,"massmax":9.05}
+{"class":"B-5","name":"Blauer Unterriese","color":"cyan","tempmin":20000,"tempmax":22000,"massmin":9.05,"massmax":10.44}
+{"class":"B-6","name":"Blauer Unterriese","color":"cyan","tempmin":22000,"tempmax":24000,"massmin":10.44,"massmax":11.83}
+{"class":"B-7","name":"Blauer Unterriese","color":"cyan","tempmin":24000,"tempmax":26000,"massmin":11.83,"massmax":13.22}
+{"class":"B-8","name":"Blauer Unterriese","color":"cyan","tempmin":26000,"tempmax":28000,"massmin":13.22,"massmax":14.61}
+{"class":"B-9","name":"Blauer Unterriese","color":"cyan","tempmin":28000,"tempmax":30000,"massmin":14.61,"massmax":16}
+{"class":"A-0","name":"Blau-Weißer HRS","color":"lightblue","tempmin":7500,"tempmax":7750,"massmin":1.7,"massmax":1.74}
+{"class":"A-1","name":"Blau-Weißer HRS","color":"lightblue","tempmin":7750,"tempmax":8000,"massmin":1.74,"massmax":1.78}
+{"class":"A-2","name":"Blau-Weißer HRS","color":"lightblue","tempmin":8000,"tempmax":8250,"massmin":1.78,"massmax":1.82}
+{"class":"A-3","name":"Blau-Weißer HRS","color":"lightblue","tempmin":8250,"tempmax":8500,"massmin":1.82,"massmax":1.86}
+{"class":"A-4","name":"Blau-Weißer HRS","color":"lightblue","tempmin":8500,"tempmax":8750,"massmin":1.86,"massmax":1.9}
+{"class":"A-5","name":"Blau-Weißer HRS","color":"lightblue","tempmin":8750,"tempmax":9000,"massmin":1.9,"massmax":1.94}
+{"class":"A-6","name":"Blau-Weißer HRS","color":"lightblue","tempmin":9000,"tempmax":9250,"massmin":1.94,"massmax":1.98}
+{"class":"A-7","name":"Blau-Weißer HRS","color":"lightblue","tempmin":9250,"tempmax":9500,"massmin":1.98,"massmax":2.02}
+{"class":"A-8","name":"Blau-Weißer HRS","color":"lightblue","tempmin":9500,"tempmax":9750,"massmin":2.02,"massmax":2.06}
+{"class":"A-9","name":"Blau-Weißer HRS","color":"lightblue","tempmin":9750,"tempmax":10000,"massmin":2.06,"massmax":2.1}
+{"class":"F-0","name":"Weißer HRS","color":"white","tempmin":6000,"tempmax":6150,"massmin":1.1,"massmax":1.16}
+{"class":"F-1","name":"Weißer HRS","color":"white","tempmin":6150,"tempmax":6300,"massmin":1.16,"massmax":1.22}
+{"class":"F-2","name":"Weißer HRS","color":"white","tempmin":6300,"tempmax":6450,"massmin":1.22,"massmax":1.28}
+{"class":"F-3","name":"Weißer HRS","color":"white","tempmin":6450,"tempmax":6600,"massmin":1.28,"massmax":1.34}
+{"class":"F-4","name":"Weißer HRS","color":"white","tempmin":6600,"tempmax":6750,"massmin":1.34,"massmax":1.4}
+{"class":"F-5","name":"Weißer HRS","color":"white","tempmin":6750,"tempmax":6900,"massmin":1.4,"massmax":1.46}
+{"class":"F-6","name":"Weißer HRS","color":"white","tempmin":6900,"tempmax":7050,"massmin":1.46,"massmax":1.52}
+{"class":"F-7","name":"Weißer HRS","color":"white","tempmin":7050,"tempmax":7200,"massmin":1.52,"massmax":1.58}
+{"class":"F-8","name":"Weißer HRS","color":"white","tempmin":7200,"tempmax":7350,"massmin":1.58,"massmax":1.64}
+{"class":"F-9","name":"Weißer HRS","color":"white","tempmin":7350,"tempmax":7500,"massmin":1.64,"massmax":1.7}
+{"class":"G-0","name":"Gelber Zwergstern","color":"yellow","tempmin":5300,"tempmax":5370,"massmin":0.8,"massmax":0.83}
+{"class":"G-1","name":"Gelber Zwergstern","color":"yellow","tempmin":5370,"tempmax":5440,"massmin":0.83,"massmax":0.86}
+{"class":"G-2","name":"Gelber Zwergstern","color":"yellow","tempmin":5440,"tempmax":5510,"massmin":0.86,"massmax":0.89}
+{"class":"G-3","name":"Gelber Zwergstern","color":"yellow","tempmin":5510,"tempmax":5580,"massmin":0.89,"massmax":0.92}
+{"class":"G-4","name":"Gelber Zwergstern","color":"yellow","tempmin":5580,"tempmax":5650,"massmin":0.92,"massmax":0.95}
+{"class":"G-5","name":"Gelber Zwergstern","color":"yellow","tempmin":5650,"tempmax":5720,"massmin":0.95,"massmax":0.98}
+{"class":"G-6","name":"Gelber Zwergstern","color":"yellow","tempmin":5720,"tempmax":5790,"massmin":0.98,"massmax":1.01}
+{"class":"G-7","name":"Gelber Zwergstern","color":"yellow","tempmin":5790,"tempmax":5860,"massmin":1.01,"massmax":1.04}
+{"class":"G-8","name":"Gelber Zwergstern","color":"yellow","tempmin":5860,"tempmax":5930,"massmin":1.04,"massmax":1.07}
+{"class":"G-9","name":"Gelber Zwergstern","color":"yellow","tempmin":5930,"tempmax":6000,"massmin":1.07,"massmax":1.1}
+{"class":"K-0","name":"Orangener Zwergstern","color":"orange","tempmin":3500,"tempmax":3680,"massmin":0.5,"massmax":0.53}
+{"class":"K-1","name":"Orangener Zwergstern","color":"orange","tempmin":3680,"tempmax":3860,"massmin":0.53,"massmax":0.56}
+{"class":"K-2","name":"Orangener Zwergstern","color":"orange","tempmin":3860,"tempmax":4040,"massmin":0.56,"massmax":0.59}
+{"class":"K-3","name":"Orangener Zwergstern","color":"orange","tempmin":4040,"tempmax":4220,"massmin":0.59,"massmax":0.62}
+{"class":"K-4","name":"Orangener Zwergstern","color":"orange","tempmin":4220,"tempmax":4400,"massmin":0.62,"massmax":0.65}
+{"class":"K-5","name":"Orangener Zwergstern","color":"orange","tempmin":4400,"tempmax":4580,"massmin":0.65,"massmax":0.68}
+{"class":"K-6","name":"Orangener Zwergstern","color":"orange","tempmin":4580,"tempmax":4760,"massmin":0.68,"massmax":0.71}
+{"class":"K-7","name":"Orangener Zwergstern","color":"orange","tempmin":4760,"tempmax":4940,"massmin":0.71,"massmax":0.74}
+{"class":"K-8","name":"Orangener Zwergstern","color":"orange","tempmin":4940,"tempmax":5120,"massmin":0.74,"massmax":0.77}
+{"class":"K-9","name":"Orangener Zwergstern","color":"orange","tempmin":5120,"tempmax":5300,"massmin":0.77,"massmax":0.8}
+{"class":"M-0","name":"Roter Zwergstern","color":"red","tempmin":2500,"tempmax":2600,"massmin":0.05,"massmax":0.095}
+{"class":"M-1","name":"Roter Zwergstern","color":"red","tempmin":2600,"tempmax":2700,"massmin":0.095,"massmax":0.14}
+{"class":"M-2","name":"Roter Zwergstern","color":"red","tempmin":2700,"tempmax":2800,"massmin":0.14,"massmax":0.185}
+{"class":"M-3","name":"Roter Zwergstern","color":"red","tempmin":2800,"tempmax":2900,"massmin":0.185,"massmax":0.23}
+{"class":"M-4","name":"Roter Zwergstern","color":"red","tempmin":2900,"tempmax":3000,"massmin":0.23,"massmax":0.275}
+{"class":"M-5","name":"Roter Zwergstern","color":"red","tempmin":3000,"tempmax":3100,"massmin":0.275,"massmax":0.32}
+{"class":"M-6","name":"Roter Zwergstern","color":"red","tempmin":3100,"tempmax":3200,"massmin":0.32,"massmax":0.365}
+{"class":"M-7","name":"Roter Zwergstern","color":"red","tempmin":3200,"tempmax":3300,"massmin":0.365,"massmax":0.41}
+{"class":"M-8","name":"Roter Zwergstern","color":"red","tempmin":3300,"tempmax":3400,"massmin":0.41,"massmax":0.455}
+{"class":"M-9","name":"Roter Zwergstern","color":"red","tempmin":3400,"tempmax":3500,"massmin":0.455,"massmax":0.5}
+{"class":"L-0","name":"Brauner Zwergstern","color":"darkred","tempmin":1300,"tempmax":1420,"massmin":0.03,"massmax":0.032}
+{"class":"L-1","name":"Brauner Zwergstern","color":"darkred","tempmin":1420,"tempmax":1540,"massmin":0.032,"massmax":0.034}
+{"class":"L-2","name":"Brauner Zwergstern","color":"darkred","tempmin":1540,"tempmax":1660,"massmin":0.034,"massmax":0.036}
+{"class":"L-3","name":"Brauner Zwergstern","color":"darkred","tempmin":1660,"tempmax":1780,"massmin":0.036,"massmax":0.038}
+{"class":"L-4","name":"Brauner Zwergstern","color":"darkred","tempmin":1780,"tempmax":1900,"massmin":0.038,"massmax":0.04}
+{"class":"L-5","name":"Brauner Zwergstern","color":"darkred","tempmin":1900,"tempmax":2020,"massmin":0.04,"massmax":0.042}
+{"class":"L-6","name":"Brauner Zwergstern","color":"darkred","tempmin":2020,"tempmax":2140,"massmin":0.042,"massmax":0.044}
+{"class":"L-7","name":"Brauner Zwergstern","color":"darkred","tempmin":2140,"tempmax":2260,"massmin":0.044,"massmax":0.046}
+{"class":"L-8","name":"Brauner Zwergstern","color":"darkred","tempmin":2260,"tempmax":2380,"massmin":0.046,"massmax":0.048}
+{"class":"L-9","name":"Brauner Zwergstern","color":"darkred","tempmin":2380,"tempmax":2500,"massmin":0.048,"massmax":0.05}
+{"class":"T-0","name":"Kalter Brauner Zwergstern","color":"darkpurple","tempmin":800,"tempmax":850,"massmin":0.01,"massmax":0.012}
+{"class":"T-1","name":"Kalter Brauner Zwergstern","color":"darkpurple","tempmin":850,"tempmax":900,"massmin":0.012,"massmax":0.014}
+{"class":"T-2","name":"Kalter Brauner Zwergstern","color":"darkpurple","tempmin":900,"tempmax":950,"massmin":0.014,"massmax":0.016}
+{"class":"T-3","name":"Kalter Brauner Zwergstern","color":"darkpurple","tempmin":950,"tempmax":1000,"massmin":0.016,"massmax":0.018}
+{"class":"T-4","name":"Kalter Brauner Zwergstern","color":"darkpurple","tempmin":1000,"tempmax":1050,"massmin":0.018,"massmax":0.02}
+{"class":"T-5","name":"Kalter Brauner Zwergstern","color":"darkpurple","tempmin":1050,"tempmax":1100,"massmin":0.02,"massmax":0.022}
+{"class":"T-6","name":"Kalter Brauner Zwergstern","color":"darkpurple","tempmin":1100,"tempmax":1150,"massmin":0.022,"massmax":0.024}
+{"class":"T-7","name":"Kalter Brauner Zwergstern","color":"darkpurple","tempmin":1150,"tempmax":1200,"massmin":0.024,"massmax":0.026}
+{"class":"T-8","name":"Kalter Brauner Zwergstern","color":"darkpurple","tempmin":1200,"tempmax":1250,"massmin":0.026,"massmax":0.028}
+{"class":"T-9","name":"Kalter Brauner Zwergstern","color":"darkpurple","tempmin":1250,"tempmax":1300,"massmin":0.028,"massmax":0.03}
+{"class":"Y-0","name":"Extrem Kalter Brauner Zwergstern/Gasriese","color":"darkslategray","tempmin":0,"tempmax":80,"massmin":0.0083,"massmax":0.00847}
+{"class":"Y-1","name":"Extrem Kalter Brauner Zwergstern/Gasriese","color":"darkslategray","tempmin":80,"tempmax":160,"massmin":0.00847,"massmax":0.00864}
+{"class":"Y-2","name":"Extrem Kalter Brauner Zwergstern/Gasriese","color":"darkslategray","tempmin":160,"tempmax":240,"massmin":0.00864,"massmax":0.00881}
+{"class":"Y-3","name":"Extrem Kalter Brauner Zwergstern/Gasriese","color":"darkslategray","tempmin":240,"tempmax":320,"massmin":0.00881,"massmax":0.00898}
+{"class":"Y-4","name":"Extrem Kalter Brauner Zwergstern/Gasriese","color":"darkslategray","tempmin":320,"tempmax":400,"massmin":0.00898,"massmax":0.00915}
+{"class":"Y-5","name":"Extrem Kalter Brauner Zwergstern/Gasriese","color":"darkslategray","tempmin":400,"tempmax":480,"massmin":0.00915,"massmax":0.00932}
+{"class":"Y-6","name":"Extrem Kalter Brauner Zwergstern/Gasriese","color":"darkslategray","tempmin":480,"tempmax":560,"massmin":0.00932,"massmax":0.00949}
+{"class":"Y-7","name":"Extrem Kalter Brauner Zwergstern/Gasriese","color":"darkslategray","tempmin":560,"tempmax":640,"massmin":0.00949,"massmax":0.00966}
+{"class":"Y-8","name":"Extrem Kalter Brauner Zwergstern/Gasriese","color":"darkslategray","tempmin":640,"tempmax":720,"massmin":0.00966,"massmax":0.00983}
+{"class":"Y-9","name":"Extrem Kalter Brauner Zwergstern/Gasriese","color":"darkslategray","tempmin":720,"tempmax":800,"massmin":0.00983,"massmax":0.01}
+```
+
+</details>

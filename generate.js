@@ -2,6 +2,8 @@ const fs = require("fs");
 const seedrandom = require("seedrandom");
 const cc = require("./consolecolor.jsdb.js")
 
+//// throw new Error("test")
+
 /**
  * Die Config wo alle Informationen aufgeschrieben sind.\
  * Ohne sie würde alles den Bach Runter gehen XD.
@@ -66,8 +68,8 @@ function polarToCartesian(r, angle) {
  * Hier wird eine Seedbasierte Distanz generiert.\
  * hab einfach ChatGPT Gefragt lol.
  * 
- * @param min {number}
- * @param max {number}
+ * @param {number} min
+ * @param {number} max
  * @returns {number}
  */
 function getRandomDistance(min, max) {
@@ -86,7 +88,7 @@ function getRandomDistance(min, max) {
  * 
  * Weil es sich für Anomalien besser anhört
  * 
- * @returns 
+ * @returns {string}
  */
 function generateAnomalyName() {
     /**
@@ -113,10 +115,12 @@ function generateAnomalyName() {
 }
 
 /**
- * Gibt den Sonnenmassenwert basierend auf x zurück.
+ * Gibt den Sonnenmassenwert basierend auf x zurück.  
+ * Hier wird dafür gesorgt, dass... ja genau das.  
+ * Das die Sterne hauptsächlich im Rote-Zwerge Bereich Liegen, bin sehr stolz darauf
  * 
  * @param {number} x wert zwischen `0.0000000000000001` - `1.0000000000000000`
- * @returns {number} wert zwischen `0.0086` - `100`
+ * @returns {number} wert zwischen `0.0086` - `100+`
  */
 function generateSolarMass(x) {
     // Der Minimalwert Basierend auf dem Minimalen wert über 0 vom Seed
@@ -131,7 +135,8 @@ function generateSolarMass(x) {
 /**
  * Alle Validen Werte für jedesSpektrum.
  *
- * Hier habe ich natürlich einige Simplifikationen durchgeführt, besonders bei der Klasse `M`, `L`, `T` und `Y`.
+ * Hier habe ich natürlich einige Simplifikationen durchgeführt, besonders bei der Klasse `M`, `L`, `T` und `Y`.  
+ * man kann ja nicht immer alles Kompliziert machen
  * 
  * @type {{class: string, name: string, color: string, tempmin:number, tempmax: number, massmin: number, massmax: number}[]}
  */
@@ -160,11 +165,11 @@ function initSubspectralClassValues() {
         const e_i = VALID_SPECTRAL_CLASS_VALUES[i];
         for (let j = 0; j < 10; j++) {
 
-            const tempmin = e_i.tempmin + ((e_i.tempmax - e_i.tempmin) / 10) * j;
-            const tempmax = e_i.tempmin + ((e_i.tempmax - e_i.tempmin) / 10) * (j + 1);
+            const tempmin = +(e_i.tempmin + ((e_i.tempmax - e_i.tempmin) / 10) * j).toFixed(2);
+            const tempmax = +(e_i.tempmin + ((e_i.tempmax - e_i.tempmin) / 10) * (j + 1)).toFixed(2);
 
-            const massmin = e_i.massmin + ((e_i.massmax - e_i.massmin) / 10) * j;
-            const massmax = e_i.massmin + ((e_i.massmax - e_i.massmin) / 10) * (j + 1);
+            const massmin = +(e_i.massmin + ((e_i.massmax - e_i.massmin) / 10) * j).toFixed(5);
+            const massmax = +(e_i.massmin + ((e_i.massmax - e_i.massmin) / 10) * (j + 1)).toFixed(5);
 
             let data = {
                 class: e_i.class + "-" + j,
@@ -205,8 +210,9 @@ const T_SOL = 5778; // °K
 const M_SOL = 1.989 * Math.pow(10, 30); // KG
 
 /**
- * Hier wird die Spektralklasse des Sterns einfach basierend auf der Masse ausgegeben.\
- * Sehr Simpel Gehalten, ich meine wir brauchen hier keine Wissenschaftliche Simulation.
+ * Hier wird die Spektralklasse des Sterns einfach basierend auf der Masse ausgegeben.  
+ * Sehr Simpel Gehalten, ich meine wir brauchen hier keine Wissenschaftliche Simulation.  
+ * Oder?
  * 
  * @param mass Die Masse des STerns
  * @returns {{class: string, subclass: string, name: string, color: string, temp: number, mass_sol: number, lum_sol: number, lum: number, r_sol: number}}
@@ -253,8 +259,9 @@ function getSolarSpectralClassData(mass) {
 /**
  * Gibt Einen Namen basierend auf den Typ des Planeten zurück.
  * 
- * Sehr Interessant ist das er Basierend auf Silben Generiert wird, ich wusste davor nicht einmal, dass das geht.\
- * Danke ChatGPT XD.
+ * Sehr Interessant ist das er Basierend auf Silben Generiert wird, ich wusste davor nicht einmal, dass das geht.  
+ * Danke ChatGPT XD.  
+ * Aber mal im ernst, das ist echt interessant dass sowas funktioniert.
  * 
  * Wer das liest ist Dumm.
  * 
@@ -312,7 +319,8 @@ function generateUniqueName(type) {
 
 
 /**
- * Generiert die Ressourcen eines Bestimmten Typs
+ * Generiert die Ressourcen eines Bestimmten Typs  
+ * Offensichtlich noch nicht fertig
  *
  * @param {"gas_planet"|"interstellar_space"|"interstellar_t1_astroid"|"interstellar_t2_astroid"|"interstellar_t3_astroid"|"moon_atmosphere"|"moon_noAdmosphere"|"neutron_star"|
  * "none"|"planet_atmosphere"|"planet_noAtmosphere"|"stellar_astroid"|"test"} type Der Planetentyp für den die Ressourcen generiert werden sollen
@@ -359,7 +367,8 @@ function GenerateResources(type, tries = 1000) {
 }
 
 /**
- * Berechnet den Radius
+ * Berechnet den Radius  
+ * wirklich Primitiv
  * 
  * @param {{name: string;id: string;short: string;group: string;density: number;p: number;n: number;v: number;}[]} resources 
  * @param {number} mass Masse In KG
@@ -376,8 +385,7 @@ function calculatePlanetRadius(resources, mass) {
 }
 
 /**
- * Validiert die Distanz zwischen Objekten, sodass Objekte nicht zu nah und auch nicht zu weit voneinander sind,
- * basierend auf der config.
+ * Validiert die Distanz zwischen Objekten, sodass Objekte nicht zu nah und auch nicht zu weit voneinander sind, basierend auf der config.
  * 
  * @param {number} distance 
  * @param {number} angle 
@@ -463,6 +471,7 @@ function getObjectType(objectType) {
 
 /**
  * Gibt dir ein Semi-Zufälliges Objekt Des Galaxy-Arrays eines typs zurück
+ * 
  * @param {string} objectType 
  * @returns {{}[]}
  */
@@ -472,15 +481,12 @@ function getRandomObjectType(objectType) {
     return all[(rng() * (all.length - 1))];
 }
 
-/** 
- * Zulässige Sterneneigenschaften:\
- * erstmal Nix
- * 
- * Diese Informationen werden Automatisch Via Seed "Erfunden"
- * star:\
- * Spektralklasse via Seed + Tabelle\
- * Masse via Spektralklasse + Tabelle\
- * Subspektralklasse via Seed + Masse\
+/**  * 
+ * Diese Informationen werden Automatisch Via Seed "Erfunden"  
+ * star:  
+ * Spektralklasse via Seed + Tabelle  
+ * Masse via Spektralklasse + Tabelle  
+ * Subspektralklasse via Seed + Masse  
  * Temperatur via Seed + Subspektralklasse
  * 
  * `gasGiant` | `moon` | `planet` | `stellar_astroid_field` sind zwar Valide objekte sind\
@@ -508,15 +514,15 @@ function galaxyPush(type, x, y, name) {
         /**
          * Die Grund-Informationen für den Stern
          * 
-         * starTemperature: Sternentemparatur in °K\
-         * starMass: Sternenmasse in Sonnenmassen\
-         * starLum: Sternenleuchtstärke in Sonnenleuchtstärken\
+         * starTemperature: Sternentemparatur in °K  
+         * starMass: Sternenmasse in Sonnenmassen  
+         * starLum: Sternenleuchtstärke in Sonnenleuchtstärken  
          * starSpectral: Spektrum des Sterns:
          *  - h=Hauptsprektrum
          *  - s=Subspektrum
          * 
          * Hauptspektrum: Y, T, L, M, K, G (zb. wie unsere Sonne), F, A, B, O\
-         * Subspektrum: Y0-Y9, T0-T9, L0-L9, M0-M9, K0-K9, G0-G9 (unsere Sonne ist G-2), F0-F9, A0-A9, B0-B9, O0-O9
+         * Subspektrum: Y0-Y9, T0-T9, L0-L9, M0-M9, K0-K9, G0-G9 (unsere Sonne zb. ist G-2), F0-F9, A0-A9, B0-B9, O0-O9
          * 
          * @type {{starTemperature: number, starMass: number, starMassKG: number, starRad: number, starLum: number, starSpectral: {h:"Y"|"T"|"L"|"M"|"K"|"G"|"F"|"A"|"B"|"O"|string, s:"0"|"1"|"2"|"3"|"4"|"5"|"6"|"7"|"8"|"9"|string}, planetSystem: []}}
          */
@@ -569,7 +575,6 @@ function galaxyPush(type, x, y, name) {
         }
 
         if (type == "rogue_planet") {
-            // Beispielwerte, du kannst sie nach Bedarf anpassen/generieren
             const mass = +(0.1 + rng() * 10).toFixed(3);
             const rotation = Math.round(rng() * 360);
             const moons = generateMoonSystemData(name, mass * EARTH_MASS_KG, Math.round(rng() * MAX_MOONS_PER_PLANET));
@@ -606,15 +611,17 @@ function galaxyPush(type, x, y, name) {
     }
     console.log(JSON.stringify(d));
 
-    // console.log(d.chosenType);
+    //// console.log(d.chosenType);
 
     galaxy.push(d)
 }
 galaxyPush("mainBlackHole")
 
 /**
- * Generiert ein Planetensystem (nur Daten, nicht in der Galaxie!).
- * Jeder Planet hat: höhe (Abstand), masse, rotation (in Grad), und ggf. Monde.
+ * Generiert ein Planetensystem .  
+ * Jeder Planet hat: höhe (Abstand), masse, rotation (in Grad), und (wemm überhaupt) Monde.  
+ * Und neuerdings Ressourcen.
+ * 
  * @param {string} parentStarName
  * @param {number} parentStarMass In KG
  * @param {number} parentStarLum In W
@@ -625,11 +632,11 @@ galaxyPush("mainBlackHole")
 function generatePlanetSystemData(parentStarName, parentStarMass, parentStarLum, minPlanets = 1, maxPlanets = 10) {
     const planets = [];
     const planetCount = minPlanets + Math.floor(rng() * (maxPlanets - minPlanets + 1));
-    let lastDistance = 0.1 + rng() * 0.5; // Startabstand in AE
+    let lastDistance = 0.1 + rng() * 0.5;
 
     for (let i = 0; i < planetCount; i++) {
         lastDistance += rng() * 1.5;
-        const rotation = +(rng() * 360).toFixed(2); // Rotationswinkel in Grad
+        const rotation = +(rng() * 360).toFixed(2);
         const planetType = !!Math.round(rng());
         const mass = +((0.0025 + (rng() ** 4.5)) * 10).toFixed(3);
         const name = generateUniqueName("planet");
@@ -665,15 +672,15 @@ function generatePlanetSystemData(parentStarName, parentStarMass, parentStarLum,
             orbitPosDegree: rotation,   // in Grad
             orbitPosNorm: +(rotation / 360).toFixed(5),  // Normalisiert
             moons,
-            resources // <-- Ressourcen anhängen
+            resources
         });
     }
     return planets;
 }
 
 /**
- * Generiert ein Mondsystem für einen Planeten (nur Daten).
- * Jeder Mond hat: höhe (Abstand), masse, rotation (in Grad).
+ * Generiert ein Mondsystem für einen Planeten.
+ * 
  * @param {string} parentPlanetName
  * @param {number} parentPlanetMass in KG
  * @param {number} maxMoons
@@ -768,7 +775,6 @@ while (galaxy.length < config.count) {
         }
     }
 
-    // === Alle anderen ===
     const { tooClose, x, y } = validateDistance(distance, angle, chosenType);
     if (!tooClose) {
         galaxyPush(chosenType, x, y, generateUniqueName(chosenType));
