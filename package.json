@@ -12,5 +12,10 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "@types/node": "^24.0.10",
+    "@types/pngjs": "^6.0.5",
+    "@types/seedrandom": "^3.0.8"
+  }
 }

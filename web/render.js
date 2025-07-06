@@ -89,9 +89,9 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
 
     let object_count = {
         star: 0,
-        t1_astroid: 0,
-        t2_astroid: 0,
-        t3_astroid: 0,
+        interstellar_t1_astroid: 0,
+        interstellar_t2_astroid: 0,
+        interstellar_t3_astroid: 0,
         rogue_planet: 0,
         anomaly: 0,
         blackHole: 0,
@@ -103,9 +103,9 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
 
         switch (element.type) {
             case 'star': object_count.star++; continue;
-            case 't1_astroid': object_count.t1_astroid++; continue;
-            case 't2_astroid': object_count.t2_astroid++; continue;
-            case 't3_astroid': object_count.t3_astroid++; continue;
+            case 'interstellar_t1_astroid': object_count.interstellar_t1_astroid++; continue;
+            case 'interstellar_t2_astroid': object_count.interstellar_t2_astroid++; continue;
+            case 'interstellar_t3_astroid': object_count.interstellar_t3_astroid++; continue;
             case 'rogue_planet': object_count.rogue_planet++; continue;
             case 'anomaly': object_count.anomaly++; continue;
             case 'blackHole': object_count.blackHole++; continue;
@@ -133,11 +133,9 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
         if (
             obj.type === "star" &&
             obj.metadata &&
-            obj.metadata.informationBase &&
-            obj.metadata.informationBase.starSpectral &&
-            obj.metadata.informationBase.starSpectral.h
+            obj.metadata.starSpectral
         ) {
-            const h = obj.metadata.informationBase.starSpectral.h;
+            const h = obj.metadata.starSpectral.h;
             if (spectralClassCounts.hasOwnProperty(h)) {
                 spectralClassCounts[h]++;
             }
@@ -154,11 +152,11 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
 
     const star_count = document.getElementById('star_count');
     star_count.innerText = `(${object_count.star})`;
-    const t1_astroid_count = document.getElementById('t1_astroid_count');
+    const t1_astroid_count = document.getElementById('interstellar_t1_astroid_count');
     t1_astroid_count.innerText = `(${object_count.t1_astroid})`;
-    const t2_astroid_count = document.getElementById('t2_astroid_count');
+    const t2_astroid_count = document.getElementById('interstellar_t2_astroid_count');
     t2_astroid_count.innerText = `(${object_count.t2_astroid})`;
-    const t3_astroid_count = document.getElementById('t3_astroid_count');
+    const t3_astroid_count = document.getElementById('interstellar_t3_astroid_count');
     t3_astroid_count.innerText = `(${object_count.t3_astroid})`;
     const rogue_planet_count = document.getElementById('rogue_planet_count');
     rogue_planet_count.innerText = `(${object_count.rogue_planet})`;
@@ -220,9 +218,9 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
             dot.style.backgroundColor = (() => {
                 switch (type) {
                     case 'star': return 'yellow';
-                    case 't1_astroid': return 'lightgray';
-                    case 't2_astroid': return 'gray';
-                    case 't3_astroid': return 'darkgreen';
+                    case 'interstellar_t1_astroid': return 'lightgray';
+                    case 'interstellar_t2_astroid': return 'gray';
+                    case 'interstellar_t3_astroid': return 'darkgreen';
                     case 'rogue_planet': return 'blue';
                     case 'anomaly': return 'magenta';
                     case 'blackHole': return 'pink';
@@ -450,7 +448,7 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
 
             if (hoveredSpectralClass) {
                 if (obj.type === "star") {
-                    const h = obj.metadata?.informationBase?.starSpectral?.h;
+                    const h = obj.metadata.starSpectral.h;
                     if (h === hoveredSpectralClass) {
                         alpha = 1;
                         size = MAX_OBJECT_HOVER_SIZE * zoom;
@@ -487,15 +485,15 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
                 case 'star':
                     ctx.fillStyle = (
                         obj.metadata &&
-                        obj.metadata.informationBase &&
-                        obj.metadata.informationBase.starSpectral &&
-                        obj.metadata.informationBase.starSpectral.color &&
+                        obj &&
+                        obj.metadata.starSpectral &&
+                        obj.metadata.starSpectral.color &&
                         !UNIFORM_STAR_COLOR
-                    ) ? obj.metadata.informationBase.starSpectral.color : 'yellow';
+                    ) ? obj.metadata.starSpectral.color : 'yellow';
                     break;
-                case 't1_astroid': ctx.fillStyle = 'lightgray'; break;
-                case 't2_astroid': ctx.fillStyle = 'gray'; break;
-                case 't3_astroid': ctx.fillStyle = 'darkgreen'; break;
+                case 'interstellar_t1_astroid': ctx.fillStyle = 'lightgray'; break;
+                case 'interstellar_t2_astroid': ctx.fillStyle = 'gray'; break;
+                case 'interstellar_t3_astroid': ctx.fillStyle = 'darkgreen'; break;
                 case 'rogue_planet': ctx.fillStyle = 'blue'; break;
                 case 'anomaly': ctx.fillStyle = 'magenta'; break;
                 case 'blackHole': ctx.fillStyle = 'pink'; break;
@@ -513,7 +511,7 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
                     zoom > NAME_VANISH_DISTANCE ||
                     (hoveredType && obj.type === hoveredType) ||
                     (hoveredObject && obj === hoveredObject) ||
-                    (hoveredSpectralClass && obj.type === "star" && obj.metadata?.informationBase?.starSpectral?.h === hoveredSpectralClass)
+                    (hoveredSpectralClass && obj.type === "star" && obj.metadata.starSpectral.h === hoveredSpectralClass)
                 )
             ) {
                 ctx.fillStyle = (obj.type === 'anomaly') ? 'magenta' : 'white';
@@ -568,20 +566,20 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
         html += `<b>Position:</b> x=${obj.x.toFixed(2)}, y=${obj.y.toFixed(2)} (Lj)<br>`;
         html += `<b>Distanz zum Zentrum:</b> ${obj.distanceToCenter ? obj.distanceToCenter.toFixed(2) : "-"} Lj<br>`;
 
-        if (obj.metadata && obj.metadata.informationBase) {
-            const info = obj.metadata.informationBase;
+        if (obj.metadata) {
+            const info = obj;
             if (obj.type === "star") {
                 html += `<hr><b>Sternendaten:</b><br>`;
-                html += `Spektralklasse: ${info.starSpectral?.h ?? "-"}-${info.starSpectral?.s ?? "-"} (${info.starSpectral?.name ?? "-"})<br>`;
-                html += `Temperatur: ${info.starTemperature ?? "-"} °K (${info.starSpectral?.color ?? "-"})<br>`;
-                html += `Masse: ${info.starMass?.toFixed(3) ?? "-"} Sonnenmassen<br>`;
-                html += `Radius: ${info.starRad?.toFixed(3) ?? "-"} Sonnenradien<br>`;
-                html += `Leuchtkraft: ${info.starLum?.toFixed(5) ?? "-"} L☉<br>`;
-                html += `Masse (kg): ${info.starMassKG ? info.starMassKG.toExponential(3) : "-"}<br>`;
-                
-                if (Array.isArray(info.planetSystem)) {
-                    html += `<hr><b>Planeten (${info.planetSystem.length}):</b><br>`;
-                    info.planetSystem.forEach((planet, idx) => {
+                html += `Spektralklasse: ${info.metadata.starSpectral?.h ?? "-"}-${info.metadata.starSpectral.s ?? "-"} (${info.metadata.starSpectral.name ?? "-"})<br>`;
+                html += `Temperatur: ${info.metadata.starTemperature ?? "-"} °K (${info.metadata.starSpectral.color ?? "-"})<br>`;
+                html += `Masse: ${info.metadata.starMass?.toFixed(3) ?? "-"} Sonnenmassen<br>`;
+                html += `Radius: ${info.metadata.starRad?.toFixed(3) ?? "-"} Sonnenradien<br>`;
+                html += `Leuchtkraft: ${info.metadata.starLum?.toFixed(5) ?? "-"} L☉<br>`;
+                html += `Masse (kg): ${info.metadata.starMassKG ? info.metadata.starMassKG.toExponential(3) : "-"}<br>`;
+
+                if (Array.isArray(info.metadata.planetSystem)) {
+                    html += `<hr><b>Planeten (${info.metadata.planetSystem.length}):</b><br>`;
+                    info.metadata.planetSystem.forEach((planet, idx) => {
                         let OTD = planet.OrbitalTimeInSec / (24 * 3600);
 
                         let planetResString = "";
@@ -594,7 +592,7 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
                             }
                         }
 
-                        html += `<u>Planet ${idx + 1}: ${planet.name}</u><br>`;
+                        html += `<u>Planet ${idx + 1}: ${planet.name}</u> <br>`;
                         html += `&nbsp;Temperatur: ${planet.temperature.toFixed(3)} °K (${(planet.temperature - 273.15).toFixed(3)}°C)<br>`;
                         html += `&nbsp;Orbitale Höhe: ${planet.height.toFixed(2)} AE<br>`;
                         html += `&nbsp;Masse: ${planet.massEM} Erdmassen (${planet.massKG.toExponential(3)} kg)<br>`;
@@ -603,6 +601,7 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
                         html += `&nbsp;Umlaufzeit: ${planet.OrbitalTimeInYears} Jahre`;
                         if (OTD < 100) { html += `(${OTD.toFixed(3)} Tage)<br>` } else { html += "<br>" }
                         html += `&nbsp;Ressourcen:<br>&nbsp;${planetResString}<br>`;
+                        html += `&nbsp;Attribute: ${JSON.stringify(planet.attributes) ?? "-"}<br>`;
                         if (planet.moons && planet.moons.length > 0) {
                             // Optional: letztes Komma entfernen
                             if (planetResString.endsWith(", ")) planetResString = planetResString.slice(0, -2);
@@ -627,6 +626,7 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
                                 html += `&nbsp;&nbsp;&nbsp;&nbsp;Radius: ${(moon.r / 1000).toFixed(2)} km<br>`
                                 html += `&nbsp;&nbsp;&nbsp;&nbsp;Umlaufzeit: ${(moon.OrbitalTimeInSec / 3600).toFixed(2)} h (${(moon.OrbitalTimeInSec / (24 * 3600)).toFixed(3)} Tage)<br>`;
                                 html += `&nbsp;&nbsp;&nbsp;&nbsp;Ressourcen: ${moonResString}<br>`;
+                                html += `&nbsp;&nbsp;&nbsp;&nbsp;Attribute: ${JSON.stringify(moon.attributes) ?? "-"}<br>`;
                             });
                         }
                         html += "<br>"

@@ -1,0 +1,2 @@
+node resmap.js
+pause
