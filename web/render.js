@@ -142,7 +142,6 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
         }
     });
 
-    // HTML aktualisieren
     Object.entries(spectralClassMap).forEach(([klass, elemId]) => {
         const elem = document.getElementById(elemId);
         if (elem) {
@@ -153,11 +152,11 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
     const star_count = document.getElementById('star_count');
     star_count.innerText = `(${object_count.star})`;
     const t1_astroid_count = document.getElementById('interstellar_t1_astroid_count');
-    t1_astroid_count.innerText = `(${object_count.t1_astroid})`;
+    t1_astroid_count.innerText = `(${object_count.interstellar_t1_astroid})`;
     const t2_astroid_count = document.getElementById('interstellar_t2_astroid_count');
-    t2_astroid_count.innerText = `(${object_count.t2_astroid})`;
+    t2_astroid_count.innerText = `(${object_count.interstellar_t2_astroid})`;
     const t3_astroid_count = document.getElementById('interstellar_t3_astroid_count');
-    t3_astroid_count.innerText = `(${object_count.t3_astroid})`;
+    t3_astroid_count.innerText = `(${object_count.interstellar_t3_astroid})`;
     const rogue_planet_count = document.getElementById('rogue_planet_count');
     rogue_planet_count.innerText = `(${object_count.rogue_planet})`;
     const anomaly_count = document.getElementById('anomaly_count');
@@ -593,7 +592,7 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
                         }
 
                         html += `<u>Planet ${idx + 1}: ${planet.name}</u> <br>`;
-                        html += `&nbsp;Temperatur: ${planet.temperature.toFixed(3)} °K (${(planet.temperature - 273.15).toFixed(3)}°C)<br>`;
+                        html += `&nbsp;Temperatur: ${planet.temperature.toFixed(3)} °K (${(planet.temperature - 273.15).toFixed(3)} °C)<br>`;
                         html += `&nbsp;Orbitale Höhe: ${planet.height.toFixed(2)} AE<br>`;
                         html += `&nbsp;Masse: ${planet.massEM} Erdmassen (${planet.massKG.toExponential(3)} kg)<br>`;
                         html += `&nbsp;Dichte: ${planet.d.toFixed(2)} kg/m³)<br>`;

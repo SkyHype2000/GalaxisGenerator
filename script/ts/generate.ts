@@ -84,10 +84,10 @@ function generateSolarMass(x:number):number {
     // Naja einfach den Wert auf 1 Setzen wenn es über 1 Geht, eigentlich unwahrscheinlich wenn man nur den seed selbst verwendet
     if (x > 1) x = 1.0000000000000000;
 
-    return -(1 - Math.pow(x / 1.2, -0.4));
+    // Diese 1.021639 war anstrengend zu bekommen... habe einfach nur Geraten lol, in Desmos einfach immer Genauere Kommerstellen eingeben, irgendwann findet man es schon XD
+    // Jetzt haben wir wenigstens auch L, T und Y Sterne das mit dem 1.2 nicht möglich gewesen wäre
+    return -(1 - Math.pow(x / 1.021639, -0.4));
 }
-
-
 
 /**
  * Alle Validen Werte für jedes Sub-Spektrum.

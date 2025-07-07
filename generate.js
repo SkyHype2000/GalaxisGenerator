@@ -115,7 +115,7 @@ function generateSolarMass(x) {
     // Naja einfach den Wert auf 1 Setzen wenn es über 1 Geht, eigentlich unwahrscheinlich wenn man nur den seed selbst verwendet
     if (x > 1)
         x = 1.0000000000000000;
-    return -(1 - Math.pow(x / 1.2, -0.4));
+    return -(1 - Math.pow(x / 1.021639, -0.4)); // <== Diese 1.021639 war anstrengend zu bekommen... habe einfach nur Geraten, in Desmos einfach immer Genauere Kommerstellen eingeben, irgendwann findet man es schon XD
 }
 /**
  * Alle Validen Werte für jedes Sub-Spektrum.
