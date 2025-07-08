@@ -475,11 +475,11 @@ config.types.forEach((e) => {if (e.name == "mainBlackHole") galaxyPush(e, 0, 0, 
  * Jeder Planet hat: höhe (Abstand), masse, rotation (in Grad), und (wemm überhaupt) Monde.  
  * Und neuerdings Ressourcen.
  * 
- * @param {string} parentStarName
- * @param {number} parentStarMass In KG
- * @param {number} parentStarLum In W
- * @param {number} minPlanets
- * @param {number} maxPlanets
+ * @param parentStarName
+ * @param parentStarMass In KG
+ * @param parentStarLum In W
+ * @param minPlanets
+ * @param maxPlanets
  */
 function generatePlanetSystemData(parentStarName:string, parentStarMass:number, parentStarLum:number, minPlanets:number = 1, maxPlanets:number = 10):config.planetSystemDataDef[] {
     const planets:config.planetSystemDataDef[] = [];
