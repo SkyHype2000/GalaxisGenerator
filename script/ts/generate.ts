@@ -435,18 +435,10 @@ export function galaxyPush(type: config.ObjectType, x: number, y: number, name: 
         }
 
         if (type.name == "rogue_planet") {
-            const mass: number = +(0.1 + config.rng() * 10).toFixed(3);
-
-            const moons: config.moonSystemDataDef[] = generateMoonSystemData(name, mass * config.EARTH_MASS_KG, Math.round(config.rng() * config.MAX_MOONS_PER_PLANET));
-
-            let info: config.roguePlanetDataDef | any = {};
-
-            info.massEM = mass
-            info.massKG = mass * config.EARTH_MASS_KG
-            info.moons = moons
+            const rogue_planet: config.roguePlanetDataDef = generateRoguePlanetData();
 
             metadata.informationType = "rogue_planet";
-            metadata.informationBase = info;
+            metadata.informationBase = rogue_planet;
         }
 
     } else {
