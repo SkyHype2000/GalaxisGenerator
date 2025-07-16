@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.VALID_SPECTRAL_CLASS_VALUES = exports.MAX_MOONS_PER_PLANET = exports.MAX_PLANETS_PER_SOLSYS = exports.EARTH_MASS_KG = exports.T_SOL = exports.LUM_SOL_W = exports.R_SOL_KM = exports.SUN_MASS_KG = exports.YEAR_IN_SEC = exports.LJ = exports.AE = exports.O = exports.G = exports.types = exports.ObjectType = exports.mainBlackHoleName = exports.exponent = exports.stellarAstroidCount = exports.stellarPlanetCount = exports.count = exports.radius = exports.rng = exports.seed = void 0;
+exports.GasInformation = exports.VALID_SPECTRAL_CLASS_VALUES = exports.MAX_MOONS_PER_PLANET = exports.MAX_PLANETS_PER_SOLSYS = exports.EARTH_MASS_KG = exports.T_SOL = exports.LUM_SOL_W = exports.R_SOL_KM = exports.SUN_MASS_KG = exports.YEAR_IN_SEC = exports.LJ = exports.AE = exports.O = exports.G = exports.types = exports.ObjectType = exports.mainBlackHoleName = exports.exponent = exports.stellarAstroidCount = exports.stellarPlanetCount = exports.count = exports.radius = exports.rng = exports.seed = void 0;
 exports.chooseTypeByChance = chooseTypeByChance;
 const seedrandom_1 = __importDefault(require("seedrandom"));
 /**
@@ -115,6 +115,9 @@ class ObjectType {
     }
 }
 exports.ObjectType = ObjectType;
+/**
+ * Alle Objekte in einem Array
+ */
 exports.types = [
     new ObjectType("star", 0.2, 3, 0, ""),
     new ObjectType("planet", 0.5, 0, 0, "sun_orbit"),
@@ -213,4 +216,14 @@ exports.VALID_SPECTRAL_CLASS_VALUES = [
     { class: "L", name: "Brauner Zwergstern", color: "darkred", tempmin: 1300, tempmax: 2500, massmin: 0.03, massmax: 0.05 },
     { class: "T", name: "Kalter Brauner Zwergstern", color: "darkpurple", tempmin: 800, tempmax: 1300, massmin: 0.01, massmax: 0.03 },
     { class: "Y", name: "Extrem Kalter Brauner Zwergstern/Gasriese", color: "darkslategray", tempmin: 0, tempmax: 800, massmin: 0.0083, massmax: 0.01 },
+];
+/**
+ * Gasinformationen
+ */
+exports.GasInformation = [
+    { id: "CO2", k_a: 2000, w: 0, mol: 0.04401 },
+    { id: "CH4", k_a: 150, w: 0, mol: 0.01604 },
+    { id: "H2O", k_a: 3000, w: 0, mol: 0.018015 },
+    { id: "N2", k_a: 0.01, w: 0, mol: 0.028014 },
+    { id: "O2", k_a: 0.01, w: 0, mol: 0.031999 }
 ];

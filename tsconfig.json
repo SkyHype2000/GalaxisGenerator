@@ -3,14 +3,14 @@
     "compilerOptions": {
         "target": "es2024",
         "module": "commonjs",
-        "outDir": "./", // ← nur .js-Dateien gehen hierhin
-        "declarationDir": "./src/ts/", // ← .d.ts-Dateien gehen hierhin
+        "outDir": "./", // <- nur .js-Dateien gehen hierhin
+        "declarationDir": "./src/ts/", // <- .d.ts-Dateien gehen hierhin
         "declaration": true,
         "strict": true,
         "esModuleInterop": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true
     },
-    "include": ["./script/ts/"],
+    "include": ["./script/ts/**/*"],
     "exclude": []
 }

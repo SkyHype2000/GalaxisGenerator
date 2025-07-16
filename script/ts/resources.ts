@@ -27,7 +27,7 @@ export class resource {
     readonly density: number;
     readonly chance: number;
     readonly type: string;
-    readonly found: string;
+    readonly found: CelestialObjectTypes;
     /**
      * Informationen über eine Ressource, ich finde es einfacher und Übersichtlicher als eine JSON zu machen
      * 

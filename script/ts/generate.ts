@@ -12,7 +12,7 @@ import { resMapLayout } from "./resmap";
 /**
  * Alle Objekte in der Galaxie die bisher Generiert wurden
  */
-const galaxy:{type: string, x: number, y: number, name: string, metadata: any}[] = [];
+export const galaxy: { type: string, x: number, y: number, name: string, metadata: any }[] = [];
 
 /**
  * ähm... ja, danke ChatGPT. XD
@@ -20,7 +20,7 @@ const galaxy:{type: string, x: number, y: number, name: string, metadata: any}[]
  * Ich glaube das generiert die `x` und `y` koordinaten die nicht
  * weiter als der Radius der Galaxie entfernt sein dürfen
  */
-function polarToCartesian(r:number, angle:number):{x:number,y:number} {
+export function polarToCartesian(r: number, angle: number): { x: number, y: number } {
     return {
         x: r * Math.cos(angle),
         y: r * Math.sin(angle)
@@ -31,7 +31,7 @@ function polarToCartesian(r:number, angle:number):{x:number,y:number} {
  * Hier wird eine Seedbasierte Distanz generiert.  
  * hab einfach ChatGPT Gefragt lol.
  */
-function getRandomDistance(min:number, max:number):number {
+export function getRandomDistance(min: number, max: number): number {
     if (max === 0) max = config.radius;
 
     const exponent = config.exponent || 1;
@@ -47,16 +47,16 @@ function getRandomDistance(min:number, max:number):number {
  * 
  * Weil es sich für Anomalien besser anhört.
  */
-function generateAnomalyName():string {
+export function generateAnomalyName(): string {
     /**
      * Die Prefixe, quasi die ersten Zeichen die Verwendet werden.
      */
-    const prefix:string[] = ["RX", "ZB", "QK", "VR", "IA", "OR", "PA", "TR"];
+    const prefix: string[] = ["RX", "ZB", "QK", "VR", "IA", "OR", "PA", "TR"];
     /**
      * Das sind die Suffixe die nach den Prefixen kommen,
      * sie bestehen aus nur eine Zahl oder MK + Zahl.
      */
-    const suffix:string[] = [];
+    const suffix: string[] = [];
     for (let i = 0; i < 99; i++) {
         if (i < 10) suffix.push("-0" + i);
         else suffix.push("-" + i)
@@ -77,7 +77,7 @@ function generateAnomalyName():string {
  * @param x wert zwischen `0.0000000000000001` - `1.0000000000000000`
  * @returns wert zwischen `0.0086` - `100+`
  */
-function generateSolarMass(x:number):number {
+export function generateSolarMass(x: number): number {
     // Der Minimalwert Basierend auf dem Minimalen wert über 0 vom Seed
     if (x <= 0) x = 0.0000000000000001;
 
@@ -92,9 +92,12 @@ function generateSolarMass(x:number):number {
 /**
  * Alle Validen Werte für jedes Sub-Spektrum.
  */
-const VALID_SUBSPECTRAL_CLASS_VALUES:{class: string, name: string, color: string, tempmin:number, tempmax: number, massmin: number, massmax: number}[] = []
+export const VALID_SUBSPECTRAL_CLASS_VALUES: { class: string, name: string, color: string, tempmin: number, tempmax: number, massmin: number, massmax: number }[] = []
 
-function initSubspectralClassValues() {
+/**
+ * Generiert alle Sipspektralwerte
+ */
+export function initSubspectralClassValues() {
     for (let i = 0; i < config.VALID_SPECTRAL_CLASS_VALUES.length; i++) {
         const e_i = config.VALID_SPECTRAL_CLASS_VALUES[i];
         for (let j = 0; j < 10; j++) {
@@ -129,16 +132,16 @@ initSubspectralClassValues();
  * 
  * @param mass Die Masse des STerns
  */
-function getSolarSpectralClassData(mass:number):{class: string, subclass: string, name: string, color: string, temp: number, mass_sol: number, lum_sol: number, lum: number, r_sol: number} {
+export function getSolarSpectralClassData(mass: number): { class: string, subclass: string, name: string, color: string, temp: number, mass_sol: number, lum_sol: number, lum: number, r_sol: number } {
     /**@type {} */
-    let returnData:{class: string, subclass: string, name: string, color: string, temp: number, mass_sol: number, lum_sol: number, lum: number, r_sol: number} =
-    {class: "string", subclass: "string", name: "string", color: "string", temp: 0, mass_sol: 0, lum_sol: 0, lum: 0, r_sol: 0};
+    let returnData: { class: string, subclass: string, name: string, color: string, temp: number, mass_sol: number, lum_sol: number, lum: number, r_sol: number } =
+        { class: "string", subclass: "string", name: "string", color: "string", temp: 0, mass_sol: 0, lum_sol: 0, lum: 0, r_sol: 0 };
 
     returnData.mass_sol = mass;
 
     /**@type {{class: string, name: string, color: string, tempmin:number, tempmax: number, massmin: number, massmax: number}} */
-    let currentClass:{class: string, name: string, color: string, tempmin:number, tempmax: number, massmin: number, massmax: number} =
-    {class: "string", name: "string", color: "string", tempmin:0, tempmax: 0, massmin: 0, massmax: 0}
+    let currentClass: { class: string, name: string, color: string, tempmin: number, tempmax: number, massmin: number, massmax: number } =
+        { class: "string", name: "string", color: "string", tempmin: 0, tempmax: 0, massmin: 0, massmax: 0 }
 
     for (let i = 0; i < VALID_SUBSPECTRAL_CLASS_VALUES.length; i++) {
         const e = VALID_SUBSPECTRAL_CLASS_VALUES[i];
@@ -154,7 +157,7 @@ function getSolarSpectralClassData(mass:number):{class: string, subclass: string
     try {
         const temp = Math.round((config.rng() * (currentClass.tempmax - currentClass.tempmin)) + currentClass.tempmin);
         returnData.temp = temp;
-    } catch (error:any) {
+    } catch (error: any) {
         console.log(cc.yellow(mass.toString()));
         console.log(cc.yellow(JSON.stringify(returnData)));
         console.log(cc.yellow(JSON.stringify(currentClass)));
@@ -181,11 +184,11 @@ function getSolarSpectralClassData(mass:number):{class: string, subclass: string
  * 
  * @param type typ des Objektes
  */
-function generateName(type:res.CelestialObjectTypes):string {
+export function generateName(type: res.CelestialObjectTypes): string {
     if (type === "anomaly") { return generateAnomalyName() };
 
     /**Silben von ChatGPT für die Namensgenerierung */
-    const syllables:string[] = [
+    const syllables: string[] = [
         // Silben V1
         "ka", "lo", "ra", "ze", "tu", "mi", "xa", "vi", "no",
         "shi", "dra", "qu", "ly", "tor", "zan", "ny", "fel", "vra",
@@ -213,9 +216,9 @@ function generateName(type:res.CelestialObjectTypes):string {
     return name.charAt(0).toUpperCase() + name.slice(1);
 }
 
-const usedNames = new Set();
+export const usedNames = new Set();
 
-function generateUniqueName(type:res.CelestialObjectTypes):string {
+export function generateUniqueName(type: res.CelestialObjectTypes): string {
     let name;
     let tries = 0;
     do {
@@ -238,11 +241,11 @@ function generateUniqueName(type:res.CelestialObjectTypes):string {
  * @param type Der Planetentyp für den die Ressourcen generiert werden sollen
  * @param tries Die anzahl der Versuche die es durchführt
  */
-function GenerateResources(type:res.CelestialObjectTypes, tries:1000|number = 1000):res.webResourceInformation[] {
+export function GenerateResources(type: res.CelestialObjectTypes, tries: 1000 | number = 1000): res.webResourceInformation[] {
     /**@type {{legend: string[], map: number[][]}} */
-    const typeData:resMapLayout = require(`./src/resmap/resourceMap_${type.replaceAll(":", "_")}.json`)
+    const typeData: resMapLayout = require(`./src/resmap/resourceMap_${type.replaceAll(":", "_")}.json`)
 
-    let values:{values:{[key:string]:number},total:number,resources:res.webResourceInformation[]} = {
+    let values: { values: { [key: string]: number }, total: number, resources: res.webResourceInformation[] } = {
         values: {},
         total: 0,
         resources: []
@@ -273,7 +276,7 @@ function GenerateResources(type:res.CelestialObjectTypes, tries:1000|number = 10
         const p = +(e[1] / values.total).toFixed(5);
         if (r !== null) {
             values.resources.push(r.webInformation(p, e[1], values.total));
-        } else {console.log(cc.yellow(`Value ${r} on ${e} is null`))}
+        } else { console.log(cc.yellow(`Value ${r} on ${e} is null`)) }
     })
 
     return values.resources;
@@ -286,14 +289,14 @@ function GenerateResources(type:res.CelestialObjectTypes, tries:1000|number = 10
  * @param resources 
  * @param mass Masse In KG
  */
-function calculatePlanetRadius(resources:res.webResourceInformation[], mass:number):{d:number, r:number} {
+export function calculatePlanetRadius(resources: res.webResourceInformation[], mass: number): { d: number, r: number } {
     let totalDensity = 0;
     for (let i = 0; i < resources.length; i++) {
-        if (resources[i].p != null) {totalDensity += (resources[i].p! * resources[i].density)}
+        if (resources[i].p != null) { totalDensity += (resources[i].p! * resources[i].density) }
     }
     const r = Math.pow((3 * mass) / (4 * Math.PI * totalDensity), 1 / 3);
     const d = +totalDensity.toFixed(2)
-    return {d, r};
+    return { d, r };
 }
 
 /**
@@ -303,7 +306,7 @@ function calculatePlanetRadius(resources:res.webResourceInformation[], mass:numb
  * @param {number} angle 
  * @param {number} chosenType 
  */
-function validateDistance(distance:number, angle:number, chosenType:config.ObjectType):{ tooClose:boolean, x:number, y:number, dx:number, dy:number } {
+export function validateDistance(distance: number, angle: number, chosenType: config.ObjectType): { tooClose: boolean, x: number, y: number, dx: number, dy: number } {
     const { x, y } = polarToCartesian(distance, angle)
 
     const stars = getObjectType("star");
@@ -365,7 +368,7 @@ function validateDistance(distance:number, angle:number, chosenType:config.Objec
 /**
  * Gibt alle Objekte eines Typs das momentan im galaxy-Array gespeichert sind zurück.
  */
-function getObjectType(objectType:string) {
+export function getObjectType(objectType: string) {
     const all = []
     for (const obj of galaxy) {
         if (obj.type == objectType) {
@@ -378,13 +381,13 @@ function getObjectType(objectType:string) {
 /**
  * Gibt dir ein Semi-Zufälliges Objekt Des Galaxy-Arrays eines typs zurück
  */
-function getRandomObjectType(objectType:string) {
+export function getRandomObjectType(objectType: string) {
     const all = getObjectType(objectType)
 
     return all[(config.rng() * (all.length - 1))];
 }
 
-/**  * 
+/**
  * Diese Informationen werden Automatisch Via Seed "Erfunden"  
  * star:  
  * Spektralklasse via Seed + Tabelle  
@@ -397,13 +400,13 @@ function getRandomObjectType(objectType:string) {
  * sie werden separat in den Sternensystemen Generiert.\
  * Die Gesammtmenge der Objekte in der Galaxie wird dennoch `config.amount` erreichen.
  */
-function galaxyPush(type:config.ObjectType, x:number, y:number, name:string) {
+export function galaxyPush(type: config.ObjectType, x: number, y: number, name: string) {
     if (type.name == "planet") return;
     if (type.name == "gas_planet") return;
     if (type.name == "moon") return;
     if (type.name == "stellar_astroid") return;
-    
-    let metadata:{informationType:any, informationBase:config.starInformationTypeDef|any} = { informationType: null, informationBase: null };
+
+    let metadata: { informationType: any, informationBase: config.starInformationTypeDef | any } = { informationType: null, informationBase: null };
 
     if (type.name != "mainBlackHole") {
 
@@ -417,7 +420,7 @@ function galaxyPush(type:config.ObjectType, x:number, y:number, name:string) {
 
             let specs = getSolarSpectralClassData(sunMass);
 
-            let info:config.starInformationTypeDef = {
+            let info: config.starInformationTypeDef = {
                 starLum: specs.lum_sol,
                 starMass: specs.mass_sol,
                 starMassKG: specs.mass_sol * config.SUN_MASS_KG,
@@ -432,10 +435,11 @@ function galaxyPush(type:config.ObjectType, x:number, y:number, name:string) {
         }
 
         if (type.name == "rogue_planet") {
-            const mass:number = +(0.1 + config.rng() * 10).toFixed(3);
-            const moons:config.moonSystemDataDef[] = generateMoonSystemData(name, mass * config.EARTH_MASS_KG, Math.round(config.rng() * config.MAX_MOONS_PER_PLANET));
+            const mass: number = +(0.1 + config.rng() * 10).toFixed(3);
 
-            let info:config.roguePlanetDataDef|any = {};
+            const moons: config.moonSystemDataDef[] = generateMoonSystemData(name, mass * config.EARTH_MASS_KG, Math.round(config.rng() * config.MAX_MOONS_PER_PLANET));
+
+            let info: config.roguePlanetDataDef | any = {};
 
             info.massEM = mass
             info.massKG = mass * config.EARTH_MASS_KG
@@ -454,7 +458,7 @@ function galaxyPush(type:config.ObjectType, x:number, y:number, name:string) {
     const distanceToCenter = Math.hypot(x, y);
 
     const d = {
-        type:type.name,
+        type: type.name,
         x,
         y,
         name,
@@ -468,21 +472,22 @@ function galaxyPush(type:config.ObjectType, x:number, y:number, name:string) {
     galaxy.push(d)
 }
 
-config.types.forEach((e) => {if (e.name == "mainBlackHole") galaxyPush(e, 0, 0, config.mainBlackHoleName)});
+config.types.forEach((e) => { if (e.name == "mainBlackHole") galaxyPush(e, 0, 0, config.mainBlackHoleName) });
+
+export function calculatePlanetTemperature(StarLum: number, albedo: number, distance: number): number {
+    return +((Math.pow((StarLum * (1 - albedo)) / (16 * Math.PI * Math.pow(distance, 2) * config.O), 0.25))).toFixed(5)
+}
 
 /**
  * Generiert ein Planetensystem .  
  * Jeder Planet hat: höhe (Abstand), masse, rotation (in Grad), und (wemm überhaupt) Monde.  
  * Und neuerdings Ressourcen.
  * 
- * @param parentStarName
  * @param parentStarMass In KG
  * @param parentStarLum In W
- * @param minPlanets
- * @param maxPlanets
  */
-function generatePlanetSystemData(parentStarName:string, parentStarMass:number, parentStarLum:number, minPlanets:number = 1, maxPlanets:number = 10):config.planetSystemDataDef[] {
-    const planets:config.planetSystemDataDef[] = [];
+export function generatePlanetSystemData(parentStarName: string, parentStarMass: number, parentStarLum: number, minPlanets: number = 1, maxPlanets: number = 10): config.planetSystemDataDef[] {
+    const planets: config.planetSystemDataDef[] = [];
     const planetCount = minPlanets + Math.floor(config.rng() * (maxPlanets - minPlanets + 1));
     let lastDistance = 0.1 + config.rng() * 0.5;
 
@@ -494,10 +499,10 @@ function generatePlanetSystemData(parentStarName:string, parentStarMass:number, 
         const name = generateUniqueName("planet");
         const albedo = +(0.05 + (config.rng() * (0.3 - 0.05))).toFixed(5)
 
-        const temperature = +((Math.pow((parentStarLum * (1 - albedo)) / (16 * Math.PI * Math.pow(lastDistance * config.AE, 2) * config.O), 0.25))).toFixed(5)
+        const temperature = calculatePlanetTemperature(parentStarLum, albedo, lastDistance * config.AE)
 
         const maxMoons = Math.round(config.rng() * config.MAX_MOONS_PER_PLANET);
-        let moons:config.moonSystemDataDef[] = [];
+        let moons: config.moonSystemDataDef[] = [];
         if (maxMoons > 0) {
             moons = generateMoonSystemData(name, mass * config.EARTH_MASS_KG, maxMoons);
         }
@@ -506,8 +511,13 @@ function generatePlanetSystemData(parentStarName:string, parentStarMass:number, 
         const OrbitalTimeInSec = 2 * Math.PI * Math.sqrt(Math.pow(lastDistance * config.AE, 3) / (config.G * parentStarMass));
 
         // Ressourcen für diesen Planeten generieren
-        let resources:res.webResourceInformation[] = GenerateResources(planetType ? "planet:atmosphere" : "planet:noAtmosphere", 1000);
-        let {d, r} = calculatePlanetRadius(resources, mass * config.EARTH_MASS_KG);
+        let resources: res.webResourceInformation[] = GenerateResources(planetType ? "planet:atmosphere" : "planet:noAtmosphere", 1000);
+        let { d, r } = calculatePlanetRadius(resources, mass * config.EARTH_MASS_KG);
+
+        let special: any = {}
+        if (planetType) {
+            special.atmosphere = generateAtmosphericInformation(parentStarLum, lastDistance, albedo);
+        }
 
         planets.push({
             name,
@@ -525,11 +535,57 @@ function generatePlanetSystemData(parentStarName:string, parentStarMass:number, 
             orbitPosDegree: rotation,   // in Grad
             orbitPosNorm: +(rotation / 360).toFixed(5),  // Normalisiert
             moons,
-            attributes: [(planetType ? "atmosphere" : "noAtmosphere")],
             resources,
+            attributes: [(planetType ? "atmosphere" : "noAtmosphere")],
+            special,
         });
     }
     return planets;
+}
+
+/**
+ * Generiert ein Planetensystem .  
+ * Jeder Planet hat: höhe (Abstand), masse, rotation (in Grad), und (wemm überhaupt) Monde.  
+ * Und neuerdings Ressourcen.
+ * 
+ * @param parentStarMass In KG
+ * @param parentStarLum In W
+ */
+export function generateRoguePlanetData(): config.roguePlanetDataDef {
+    const planetType = !!Math.round(config.rng());
+    const mass = +((0.0025 + (config.rng() ** 4.5)) * 10).toFixed(3);
+    const name = generateUniqueName("planet");
+    const albedo = +(0.05 + (config.rng() * (0.3 - 0.05))).toFixed(5)
+
+    let temperature = 0;
+
+    const maxMoons = Math.round(config.rng() * config.MAX_MOONS_PER_PLANET);
+    let moons: config.moonSystemDataDef[] = [];
+    if (maxMoons > 0) {
+        moons = generateMoonSystemData(name, mass * config.EARTH_MASS_KG, maxMoons);
+    }
+
+    // Ressourcen für diesen Planeten generieren
+    let resources: res.webResourceInformation[] = GenerateResources(planetType ? "planet:atmosphere" : "planet:noAtmosphere", 1000);
+    let { d, r } = calculatePlanetRadius(resources, mass * config.EARTH_MASS_KG);
+
+    let special: { atmosphere: config.AtmosphericInformation } | any = {}
+    if (planetType) {
+        special.atmosphere = generateAtmosphericInformation(0, 0, 0);
+        temperature = special.atmosphere.temperature
+    }
+    return {
+        name,
+        temperature,
+        massEM: mass,
+        massKG: mass * config.EARTH_MASS_KG,
+        r, // Radius
+        d, // Dichte
+        moons,
+        resources,
+        attributes: [(planetType ? "atmosphere" : "noAtmosphere")],
+        special
+    };
 }
 
 /**
@@ -539,8 +595,8 @@ function generatePlanetSystemData(parentStarName:string, parentStarMass:number, 
  * @param parentPlanetMass in KG
  * @param maxMoons
  */
-function generateMoonSystemData(parentPlanetName:string, parentPlanetMass:number, maxMoons:number = 5):config.moonSystemDataDef[] {
-    const moons:config.moonSystemDataDef[] = [];
+export function generateMoonSystemData(parentPlanetName: string, parentPlanetMass: number, maxMoons: number = 5): config.moonSystemDataDef[] {
+    const moons: config.moonSystemDataDef[] = [];
     const moonCount = Math.floor(config.rng() * (maxMoons + 1));
     let lastDistance = 50000 + config.rng() * 100000; // Startabstand in KM
 
@@ -548,16 +604,16 @@ function generateMoonSystemData(parentPlanetName:string, parentPlanetMass:number
         /**
          * Ob der Mond eine Atmosphäre hat oder nicht. 0 = Nein, 1 = Ja
          */
-        const moonType:boolean = !!Math.round(config.rng());
+        const moonType: boolean = !!Math.round(config.rng());
         const rotation = Math.round(config.rng() * 360);
         const mass = +((0.0025 + (config.rng() ** 4.5)) * 0.05).toFixed(10);
-        const name:string = generateUniqueName("moon");
+        const name: string = generateUniqueName("moon");
 
         const OrbitalSpeed = Math.sqrt((config.G * parentPlanetMass) / (lastDistance * 1000))
         const OrbitalTimeInSec = 2 * Math.PI * Math.sqrt(Math.pow((lastDistance * 1000), 3) / (config.G * parentPlanetMass));
 
         let resources = GenerateResources(moonType ? "moon:atmosphere" : "moon:noAtmosphere", 1000);
-        let {d, r} = calculatePlanetRadius(resources, mass * config.EARTH_MASS_KG);
+        let { d, r } = calculatePlanetRadius(resources, mass * config.EARTH_MASS_KG);
         //// console.log(resources);
 
 
@@ -574,14 +630,57 @@ function generateMoonSystemData(parentPlanetName:string, parentPlanetMass:number
             OrbitalTimeInYears: +(OrbitalTimeInSec / config.YEAR_IN_SEC).toFixed(3),
             orbitPosDegree: rotation,   // in Grad
             orbitPosNorm: +(rotation / 360).toFixed(3),  // Normalisiert
-            attributes: [(moonType ? "atmosphere" : "noAtmosphere")],
             resources,
+            attributes: [(moonType ? "atmosphere" : "noAtmosphere")],
+            special: {},
         });
 
         lastDistance += config.rng() * 100000
     }
     return moons;
 }
+
+function generateGasMix(): config.GasInformationType[] {
+    let gases = config.GasInformation.map(g => ({ ...g }));
+
+    // ppm Werte random, keine Max-Vorgaben
+    for (const gas of gases) {
+        // ppm Bereich 0 bis 1.000.000 (100%)
+        gas.w = Math.floor(config.rng() * 1_000_000);
+    }
+
+    // Jetzt die w in Mischung (Bruchteil) umrechnen: w = ppm / 1.000.000
+    for (const gas of gases) {
+        gas.w = gas.w / 1_000_000;
+    }
+
+    return gases;
+}
+
+export function generateAtmosphericInformation(StarLum: number, StarDistance: number, albedo: number, minDensity = 0.01, maxDensity = 10): config.AtmosphericInformation {
+    const gasInfo = generateGasMix();
+
+    const referenceDensity = Math.max(Math.min((Math.pow(config.rng(), 3.95) * maxDensity), maxDensity), minDensity);
+    const scaleHeight = 8000 + 2000 * (config.rng() - 0.5);
+
+    let tau = 0;
+    for (const gas of gasInfo) {
+        tau += gas.k_a * gas.w * referenceDensity * scaleHeight;
+    }
+
+    const d_m = StarDistance * config.AE;
+    const F = StarLum / (4 * Math.PI * d_m ** 2);
+    const sigma = config.O;
+    const T = Math.pow(((F * (1 - albedo)) / (4 * sigma)) * (1 + (3 / 4) * tau), 0.25);
+
+    return {
+        tau,
+        temperature: +T.toFixed(2),
+        scaleHeight,
+        referenceDensity,
+    };
+}
+
 
 /**
  * Hier werden per Seed alle Objekte Ausgewählt, deren Positionen Generiert & Validiert und dann Abgespeichert.

@@ -82,6 +82,9 @@ export declare const exponent: 0.75 | number;
  * Standard: `"Nexus"` - die verbindung zu allem 😄
  */
 export declare const mainBlackHoleName: "Nexus" | string;
+/**
+ * Alle Beforzugten typen (Type)
+ */
 export type preferredTypes = "sun_orbit" | "planet_orbit" | "nearStar-min-max" | "deepSpace-min" | "" | string;
 /**
  * Die Verschiedenen Objekttypen und ihre Eigenschaften.
@@ -109,6 +112,9 @@ export declare class ObjectType {
     preferred: preferredTypes;
     constructor(name: res.CelestialObjectTypes, chance: number, minDistance: number, maxDistance: number, preferred: preferredTypes);
 }
+/**
+ * Alle Objekte in einem Array
+ */
 export declare const types: ObjectType[];
 export declare function chooseTypeByChance(): ObjectType;
 /**
@@ -177,7 +183,7 @@ export declare const VALID_SPECTRAL_CLASS_VALUES: {
     massmax: number;
 }[];
 /**
- * Die Grund-Informationen für den Stern
+ * Die Grund-Informationen für den Stern (Type)
  *
  * starTemperature: Sternentemparatur in °K
  * starMass: Sternenmasse in Sonnenmassen
@@ -204,7 +210,7 @@ export type starInformationTypeDef = {
     planetSystem: planetSystemDataDef[];
 };
 /**
- * Die Infos zu einem Planetensystems
+ * Die Infos zu einem Planetensystems (Type)
  */
 export type planetSystemDataDef = {
     name: string;
@@ -224,22 +230,25 @@ export type planetSystemDataDef = {
     resources: res.webResourceInformation[];
     moons: moonSystemDataDef[];
     attributes: [("atmosphere" | "noAtmosphere")];
+    special: any;
 };
 /**
- * Die Infos zu einem Einzelgängerplaneten
+ * Die Infos zu einem Einzelgängerplaneten (Type)
  */
 export type roguePlanetDataDef = {
     name: string;
+    temperature: number;
     massEM: number;
     massKG: number;
     r: number;
     d: number;
-    resources: res.webResourceInformation[];
     moons: moonSystemDataDef[];
+    resources: res.webResourceInformation[];
     attributes: [("atmosphere" | "noAtmosphere")];
+    special: any;
 };
 /**
- * Die Infos zu einem Mondsystems
+ * Die Infos zu einem Mondsystems (Type)
  */
 export type moonSystemDataDef = {
     name: string;
@@ -256,4 +265,27 @@ export type moonSystemDataDef = {
     orbitPosNorm: number;
     resources: res.webResourceInformation[];
     attributes: [("atmosphere" | "noAtmosphere")];
+    special: any;
 };
+/**
+ * Atmosphereninformationen (Type)
+ */
+export type AtmosphericInformation = {
+    tau: number;
+    temperature: number;
+    scaleHeight: number;
+    referenceDensity: number;
+};
+/**
+ * Gasinformationen (Type)
+ */
+export type GasInformationType = {
+    id: string;
+    k_a: number;
+    w: number;
+    mol: number;
+};
+/**
+ * Gasinformationen
+ */
+export declare const GasInformation: GasInformationType[];

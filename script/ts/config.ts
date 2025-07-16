@@ -78,6 +78,9 @@ export const exponent: 0.75 | number = 0.75;
  */
 export const mainBlackHoleName: "Nexus" | string = "Nexus";
 
+/**
+ * Alle Beforzugten typen (Type)
+ */
 export type preferredTypes = "sun_orbit" | "planet_orbit" | "nearStar-min-max" | "deepSpace-min" | "" | string
 /**
  * Die Verschiedenen Objekttypen und ihre Eigenschaften.
@@ -113,7 +116,10 @@ export class ObjectType {
     }
 }
 
-export const types:ObjectType[] = [
+/**
+ * Alle Objekte in einem Array
+ */
+export const types: ObjectType[] = [
     new ObjectType("star", 0.2, 3, 0, ""),
     new ObjectType("planet", 0.5, 0, 0, "sun_orbit"),
     new ObjectType("moon", 0.15, 0, 0, "planet_orbit"),
@@ -172,15 +178,15 @@ export const SUN_MASS_KG: 1.9884e30 = 1.9884e30;
 /**
  * Der Radius der Sonne in KM
  */
-export const R_SOL_KM:695700 = 695700; // KM
+export const R_SOL_KM: 695700 = 695700; // KM
 /**
  * Die Luminosität der Sonne in Watt
  */
-export const LUM_SOL_W:3.828e26 = 3.828e26; // W
+export const LUM_SOL_W: 3.828e26 = 3.828e26; // W
 /**
  * Die (Oberflächen-)Temperatur der Sonne in °K
  */
-export const T_SOL:5778 = 5778; // °K
+export const T_SOL: 5778 = 5778; // °K
 /**
  * Masse der Erde in KG
  */
@@ -215,7 +221,7 @@ export const VALID_SPECTRAL_CLASS_VALUES: { class: string, name: string, color: 
 ]
 
 /**
- * Die Grund-Informationen für den Stern
+ * Die Grund-Informationen für den Stern (Type)
  * 
  * starTemperature: Sternentemparatur in °K  
  * starMass: Sternenmasse in Sonnenmassen  
@@ -242,7 +248,7 @@ export type starInformationTypeDef = {
 }
 
 /**
- * Die Infos zu einem Planetensystems
+ * Die Infos zu einem Planetensystems (Type)
  */
 export type planetSystemDataDef = {
     name: string,
@@ -262,24 +268,27 @@ export type planetSystemDataDef = {
     resources: res.webResourceInformation[],
     moons: moonSystemDataDef[],
     attributes: [("atmosphere" | "noAtmosphere")]
+    special: any,
 }
 
 /**
- * Die Infos zu einem Einzelgängerplaneten
+ * Die Infos zu einem Einzelgängerplaneten (Type)
  */
 export type roguePlanetDataDef = {
     name: string,
+    temperature: number,
     massEM: number,
     massKG: number,
-    r: number,
-    d: number,
-    resources: res.webResourceInformation[],
+    r: number, // Radius
+    d: number, // Dichte
     moons: moonSystemDataDef[],
-    attributes: [("atmosphere" | "noAtmosphere")]
+    resources: res.webResourceInformation[],
+    attributes: [("atmosphere"|"noAtmosphere")],
+    special: any
 }
 
 /**
- * Die Infos zu einem Mondsystems
+ * Die Infos zu einem Mondsystems (Type)
  */
 export type moonSystemDataDef = {
     name: string,
@@ -295,5 +304,32 @@ export type moonSystemDataDef = {
     orbitPosDegree: number,
     orbitPosNorm: number,
     resources: res.webResourceInformation[],
-    attributes: [("atmosphere" | "noAtmosphere")]
+    attributes: [("atmosphere" | "noAtmosphere")],
+    special: any,
 }
+
+/**
+ * Atmosphereninformationen (Type)
+ */
+export type AtmosphericInformation = {
+    tau: number,
+    temperature: number,
+    scaleHeight: number,
+    referenceDensity: number
+}
+
+/**
+ * Gasinformationen (Type)
+ */
+export type GasInformationType = { id: string, k_a: number, w: number, mol: number };
+
+/**
+ * Gasinformationen
+ */
+export const GasInformation: GasInformationType[] = [
+    { id: "CO2", k_a: 2000, w: 0, mol: 0.04401 },
+    { id: "CH4", k_a: 150, w: 0, mol: 0.01604 },
+    { id: "H2O", k_a: 3000, w: 0, mol: 0.018015 },
+    { id: "N2", k_a: 0.01, w: 0, mol: 0.028014 },
+    { id: "O2", k_a: 0.01, w: 0, mol: 0.031999 }
+];
