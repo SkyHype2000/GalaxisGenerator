@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GasInformation = exports.VALID_SPECTRAL_CLASS_VALUES = exports.MAX_MOONS_PER_PLANET = exports.MAX_PLANETS_PER_SOLSYS = exports.EARTH_MASS_KG = exports.T_SOL = exports.LUM_SOL_W = exports.R_SOL_KM = exports.SUN_MASS_KG = exports.YEAR_IN_SEC = exports.LJ = exports.AE = exports.O = exports.G = exports.types = exports.ObjectType = exports.mainBlackHoleName = exports.exponent = exports.stellarAstroidCount = exports.stellarPlanetCount = exports.count = exports.radius = exports.rng = exports.seed = void 0;
+exports.GasInformation = exports.VALID_SPECTRAL_CLASS_VALUES = exports.MAX_MOONS_PER_PLANET = exports.MAX_PLANETS_PER_SOLSYS = exports.EARTH_MASS_KG = exports.T_SOL = exports.LUM_SOL_W = exports.R_SOL_KM = exports.SUN_MASS_KG = exports.YEAR_IN_SEC = exports.LJ = exports.AE = exports.SB = exports.G = exports.types = exports.ObjectType = exports.mainBlackHoleName = exports.exponent = exports.stellarAstroidCount = exports.stellarPlanetCount = exports.count = exports.radius = exports.rng = exports.seed = void 0;
 exports.chooseTypeByChance = chooseTypeByChance;
 const seedrandom_1 = __importDefault(require("seedrandom"));
 /**
@@ -156,7 +156,7 @@ exports.G = 6.67430e-11;
 /**
  * Stefan Boltzmann Konstante
  */
-exports.O = 5.670373e-8;
+exports.SB = 5.670373e-8;
 /**
  * Die Länge einer Astronomischen Einheit in Meter
  */

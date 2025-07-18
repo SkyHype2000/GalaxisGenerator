@@ -22,8 +22,8 @@ export const galaxy: { type: string, x: number, y: number, name: string, metadat
  */
 export function polarToCartesian(r: number, angle: number): { x: number, y: number } {
     return {
-        x: r * Math.cos(angle),
-        y: r * Math.sin(angle)
+        x: +(r * Math.cos(angle)).toFixed(3),
+        y: +(r * Math.sin(angle)).toFixed(3)
     };
 }
 
@@ -421,10 +421,10 @@ export function galaxyPush(type: config.ObjectType, x: number, y: number, name: 
             let specs = getSolarSpectralClassData(sunMass);
 
             let info: config.starInformationTypeDef = {
-                starLum: specs.lum_sol,
-                starMass: specs.mass_sol,
-                starMassKG: specs.mass_sol * config.SUN_MASS_KG,
-                starRad: specs.r_sol,
+                starLum: +specs.lum_sol.toFixed(3),
+                starMass: +specs.mass_sol.toFixed(5),
+                starMassKG: Math.round(specs.mass_sol * config.SUN_MASS_KG),
+                starRad: +specs.r_sol.toFixed(2),
                 starSpectral: { h: specs.class.split("-")[0], s: specs.class.split("-")[1], name: specs.name, color: specs.color },
                 starTemperature: specs.temp,
                 planetSystem: generatePlanetSystemData(name, specs.mass_sol * config.SUN_MASS_KG, specs.lum, minPlanets, maxPlanets)
@@ -454,7 +454,7 @@ export function galaxyPush(type: config.ObjectType, x: number, y: number, name: 
         x,
         y,
         name,
-        distanceToCenter,
+        distanceToCenter: +distanceToCenter.toFixed(3),
         metadata: metadata.informationBase
     }
     console.log(JSON.stringify(d));
@@ -467,7 +467,7 @@ export function galaxyPush(type: config.ObjectType, x: number, y: number, name: 
 config.types.forEach((e) => { if (e.name == "mainBlackHole") galaxyPush(e, 0, 0, config.mainBlackHoleName) });
 
 export function calculatePlanetTemperature(StarLum: number, albedo: number, distance: number): number {
-    return +((Math.pow((StarLum * (1 - albedo)) / (16 * Math.PI * Math.pow(distance, 2) * config.O), 0.25))).toFixed(5)
+    return +((Math.pow((StarLum * (1 - albedo)) / (16 * Math.PI * Math.pow(distance, 2) * config.SB), 0.25))).toFixed(5)
 }
 
 /**
@@ -489,7 +489,7 @@ export function generatePlanetSystemData(parentStarName: string, parentStarMass:
         const planetType = !!Math.round(config.rng());
         const mass = +((0.0025 + (config.rng() ** 4.5)) * 10).toFixed(3);
         const name = generateUniqueName("planet");
-        const albedo = +(0.05 + (config.rng() * (0.3 - 0.05))).toFixed(5)
+        const albedo = +(0.05 + (config.rng() * (0.3 - 0.05)))
 
         const temperature = calculatePlanetTemperature(parentStarLum, albedo, lastDistance * config.AE)
 
@@ -506,7 +506,7 @@ export function generatePlanetSystemData(parentStarName: string, parentStarMass:
         let resources: res.webResourceInformation[] = GenerateResources(planetType ? "planet:atmosphere" : "planet:noAtmosphere", 1000);
         let { d, r } = calculatePlanetRadius(resources, mass * config.EARTH_MASS_KG);
 
-        let special: any = {}
+        let special: config.CelestialSpecialData = {}
         if (planetType) {
             special.atmosphere = generateAtmosphericInformation(parentStarLum, lastDistance, albedo);
         }
@@ -515,20 +515,20 @@ export function generatePlanetSystemData(parentStarName: string, parentStarMass:
             name,
             parent: parentStarName,
             temperature,
-            albedo,
-            height: lastDistance,
+            albedo: +albedo.toFixed(5),
+            height: +lastDistance.toFixed(5),
             massEM: mass,
             massKG: mass * config.EARTH_MASS_KG,
-            r, // Radius
+            r: +r.toFixed(3), // Radius
             d, // Dichte
-            OrbitalSpeed,
-            OrbitalTimeInSec,
+            OrbitalSpeed: +OrbitalSpeed.toFixed(2),
+            OrbitalTimeInSec: Math.round(OrbitalTimeInSec),
             OrbitalTimeInYears: +(OrbitalTimeInSec / config.YEAR_IN_SEC).toFixed(3),
             orbitPosDegree: rotation,   // in Grad
             orbitPosNorm: +(rotation / 360).toFixed(5),  // Normalisiert
             moons,
             resources,
-            attributes: [(planetType ? "atmosphere" : "noAtmosphere")],
+            attributes: { atm: planetType ? "atmosphere" : "noAtmosphere" },
             special,
         });
     }
@@ -547,7 +547,7 @@ export function generateRoguePlanetData(): config.roguePlanetDataDef {
     const planetType = !!Math.round(config.rng());
     const mass = +((0.0025 + (config.rng() ** 4.5)) * 10).toFixed(3);
     const name = generateUniqueName("planet");
-    const albedo = +(0.05 + (config.rng() * (0.3 - 0.05))).toFixed(5)
+    const albedo = +(0.05 + (config.rng() * (0.3 - 0.05))).toFixed(5);
 
     let temperature = 0;
 
@@ -561,10 +561,10 @@ export function generateRoguePlanetData(): config.roguePlanetDataDef {
     let resources: res.webResourceInformation[] = GenerateResources(planetType ? "planet:atmosphere" : "planet:noAtmosphere", 1000);
     let { d, r } = calculatePlanetRadius(resources, mass * config.EARTH_MASS_KG);
 
-    let special: { atmosphere: config.AtmosphericInformation } | any = {}
+    let special: { atmosphere: config.AtmosphericInformation } | any = {};
     if (planetType) {
         special.atmosphere = generateAtmosphericInformation(0, 0, 0);
-        temperature = special.atmosphere.temperature
+        temperature = special.atmosphere.temperature;
     }
     return {
         name,
@@ -575,7 +575,7 @@ export function generateRoguePlanetData(): config.roguePlanetDataDef {
         d, // Dichte
         moons,
         resources,
-        attributes: [(planetType ? "atmosphere" : "noAtmosphere")],
+        attributes: { atm: planetType ? "atmosphere" : "noAtmosphere" },
         special
     };
 }
@@ -598,7 +598,7 @@ export function generateMoonSystemData(parentPlanetName: string, parentPlanetMas
          */
         const moonType: boolean = !!Math.round(config.rng());
         const rotation = Math.round(config.rng() * 360);
-        const mass = +((0.0025 + (config.rng() ** 4.5)) * 0.05).toFixed(10);
+        const mass = (0.0025 + (config.rng() ** 4.5)) * 0.05;
         const name: string = generateUniqueName("moon");
 
         const OrbitalSpeed = Math.sqrt((config.G * parentPlanetMass) / (lastDistance * 1000))
@@ -613,8 +613,8 @@ export function generateMoonSystemData(parentPlanetName: string, parentPlanetMas
             name,
             parent: parentPlanetName,
             height: lastDistance,
-            massEM: mass,
-            massKG: mass * config.EARTH_MASS_KG,
+            massEM: +mass.toFixed(3),
+            massKG: +(mass * config.EARTH_MASS_KG).toFixed(1),
             r, // Radius
             d, // Dichte
             OrbitalSpeed,
@@ -623,7 +623,7 @@ export function generateMoonSystemData(parentPlanetName: string, parentPlanetMas
             orbitPosDegree: rotation,   // in Grad
             orbitPosNorm: +(rotation / 360).toFixed(3),  // Normalisiert
             resources,
-            attributes: [(moonType ? "atmosphere" : "noAtmosphere")],
+            attributes: { atm: moonType ? "atmosphere" : "noAtmosphere" },
             special: {},
         });
 
@@ -633,26 +633,33 @@ export function generateMoonSystemData(parentPlanetName: string, parentPlanetMas
 }
 
 function generateGasMix(): config.GasInformationType[] {
-    let gases = config.GasInformation.map(g => ({ ...g }));
+    const gases = config.GasInformation.map(g => ({ ...g }));
 
-    // ppm Werte random, keine Max-Vorgaben
-    for (const gas of gases) {
-        // ppm Bereich 0 bis 1.000.000 (100%)
-        gas.w = Math.floor(config.rng() * 1_000_000);
-    }
+    // Zufällige Gewichtung (aber normiert)
+    const raw = gases.map(() => config.rng());
+    const total = raw.reduce((a, b) => a + b, 0);
 
-    // Jetzt die w in Mischung (Bruchteil) umrechnen: w = ppm / 1.000.000
-    for (const gas of gases) {
-        gas.w = gas.w / 1_000_000;
+    for (let i = 0; i < gases.length; i++) {
+        gases[i].w = +(raw[i] / total).toFixed(5);
     }
 
     return gases;
 }
 
+/**
+ * Hier berechne ich die Atmosphäreninformationen
+ * 
+ * @param StarLum 
+ * @param StarDistance 
+ * @param albedo 
+ * @param minDensity 
+ * @param maxDensity 
+ * @returns 
+ */
 export function generateAtmosphericInformation(StarLum: number, StarDistance: number, albedo: number, minDensity = 0.01, maxDensity = 10): config.AtmosphericInformation {
     const gasInfo = generateGasMix();
 
-    const referenceDensity = Math.max(Math.min((Math.pow(config.rng(), 3.95) * maxDensity), maxDensity), minDensity);
+    const referenceDensity = Math.max(Math.min(Math.pow(config.rng(), 3.95) * maxDensity, maxDensity), minDensity);
     const scaleHeight = 8000 + 2000 * (config.rng() - 0.5);
 
     let tau = 0;
@@ -662,14 +669,20 @@ export function generateAtmosphericInformation(StarLum: number, StarDistance: nu
 
     const d_m = StarDistance * config.AE;
     const F = StarLum / (4 * Math.PI * d_m ** 2);
-    const sigma = config.O;
-    const T = Math.pow(((F * (1 - albedo)) / (4 * sigma)) * (1 + (3 / 4) * tau), 0.25);
+
+    // Tau wegen den Extrem Hohen Temperaturen gedämpft, ich denke nicht das eine Atmosphäre von einem Planeten der 1000 AU Entfernt ist auf einmal 100000°C hat lol
+    const tauEff = Math.log(1 + (3 / 4) * tau);
+
+    const T = Math.pow(((F * (1 - albedo)) / (4 * config.SB)) * (1 + tauEff), 0.25);
+    const T_noGH = Math.pow(((F * (1 - albedo)) / (4 * config.SB)), 0.25);
+    const greenhouseEffect = +(Math.max(T - T_noGH, 0).toFixed(2));
 
     return {
-        tau,
         temperature: +T.toFixed(2),
-        scaleHeight,
-        referenceDensity,
+        gases: gasInfo,
+        scaleHeight: +scaleHeight.toFixed(2),
+        referenceDensity: +referenceDensity.toFixed(3),
+        greenhouseEffect
     };
 }
 

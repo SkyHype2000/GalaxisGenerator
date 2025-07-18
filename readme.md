@@ -1,7 +1,6 @@
 # Galaxis Generator
 
-Das ist ein prozedurales Galaxiegenerator.
+This is a procedural, incredibly inefficient, and completely inaccurate galaxy generator, but for me (SkyHype20000) it's perfect.  
+I was bored, so I started working on it.
 
-Ich hatte langeweile also habe ich angefangen hierdran zu Arbeiten.
-
-hier kann man es in aktion sehen: <https://galaxis-generator.vercel.app/>
+You can see it in action here: <https://galaxis-generator.vercel.app/>

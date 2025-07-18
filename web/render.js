@@ -427,7 +427,7 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
             return;
         }
 
-        // Vertikal scrollen
+        // Vertikal scrolleN
         offsetY -= e.deltaY * 0.5; // Faktor
         draw();
     });
@@ -556,28 +556,28 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
 
     function updateInfoPanel(obj) {
         if (!obj) {
-            info_content.innerHTML = `<span>Bewege den Mauszeiger über ein Objekt...</span>`;
+            info_content.innerHTML = `<span>Hover with the Mouse over a Object...</span>`;
             return;
         }
 
         let html = `<b>Name:</b> ${obj.name}<br>`;
-        html += `<b>Typ:</b> ${obj.type}<br>`;
+        html += `<b>Type:</b> ${obj.type}<br>`;
         html += `<b>Position:</b> x=${obj.x.toFixed(2)}, y=${obj.y.toFixed(2)} (Lj)<br>`;
-        html += `<b>Distanz zum Zentrum:</b> ${obj.distanceToCenter ? obj.distanceToCenter.toFixed(2) : "-"} Lj<br>`;
+        html += `<b>Distance to Center:</b> ${obj.distanceToCenter ? obj.distanceToCenter.toFixed(2) : "-"} Lj<br>`;
 
         if (obj.metadata) {
             const info = obj;
             if (obj.type === "star") {
-                html += `<hr><b>Sternendaten:</b><br>`;
-                html += `Spektralklasse: ${info.metadata.starSpectral?.h ?? "-"}-${info.metadata.starSpectral.s ?? "-"} (${info.metadata.starSpectral.name ?? "-"})<br>`;
-                html += `Temperatur: ${info.metadata.starTemperature ?? "-"} °K (${info.metadata.starSpectral.color ?? "-"})<br>`;
-                html += `Masse: ${info.metadata.starMass?.toFixed(3) ?? "-"} Sonnenmassen<br>`;
-                html += `Radius: ${info.metadata.starRad?.toFixed(3) ?? "-"} Sonnenradien<br>`;
-                html += `Leuchtkraft: ${info.metadata.starLum?.toFixed(5) ?? "-"} L☉<br>`;
-                html += `Masse (kg): ${info.metadata.starMassKG ? info.metadata.starMassKG.toExponential(3) : "-"}<br>`;
+                html += `<hr><b>Stardata:</b><br>`;
+                html += `Spectral Class: ${info.metadata.starSpectral?.h ?? "-"}-${info.metadata.starSpectral.s ?? "-"} (${info.metadata.starSpectral.name ?? "-"})<br>`;
+                html += `Tempreature: ${info.metadata.starTemperature ?? "-"} °K (${info.metadata.starSpectral.color ?? "-"})<br>`;
+                html += `Mass: ${info.metadata.starMass?.toFixed(3) ?? "-"} M☉<br>`;
+                html += `Radius: ${info.metadata.starRad?.toFixed(3) ?? "-"} R☉<br>`;
+                html += `Light Strength: ${info.metadata.starLum?.toFixed(5) ?? "-"} L☉<br>`;
+                html += `Mass (kg): ${info.metadata.starMassKG ? info.metadata.starMassKG.toExponential(3) : "-"}<br>`;
 
                 if (Array.isArray(info.metadata.planetSystem)) {
-                    html += `<hr><b>Planeten (${info.metadata.planetSystem.length}):</b><br>`;
+                    html += `<hr><b>Planets (${info.metadata.planetSystem.length}):</b><br>`;
                     info.metadata.planetSystem.forEach((planet, idx) => {
                         let OTD = planet.OrbitalTimeInSec / (24 * 3600);
 
@@ -587,45 +587,48 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
                         for (let i = 0; i < sortedResources.length; i++) {
                             const e = sortedResources[i];
                             if (e.id != "nothing") {
-                                planetResString += `${e[resourceLabel]} (${(e.p * 100).toFixed(1)}%), `;
+                                planetResString += `<br>&nbsp;&nbsp;${e[resourceLabel]} (${(e.p * 100).toFixed(1)}%)`;
                             }
                         }
 
                         html += `<u>Planet ${idx + 1}: ${planet.name}</u> <br>`;
-                        html += `&nbsp;Temperatur: ${planet.temperature.toFixed(3)} °K (${(planet.temperature - 273.15).toFixed(3)} °C)<br>`;
-                        html += `&nbsp;Orbitale Höhe: ${planet.height.toFixed(2)} AE<br>`;
-                        html += `&nbsp;Masse: ${planet.massEM} Erdmassen (${planet.massKG.toExponential(3)} kg)<br>`;
-                        html += `&nbsp;Dichte: ${planet.d.toFixed(2)} kg/m³)<br>`;
+                        if (planet.attributes?.atm == "atmosphere") {
+                            html += `&nbsp;Temperature: ${planet.special.atmosphere.temperature.toFixed(3)} °K (${(planet.special.atmosphere.temperature - 273.15).toFixed(3)} °C)<br>`;
+                            html += `&nbsp;Greenhouse Effect: ${planet.special.atmosphere.greenhouseEffect.toFixed(3)} °C<br>`
+                        }
+                        else {
+                            html += `&nbsp;Temperature: ${planet.temperature.toFixed(3)} °K (${(planet.temperature - 273.15).toFixed(3)} °C)<br>`;
+                        }
+                        html += `&nbsp;Orbital Heigth: ${planet.height.toFixed(2)} AE<br>`;
+                        html += `&nbsp;Mass: ${planet.massEM} Earth Masses (${planet.massKG.toExponential(3)} kg)<br>`;
+                        html += `&nbsp;Density: ${planet.d.toFixed(2)} kg/m³)<br>`;
                         html += `&nbsp;Radius: ${(planet.r / 1000).toFixed(2)} km<br>`;
-                        html += `&nbsp;Umlaufzeit: ${planet.OrbitalTimeInYears} Jahre`;
+                        html += `&nbsp;Orbital Period: ${planet.OrbitalTimeInYears} Years`;
                         if (OTD < 100) { html += `(${OTD.toFixed(3)} Tage)<br>` } else { html += "<br>" }
-                        html += `&nbsp;Ressourcen:<br>&nbsp;${planetResString}<br>`;
-                        html += `&nbsp;Attribute: ${JSON.stringify(planet.attributes) ?? "-"}<br>`;
+                        html += `&nbsp;Resources:${planetResString}<br>`;
+                        html += `&nbsp;Attributes: ${JSON.stringify(planet.attributes) ?? "-"}<br>`;
                         if (planet.moons && planet.moons.length > 0) {
-                            // Optional: letztes Komma entfernen
                             if (planetResString.endsWith(", ")) planetResString = planetResString.slice(0, -2);
-                            html += `&nbsp;Monde (${planet.moons.length}):<br>`;
+                            html += `&nbsp;Moons (${planet.moons.length}):<br>`;
                             planet.moons.forEach((moon, min) => {
                                 let moonResString = "";
-                                // Detaillierte Ressourcenanzeige: Name statt Short, wenn aktiviert
                                 const resourceLabel = DETAILED_RESOURCE_NAMES ? "name" : "short";
-                                // Ressourcen sortieren: Erst nach Anteil (p) absteigend, "nothing" immer ans Ende
                                 const sortedResources = [...moon.resources].sort((a, b) => { return b.p - a.p; });
                                 for (let i = 0; i < sortedResources.length; i++) {
                                     const e = sortedResources[i];
                                     if (e.id != "nothing") {
-                                        moonResString += `${e[resourceLabel]} (${(e.p * 100).toFixed(1)}%), `;
+                                        moonResString += `<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${e[resourceLabel]} (${(e.p * 100).toFixed(1)}%)`;
                                     }
                                 }
 
                                 html += `&nbsp;&nbsp;- ${moon.name}<br>`
-                                html += `&nbsp;&nbsp;&nbsp;&nbsp;Höhe: ${moon.height.toFixed(0)} km<br>`
-                                html += `&nbsp;&nbsp;&nbsp;&nbsp;Masse: ${moon.massEM} Erdmassen (${moon.massKG.toExponential(3)} kg)<br>`
-                                html += `&nbsp;&nbsp;&nbsp;&nbsp;Dichte: ${(moon.d).toFixed(2)} kg/m³<br>`
+                                html += `&nbsp;&nbsp;&nbsp;&nbsp;Orbital Height: ${moon.height.toFixed(0)} km<br>`
+                                html += `&nbsp;&nbsp;&nbsp;&nbsp;Mass: ${moon.massEM} Earth Masses (${moon.massKG.toExponential(3)} kg)<br>`
+                                html += `&nbsp;&nbsp;&nbsp;&nbsp;Density: ${(moon.d).toFixed(2)} kg/m³<br>`
                                 html += `&nbsp;&nbsp;&nbsp;&nbsp;Radius: ${(moon.r / 1000).toFixed(2)} km<br>`
-                                html += `&nbsp;&nbsp;&nbsp;&nbsp;Umlaufzeit: ${(moon.OrbitalTimeInSec / 3600).toFixed(2)} h (${(moon.OrbitalTimeInSec / (24 * 3600)).toFixed(3)} Tage)<br>`;
-                                html += `&nbsp;&nbsp;&nbsp;&nbsp;Ressourcen: ${moonResString}<br>`;
-                                html += `&nbsp;&nbsp;&nbsp;&nbsp;Attribute: ${JSON.stringify(moon.attributes) ?? "-"}<br>`;
+                                html += `&nbsp;&nbsp;&nbsp;&nbsp;Orbital Peroid: ${(moon.OrbitalTimeInSec / 3600).toFixed(2)} h (${(moon.OrbitalTimeInSec / (24 * 3600)).toFixed(3)} Tage)<br>`;
+                                html += `&nbsp;&nbsp;&nbsp;&nbsp;Resources:${moonResString}<br>`;
+                                html += `&nbsp;&nbsp;&nbsp;&nbsp;Attributes: ${JSON.stringify(moon.attributes) ?? "-"}<br>`;
                             });
                         }
                         html += "<br>"
@@ -633,15 +636,20 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
                 }
             }
 
-            if (obj.type === "rogue_planet" || obj.type === "planet") {
-                html += `<hr><b>Planetendaten:</b><br>`;
-                html += `Masse: ${info.massEM ?? "-"} Erdmassen<br>`;
-                if (obj.type == "planet") html += `Höhe: ${info.height ?? "-"} AE<br>`;
-                html += `&nbsp;Ressourcen: - <br>`;
+            if (obj.type === "rogue_planet") {
+                html += `<hr><b>Planet Data:</b><br>`;
+                html += `Mass: ${info.massEM ?? "-"} Earth Mass<br>`;
+                html += `&nbsp;Resources: - <br>`;
                 if (info.moons && info.moons.length > 0) {
-                    html += `Monde (${info.moons.length}):<br>`;
+                    html += `Moons (${info.moons.length}):<br>`;
                     info.moons.forEach((moon, mi) => {
-                        html += `&nbsp;&nbsp;• ${moon.name} (Höhe: ${moon.height.toFixed(0)} km, Masse: ${moon.massEM} EM, Umlaufzeit: ${(moon.OrbitalTimeInSec / 3600).toFixed(2)} h (${(moon.OrbitalTimeInSec / (24 * 3600).toFixed(3)).toFixed(3)} Tage)<br>`;
+                        html += `&nbsp;&nbsp;Orbital Height: ${moon.height.toFixed(0)} km<br>`
+                        html += `&nbsp;&nbsp;Mass: ${moon.massEM} Earth Masses (${moon.massKG.toExponential(3)} kg)<br>`
+                        html += `&nbsp;&nbsp;Density: ${(moon.d).toFixed(2)} kg/m³<br>`
+                        html += `&nbsp;&nbsp;Radius: ${(moon.r / 1000).toFixed(2)} km<br>`
+                        html += `&nbsp;&nbsp;Orbital Peroid: ${(moon.OrbitalTimeInSec / 3600).toFixed(2)} h (${(moon.OrbitalTimeInSec / (24 * 3600)).toFixed(3)} Tage)<br>`;
+                        html += `&nbsp;&nbsp;Resources: ${moonResString}<br>`;
+                        html += `&nbsp;&nbsp;Attributes: ${JSON.stringify(moon.attributes) ?? "-"}<br>`;
                     });
                 }
             }

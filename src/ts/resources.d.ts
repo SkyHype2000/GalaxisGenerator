@@ -100,81 +100,81 @@ export declare class webResourceInformation {
  * `id` = ID der Ressource
  */
 export declare function getResourceByID(id: string): resource | null;
-/**Hämatit das auf Planeten gefunden werden kann. */
+/**Hematite that can be found on planets. */
 export declare const iron_ore_0a: resource;
-/**Elementares Eisen das auf Atmosphärenlosen Planeten gefunden werden kann. */
+/**Elemental iron that can be found on planets without atmospheres. */
 export declare const iron_ore_0b: resource;
-/**Hämatit das auf Monden gefunden werden kann. */
+/**Hematite that can be found on moons. */
 export declare const iron_ore_0c: resource;
-/**Elementares Eisen das auf Atmosphärenlosen Monden gefunden werden kann. */
+/**Elemental iron that can be found on moons without atmospheres. */
 export declare const iron_ore_0d: resource;
-/**Elementares Eisen das auf Stellaren Asteroiden gefunden werden kann. */
+/**Elemental iron that can be found on stellar asteroids. */
 export declare const iron_ore_1: resource;
-/**Elementares Eisen das auf Interstellaren T1 Asteroiden gefunden werden kann. */
+/**Elemental iron that can be found on interstellar T1 asteroids. */
 export declare const iron_ore_2: resource;
-/**Elementares Eisen das auf Interstellaren T2 Asteroiden gefunden werden kann. */
+/**Elemental iron that can be found on interstellar T2 asteroids. */
 export declare const iron_ore_3: resource;
-/**Elementares Eisen das auf Interstellaren T3 Asteroiden gefunden werden kann. */
+/**Elemental iron that can be found on interstellar T3 asteroids. */
 export declare const iron_ore_4: resource;
-/**Chalkosin das auf Planeten Gefunden werden kann. */
+/**Chalcocite that can be found on planets. */
 export declare const copper_ore_0a: resource;
-/**Chalkosin das auf Atmosphärenlosen Planeten Gefunden werden kann. */
+/**Elemental copper that can be found on planets without atmospheres. */
 export declare const copper_ore_0b: resource;
-/**Chalkosin das auf Monden Gefunden werden kann. */
+/**Chalcocite that can be found on moons. */
 export declare const copper_ore_0c: resource;
-/**Chalkosin das auf Atmosphärenlosen Monden Gefunden werden kann. */
+/**Elemental copper that can be found on moons without atmospheres. */
 export declare const copper_ore_0d: resource;
-/**Chalkosin das auf Stellaren Asteroiden Gefunden werden kann. */
+/**Elemental copper that can be found on stellar asteroids. */
 export declare const copper_ore_1: resource;
-/**Chalkosin das auf Interstellaren T1 Asteroiden Gefunden werden kann. */
+/**Elemental copper that can be found on interstellar T1 asteroids. */
 export declare const copper_ore_2: resource;
-/**Chalkosin das auf Interstellaren T2 Asteroiden Gefunden werden kann. */
+/**Elemental copper that can be found on interstellar T2 asteroids. */
 export declare const copper_ore_3: resource;
-/**Chalkosin das auf Interstellaren T3 Asteroiden Gefunden werden kann. */
+/**Elemental copper that can be found on interstellar T3 asteroids. */
 export declare const copper_ore_4: resource;
-/**Siliziumdioxid das auf Planeten Gefunden werden kann. */
+/**Silicon dioxide that can be found on planets. */
 export declare const silica_0: resource;
-/**Siliziumdioxid das auf Planeten Gefunden werden kann. */
+/**Silicon dioxide that can be found on moons. */
 export declare const silica_1: resource;
-/**Siliziumdioxid das auf Stellaren Asteroiden Gefunden werden kann. */
+/**Silicon dioxide that can be found on stellar asteroids. */
 export declare const silica_2: resource;
-/**Siliziumdioxid das auf Interstellaren T1 Asteroiden Gefunden werden kann. */
+/**Silicon dioxide that can be found on interstellar T1 asteroids. */
 export declare const silica_3: resource;
-/**Siliziumdioxid das auf Interstellaren T2 Asteroiden Gefunden werden kann. */
+/**Silicon dioxide that can be found on interstellar T2 asteroids. */
 export declare const silica_4: resource;
-/**Siliziumdioxid das auf Interstellaren T3 Asteroiden Gefunden werden kann. */
+/**Silicon dioxide that can be found on interstellar T3 asteroids. */
 export declare const silica_5: resource;
-/**Wassereis das auf Stellaren Asteroiden Gefunden werden kann. */
+/**Water ice that can be found on stellar asteroids. */
 export declare const water_ice_0: resource;
-/**Wassereis das auf Interstellaren T1 Asteroiden Gefunden werden kann. */
+/**Water ice that can be found on interstellar T1 asteroids. */
 export declare const water_ice_1: resource;
-/**Wassereis das auf Interstellaren T2 Asteroiden Gefunden werden kann. */
+/**Water ice that can be found on interstellar T2 asteroids. */
 export declare const water_ice_2: resource;
-/**Wassereis das auf Interstellaren T3 Asteroiden Gefunden werden kann. */
+/**Water ice that can be found on interstellar T3 asteroids. */
 export declare const water_ice_3: resource;
-/**Festes Methaneis das in Interstellaren T1 Asteroiden Gefunden werden kann. */
+/**Solid methane ice that can be found on interstellar T1 asteroids. */
 export declare const methane_ice_0: resource;
-/**Festes Methaneis das in Interstellaren T2 Asteroiden Gefunden werden kann. */
+/**Solid methane ice that can be found on interstellar T2 asteroids. */
 export declare const methane_ice_1: resource;
-/**Festes Methaneis das in Interstellaren T3 Asteroiden Gefunden werden kann. */
+/**Solid methane ice that can be found on interstellar T3 asteroids. */
 export declare const methane_ice_2: resource;
-/**Festes Ammoniumeis das in den Äußeren Asteroiden-Gürteln eines Sternsystems Gefunden werden kann. */
+/**Solid ammonia ice that can be found in the outer asteroid belts of a star system. */
 export declare const ammonia_ice: resource;
-/**Antimaterie-Elektronen oder Positronen, die in der Nähe von Gasriesen gefunden werden können. */
+/**Antimatter electrons or positrons that can be found near massive gas giants. */
 export declare const positrons_0: resource;
-/**Antimaterie-Elektronen oder Positronen, die im Interstellaren Raum gefunden werden können. */
+/**Antimatter electrons or positrons that can be found in interstellar space. */
 export declare const positrons_1: resource;
-/**Antimaterie-Elektronen oder Positronen, die in Interstelarren Anti-Materie Clustern gefunden werden können. */
+/**Antimatter electrons or positrons that can be found in interstellar antimatter clusters. */
 export declare const positrons_2: resource;
-/**Antimaterie-Protonen, die im Interstellaren Raum gefunden werden können. */
+/**Antimatter protons that can be found in interstellar space. */
 export declare const anti_protons: resource;
-/**Antimaterie-Neutronen, die im Interstellaren Raum gefunden werden können. */
+/**Antimatter neutrons that can be found in interstellar space. */
 export declare const anti_neutrons: resource;
-/**Antimaterie-Wasserstof, eine unglaublich Seltene form von Anti-Materie, die im Interstellaren Raum gefunden werden können. */
+/**Antihydrogen, an incredibly rare form of antimatter that can be found in interstellar space. */
 export declare const anti_hydrogen: resource;
-/**Neutronium oder Neutroniummaterie, eine Materie die aus reinen Neutronen besteht. */
+/**Neutronium or neutronium matter, a substance made entirely of neutrons. */
 export declare const neutronium_matter: resource;
-/**Nukleare Pasta, Extrem dichte Materie die in einem Neutronenstern vorkommt. */
+/**Nuclear pasta, extremely dense matter found in a neutron star's outer crust. */
 export declare const nuclear_pasta: resource;
 /**Testressource - wird für die resourcemap verwendet*/
 export declare const test_0: resource;

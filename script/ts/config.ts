@@ -158,7 +158,7 @@ export const G: 6.67430e-11 = 6.67430e-11;
 /**
  * Stefan Boltzmann Konstante
  */
-export const O: 5.670373e-8 = 5.670373e-8;
+export const SB: 5.670373e-8 = 5.670373e-8;
 /**
  * Die Länge einer Astronomischen Einheit in Meter
  */
@@ -267,8 +267,8 @@ export type planetSystemDataDef = {
     orbitPosNorm: number,
     resources: res.webResourceInformation[],
     moons: moonSystemDataDef[],
-    attributes: [("atmosphere" | "noAtmosphere")]
-    special: any,
+    attributes: CelestialAttributeData,
+    special: {atmosphere?:AtmosphericInformation},
 }
 
 /**
@@ -283,8 +283,8 @@ export type roguePlanetDataDef = {
     d: number, // Dichte
     moons: moonSystemDataDef[],
     resources: res.webResourceInformation[],
-    attributes: [("atmosphere"|"noAtmosphere")],
-    special: any
+    attributes: CelestialAttributeData,
+    special: {atmosphere?:AtmosphericInformation},
 }
 
 /**
@@ -304,18 +304,27 @@ export type moonSystemDataDef = {
     orbitPosDegree: number,
     orbitPosNorm: number,
     resources: res.webResourceInformation[],
-    attributes: [("atmosphere" | "noAtmosphere")],
-    special: any,
+    attributes: CelestialAttributeData,
+    special: CelestialSpecialData,
 }
 
 /**
  * Atmosphereninformationen (Type)
  */
 export type AtmosphericInformation = {
-    tau: number,
     temperature: number,
+    gases: GasInformationType[],
     scaleHeight: number,
-    referenceDensity: number
+    referenceDensity: number,
+    greenhouseEffect: number
+}
+
+export type CelestialAttributeData = {
+    atm?: "atmosphere" | "noAtmosphere"
+}
+
+export type CelestialSpecialData = {
+    atmosphere?:AtmosphericInformation
 }
 
 /**

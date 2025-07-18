@@ -163,90 +163,90 @@ function getResourceByID(id) {
     }
     return null;
 }
-//* EISENERZ
-/**Hämatit das auf Planeten gefunden werden kann. */
-exports.iron_ore_0a = new resource("Hämatit", "iron_ore_0a", "iron_ore", "Fe2O3", "Hämatit(Eisenerz) das auf Planeten gefunden werden kann.", 4800, 0.01, "solid", "planet:atmosphere");
-/**Elementares Eisen das auf Atmosphärenlosen Planeten gefunden werden kann. */
-exports.iron_ore_0b = new resource("Eisen", "iron_ore_0b", "iron_ore", "Fe", "Elementares Eisen das auf Atmosphärenlosen Planeten gefunden werden kann.", 4800, 0.01, "solid", "planet:noAtmosphere");
-/**Hämatit das auf Monden gefunden werden kann. */
-exports.iron_ore_0c = new resource("Hämatit", "iron_ore_0c", "iron_ore", "Fe2O3", "Hämatit(Eisenerz) das auf Monden gefunden werden kann.", 4800, 0.01, "solid", "moon:atmosphere");
-/**Elementares Eisen das auf Atmosphärenlosen Monden gefunden werden kann. */
-exports.iron_ore_0d = new resource("Eisen", "iron_ore_0d", "iron_ore", "Fe", "Elementares Eisen das auf Atmosphärenlosen Monden gefunden werden kann.", 4800, 0.01, "solid", "moon:noAtmosphere");
-/**Elementares Eisen das auf Stellaren Asteroiden gefunden werden kann. */
-exports.iron_ore_1 = new resource("Eisen", "iron_ore_1", "iron_ore", "Fe", "Elementares Eisen das auf Stellaren Asteroiden gefunden werden kann.", 4800, 0.03, "solid", "stellar_astroid");
-/**Elementares Eisen das auf Interstellaren T1 Asteroiden gefunden werden kann. */
-exports.iron_ore_2 = new resource("Eisen", "iron_ore_2", "iron_ore", "Fe", "Elementares Eisen das auf Interstellaren T1 Asteroiden gefunden werden kann.", 4800, 0.08, "solid", "interstellar_t1_astroid");
-/**Elementares Eisen das auf Interstellaren T2 Asteroiden gefunden werden kann. */
-exports.iron_ore_3 = new resource("Eisen", "iron_ore_3", "iron_ore", "Fe", "Elementares Eisen das auf Interstellaren T2 Asteroiden gefunden werden kann.", 4800, 0.1, "solid", "interstellar_t2_astroid");
-/**Elementares Eisen das auf Interstellaren T3 Asteroiden gefunden werden kann. */
-exports.iron_ore_4 = new resource("Eisen", "iron_ore_4", "iron_ore", "Fe", "Elementares Eisen das auf Interstellaren T3 Asteroiden gefunden werden kann.", 4800, 0.2, "solid", "interstellar_t3_astroid");
-//* KUPFERERZ
-/**Chalkosin das auf Planeten Gefunden werden kann. */
-exports.copper_ore_0a = new resource("Chalkosin", "copper_ore_0a", "copper_ore", "Cu2S", "Chalkosin das auf Planeten Gefunden werden kann.", 5600, 0.01, "solid", "planet:atmosphere");
-/**Chalkosin das auf Atmosphärenlosen Planeten Gefunden werden kann. */
-exports.copper_ore_0b = new resource("Kupfer", "copper_ore_0b", "copper_ore", "Cu", "Elementares Kupfer das auf Atmosphärenlosen Planeten Gefunden werden kann.", 5600, 0.01, "solid", "planet:noAtmosphere");
-/**Chalkosin das auf Monden Gefunden werden kann. */
-exports.copper_ore_0c = new resource("Chalkosin", "copper_ore_0c", "copper_ore", "Cu2S", "Chalkosin das auf Monden Gefunden werden kann.", 5600, 0.01, "solid", "moon:atmosphere");
-/**Chalkosin das auf Atmosphärenlosen Monden Gefunden werden kann. */
-exports.copper_ore_0d = new resource("Kupfer", "copper_ore_0d", "copper_ore", "Cu", "Elementares Kupfer das auf Atmosphärenlosen Monden Gefunden werden kann.", 5600, 0.01, "solid", "moon:noAtmosphere");
-/**Chalkosin das auf Stellaren Asteroiden Gefunden werden kann. */
-exports.copper_ore_1 = new resource("Kupfer", "copper_ore_1", "copper_ore", "Cu", "Elementares Kupfer das auf Stellaren Asteroiden Gefunden werden kann.", 5600, 0.08, "solid", "stellar_astroid");
-/**Chalkosin das auf Interstellaren T1 Asteroiden Gefunden werden kann. */
-exports.copper_ore_2 = new resource("Kupfer", "copper_ore_2", "copper_ore", "Cu", "Elementares Kupfer das auf Interstellaren T1 Asteroiden Gefunden werden kann.", 5600, 0.09, "solid", "interstellar_t1_astroid");
-/**Chalkosin das auf Interstellaren T2 Asteroiden Gefunden werden kann. */
-exports.copper_ore_3 = new resource("Kupfer", "copper_ore_3", "copper_ore", "Cu", "Elementares Kupfer das auf Interstellaren T2 Asteroiden Gefunden werden kann.", 5600, 0.09, "solid", "interstellar_t2_astroid");
-/**Chalkosin das auf Interstellaren T3 Asteroiden Gefunden werden kann. */
-exports.copper_ore_4 = new resource("Kupfer", "copper_ore_4", "copper_ore", "Cu", "Elementares Kupfer das auf Interstellaren T3 Asteroiden Gefunden werden kann.", 5600, 0.09, "solid", "interstellar_t3_astroid");
-//* SILIZIUMDIOXID
-/**Siliziumdioxid das auf Planeten Gefunden werden kann. */
-exports.silica_0 = new resource("Siliziumdioxid", "silica_0", "silica", "SiO2", "Siliziumdioxid das auf Planeten Gefunden werden kann.", 2650, 0.5, "solid", "planet");
-/**Siliziumdioxid das auf Planeten Gefunden werden kann. */
-exports.silica_1 = new resource("Siliziumdioxid", "silica_1", "silica", "SiO2", "Siliziumdioxid das auf Monden Gefunden werden kann.", 2650, 0.5, "solid", "moon");
-/**Siliziumdioxid das auf Stellaren Asteroiden Gefunden werden kann. */
-exports.silica_2 = new resource("Siliziumdioxid", "silica_2", "silica", "SiO2", "Siliziumdioxid das auf Stellaren Asteroiden Gefunden werden kann.", 2650, 0.5, "solid", "stellar_astroid");
-/**Siliziumdioxid das auf Interstellaren T1 Asteroiden Gefunden werden kann. */
-exports.silica_3 = new resource("Siliziumdioxid", "silica_3", "silica", "SiO2", "Siliziumdioxid das auf Interstellaren T1 Asteroiden Gefunden werden kann.", 2650, 0.5, "solid", "interstellar_t1_astroid");
-/**Siliziumdioxid das auf Interstellaren T2 Asteroiden Gefunden werden kann. */
-exports.silica_4 = new resource("Siliziumdioxid", "silica_4", "silica", "SiO2", "Siliziumdioxid das auf Interstellaren T2 Asteroiden Gefunden werden kann.", 2650, 0.5, "solid", "interstellar_t2_astroid");
-/**Siliziumdioxid das auf Interstellaren T3 Asteroiden Gefunden werden kann. */
-exports.silica_5 = new resource("Siliziumdioxid", "silica_5", "silica", "SiO2", "Siliziumdioxid das auf Interstellaren T3 Asteroiden Gefunden werden kann.", 2650, 0.5, "solid", "interstellar_t3_astroid");
-//* WASSER
-/**Wassereis das auf Stellaren Asteroiden Gefunden werden kann. */
-exports.water_ice_0 = new resource("Wassereis", "water_ice_0", "water_ice", "water_ice", "Wassereis das auf Stellaren Asteroiden Gefunden werden kann.", 997, 0.25, "solid", "stellar_astroid");
-/**Wassereis das auf Interstellaren T1 Asteroiden Gefunden werden kann. */
-exports.water_ice_1 = new resource("Wassereis", "water_ice_1", "water_ice", "water_ice", "Wassereis das auf Interstellaren T1 Asteroiden Gefunden werden kann.", 997, 0.25, "solid", "interstellar_t1_astroid");
-/**Wassereis das auf Interstellaren T2 Asteroiden Gefunden werden kann. */
-exports.water_ice_2 = new resource("Wassereis", "water_ice_2", "water_ice", "water_ice", "Wassereis das auf Interstellaren T2 Asteroiden Gefunden werden kann.", 997, 0.25, "solid", "interstellar_t2_astroid");
-/**Wassereis das auf Interstellaren T3 Asteroiden Gefunden werden kann. */
-exports.water_ice_3 = new resource("Wassereis", "water_ice_3", "water_ice", "water_ice", "Wassereis das auf Interstellaren T3 Asteroiden Gefunden werden kann.", 997, 0.25, "solid", "interstellar_t3_astroid");
-//* METHAN
-/**Festes Methaneis das in Interstellaren T1 Asteroiden Gefunden werden kann. */
-exports.methane_ice_0 = new resource("Methaneis", "solid_methane_0", "solid_methane", "methane_ice", "Festes Methaneis das in Interstellaren T1 Asteroiden Gefunden werden kann.", 900, 0.05, "solid", "interstellar_t1_astroid");
-/**Festes Methaneis das in Interstellaren T2 Asteroiden Gefunden werden kann. */
-exports.methane_ice_1 = new resource("Methaneis", "solid_methane_1", "solid_methane", "methane_ice", "Festes Methaneis das in Interstellaren T2 Asteroiden Gefunden werden kann.", 900, 0.06, "solid", "interstellar_t2_astroid");
-/**Festes Methaneis das in Interstellaren T3 Asteroiden Gefunden werden kann. */
-exports.methane_ice_2 = new resource("Methaneis", "solid_methane_2", "solid_methane", "methane_ice", "Festes Methaneis das in Interstellaren T3 Asteroiden Gefunden werden kann.", 900, 0.08, "solid", "interstellar_t3_astroid");
-//* AMMONIAK
-/**Festes Ammoniumeis das in den Äußeren Asteroiden-Gürteln eines Sternsystems Gefunden werden kann. */
-exports.ammonia_ice = new resource("Ammoniumeis", "solid_ammonia", "ammonia", "ammonia_ice", "Festes Ammoniumeis das in den Äußeren Asteroiden-Gürteln eines Sternsystems Gefunden werden kann.", 817, 0.002, "solid", "stellar_astroid");
-//* ANTIMATERIE
-/**Antimaterie-Elektronen oder Positronen, die in der Nähe von Gasriesen gefunden werden können. */
-exports.positrons_0 = new resource("Positronen", "positrons_0", "positrons", "e+", "Antimaterie-Elektronen oder Positronen, die in der Nähe von Massiven Gasriesen gefunden werden können.", 0e-1000, 0.001, "antimatter", "gas_planet");
-/**Antimaterie-Elektronen oder Positronen, die im Interstellaren Raum gefunden werden können. */
-exports.positrons_1 = new resource("Positronen", "positrons_1", "positrons", "e+", "Antimaterie-Elektronen oder Positronen, die im Interstellaren Raum gefunden werden können.", 0e-1000, 0.00001, "antimatter", "interstellar_space");
-/**Antimaterie-Elektronen oder Positronen, die in Interstelarren Anti-Materie Clustern gefunden werden können. */
-exports.positrons_2 = new resource("Positronen", "positrons_2", "positrons", "e+", "Antimaterie-Elektronen oder Positronen, die in Interstelarren Anti-Materie Clustern gefunden werden können.", 0e-1000, 0.001, "antimatter", "antimatter_anomaly");
-/**Antimaterie-Protonen, die im Interstellaren Raum gefunden werden können. */
-exports.anti_protons = new resource("Anti-Protonen", "anti_protons", "anti_protons", "p-", "Antimaterie-Protonen, die im Interstellaren Raum gefunden werden können.", 2.3e14, 0, "antimatter", "interstellar_space");
-/**Antimaterie-Neutronen, die im Interstellaren Raum gefunden werden können. */
-exports.anti_neutrons = new resource("Anti-Neutronen", "anti_neutrons", "anti_neutrons", "nn'", "Antimaterie-Neutronen, die im Interstellaren Raum gefunden werden können.", 2.2e14, 0, "antimatter", "interstellar_space");
-/**Antimaterie-Wasserstof, eine unglaublich Seltene form von Anti-Materie, die im Interstellaren Raum gefunden werden können. */
-exports.anti_hydrogen = new resource("Anti-Wasserstoff", "anti_hydrogen", "anti_hydrogen", "H'", "Antimaterie-Wasserstof, eine unglaublich Seltene form von Anti-Materie, die im Interstellaren Raum gefunden werden können.", 0.08988, 0, "antimatter", "interstellar_space");
-//* EXOTISCH
-/**Neutronium oder Neutroniummaterie, eine Materie die aus reinen Neutronen besteht. */
-exports.neutronium_matter = new resource("Neutronium-Materie", "neutronium", "neutronium", "nn", "Neutronium oder Neutroniummaterie, eine Materie die aus reinen Neutronen besteht.", 2.2e14, 0.25, "exotic", "neutron_star");
-/**Nukleare Pasta, Extrem dichte Materie die in einem Neutronenstern vorkommt. */
-exports.nuclear_pasta = new resource("Nukleare Pasta", "nuclear_pasta", "nuclear_pasta", "nnn", "Nukleare Pasta, Extrem dichte Materie die in der Äußeren Kruste eines Neutronensterns vorkommt.", 2.3e17, 0.75, "exotic", "neutron_star");
+//* IRON ORE
+/**Hematite that can be found on planets. */
+exports.iron_ore_0a = new resource("Hematite", "iron_ore_0a", "iron_ore", "Fe2O3", "Hematite (iron ore) that can be found on planets.", 4800, 0.01, "solid", "planet:atmosphere");
+/**Elemental iron that can be found on planets without atmospheres. */
+exports.iron_ore_0b = new resource("Iron", "iron_ore_0b", "iron_ore", "Fe", "Elemental iron that can be found on planets without atmospheres.", 4800, 0.01, "solid", "planet:noAtmosphere");
+/**Hematite that can be found on moons. */
+exports.iron_ore_0c = new resource("Hematite", "iron_ore_0c", "iron_ore", "Fe2O3", "Hematite (iron ore) that can be found on moons.", 4800, 0.01, "solid", "moon:atmosphere");
+/**Elemental iron that can be found on moons without atmospheres. */
+exports.iron_ore_0d = new resource("Iron", "iron_ore_0d", "iron_ore", "Fe", "Elemental iron that can be found on moons without atmospheres.", 4800, 0.01, "solid", "moon:noAtmosphere");
+/**Elemental iron that can be found on stellar asteroids. */
+exports.iron_ore_1 = new resource("Iron", "iron_ore_1", "iron_ore", "Fe", "Elemental iron that can be found on stellar asteroids.", 4800, 0.03, "solid", "stellar_astroid");
+/**Elemental iron that can be found on interstellar T1 asteroids. */
+exports.iron_ore_2 = new resource("Iron", "iron_ore_2", "iron_ore", "Fe", "Elemental iron that can be found on interstellar T1 asteroids.", 4800, 0.08, "solid", "interstellar_t1_astroid");
+/**Elemental iron that can be found on interstellar T2 asteroids. */
+exports.iron_ore_3 = new resource("Iron", "iron_ore_3", "iron_ore", "Fe", "Elemental iron that can be found on interstellar T2 asteroids.", 4800, 0.1, "solid", "interstellar_t2_astroid");
+/**Elemental iron that can be found on interstellar T3 asteroids. */
+exports.iron_ore_4 = new resource("Iron", "iron_ore_4", "iron_ore", "Fe", "Elemental iron that can be found on interstellar T3 asteroids.", 4800, 0.2, "solid", "interstellar_t3_astroid");
+//* COPPER ORE
+/**Chalcocite that can be found on planets. */
+exports.copper_ore_0a = new resource("Chalcocite", "copper_ore_0a", "copper_ore", "Cu2S", "Chalcocite that can be found on planets.", 5600, 0.01, "solid", "planet:atmosphere");
+/**Elemental copper that can be found on planets without atmospheres. */
+exports.copper_ore_0b = new resource("Copper", "copper_ore_0b", "copper_ore", "Cu", "Elemental copper that can be found on planets without atmospheres.", 5600, 0.01, "solid", "planet:noAtmosphere");
+/**Chalcocite that can be found on moons. */
+exports.copper_ore_0c = new resource("Chalcocite", "copper_ore_0c", "copper_ore", "Cu2S", "Chalcocite that can be found on moons.", 5600, 0.01, "solid", "moon:atmosphere");
+/**Elemental copper that can be found on moons without atmospheres. */
+exports.copper_ore_0d = new resource("Copper", "copper_ore_0d", "copper_ore", "Cu", "Elemental copper that can be found on moons without atmospheres.", 5600, 0.01, "solid", "moon:noAtmosphere");
+/**Elemental copper that can be found on stellar asteroids. */
+exports.copper_ore_1 = new resource("Copper", "copper_ore_1", "copper_ore", "Cu", "Elemental copper that can be found on stellar asteroids.", 5600, 0.08, "solid", "stellar_astroid");
+/**Elemental copper that can be found on interstellar T1 asteroids. */
+exports.copper_ore_2 = new resource("Copper", "copper_ore_2", "copper_ore", "Cu", "Elemental copper that can be found on interstellar T1 asteroids.", 5600, 0.09, "solid", "interstellar_t1_astroid");
+/**Elemental copper that can be found on interstellar T2 asteroids. */
+exports.copper_ore_3 = new resource("Copper", "copper_ore_3", "copper_ore", "Cu", "Elemental copper that can be found on interstellar T2 asteroids.", 5600, 0.09, "solid", "interstellar_t2_astroid");
+/**Elemental copper that can be found on interstellar T3 asteroids. */
+exports.copper_ore_4 = new resource("Copper", "copper_ore_4", "copper_ore", "Cu", "Elemental copper that can be found on interstellar T3 asteroids.", 5600, 0.09, "solid", "interstellar_t3_astroid");
+//* SILICON DIOXIDE
+/**Silicon dioxide that can be found on planets. */
+exports.silica_0 = new resource("Silicon Dioxide", "silica_0", "silica", "SiO2", "Silicon dioxide that can be found on planets.", 2650, 0.5, "solid", "planet");
+/**Silicon dioxide that can be found on moons. */
+exports.silica_1 = new resource("Silicon Dioxide", "silica_1", "silica", "SiO2", "Silicon dioxide that can be found on moons.", 2650, 0.5, "solid", "moon");
+/**Silicon dioxide that can be found on stellar asteroids. */
+exports.silica_2 = new resource("Silicon Dioxide", "silica_2", "silica", "SiO2", "Silicon dioxide that can be found on stellar asteroids.", 2650, 0.5, "solid", "stellar_astroid");
+/**Silicon dioxide that can be found on interstellar T1 asteroids. */
+exports.silica_3 = new resource("Silicon Dioxide", "silica_3", "silica", "SiO2", "Silicon dioxide that can be found on interstellar T1 asteroids.", 2650, 0.5, "solid", "interstellar_t1_astroid");
+/**Silicon dioxide that can be found on interstellar T2 asteroids. */
+exports.silica_4 = new resource("Silicon Dioxide", "silica_4", "silica", "SiO2", "Silicon dioxide that can be found on interstellar T2 asteroids.", 2650, 0.5, "solid", "interstellar_t2_astroid");
+/**Silicon dioxide that can be found on interstellar T3 asteroids. */
+exports.silica_5 = new resource("Silicon Dioxide", "silica_5", "silica", "SiO2", "Silicon dioxide that can be found on interstellar T3 asteroids.", 2650, 0.5, "solid", "interstellar_t3_astroid");
+//* WATER
+/**Water ice that can be found on stellar asteroids. */
+exports.water_ice_0 = new resource("Water Ice", "water_ice_0", "water_ice", "water_ice", "Water ice that can be found on stellar asteroids.", 997, 0.25, "solid", "stellar_astroid");
+/**Water ice that can be found on interstellar T1 asteroids. */
+exports.water_ice_1 = new resource("Water Ice", "water_ice_1", "water_ice", "water_ice", "Water ice that can be found on interstellar T1 asteroids.", 997, 0.25, "solid", "interstellar_t1_astroid");
+/**Water ice that can be found on interstellar T2 asteroids. */
+exports.water_ice_2 = new resource("Water Ice", "water_ice_2", "water_ice", "water_ice", "Water ice that can be found on interstellar T2 asteroids.", 997, 0.25, "solid", "interstellar_t2_astroid");
+/**Water ice that can be found on interstellar T3 asteroids. */
+exports.water_ice_3 = new resource("Water Ice", "water_ice_3", "water_ice", "water_ice", "Water ice that can be found on interstellar T3 asteroids.", 997, 0.25, "solid", "interstellar_t3_astroid");
+//* METHANE
+/**Solid methane ice that can be found on interstellar T1 asteroids. */
+exports.methane_ice_0 = new resource("Methane Ice", "solid_methane_0", "solid_methane", "methane_ice", "Solid methane ice that can be found on interstellar T1 asteroids.", 900, 0.05, "solid", "interstellar_t1_astroid");
+/**Solid methane ice that can be found on interstellar T2 asteroids. */
+exports.methane_ice_1 = new resource("Methane Ice", "solid_methane_1", "solid_methane", "methane_ice", "Solid methane ice that can be found on interstellar T2 asteroids.", 900, 0.06, "solid", "interstellar_t2_astroid");
+/**Solid methane ice that can be found on interstellar T3 asteroids. */
+exports.methane_ice_2 = new resource("Methane Ice", "solid_methane_2", "solid_methane", "methane_ice", "Solid methane ice that can be found on interstellar T3 asteroids.", 900, 0.08, "solid", "interstellar_t3_astroid");
+//* AMMONIA
+/**Solid ammonia ice that can be found in the outer asteroid belts of a star system. */
+exports.ammonia_ice = new resource("Ammonia Ice", "solid_ammonia", "ammonia", "ammonia_ice", "Solid ammonia ice that can be found in the outer asteroid belts of a star system.", 817, 0.002, "solid", "stellar_astroid");
+//* ANTIMATTER
+/**Antimatter electrons or positrons that can be found near massive gas giants. */
+exports.positrons_0 = new resource("Positrons", "positrons_0", "positrons", "e+", "Antimatter electrons or positrons that can be found near massive gas giants.", 0e-1000, 0.001, "antimatter", "gas_planet");
+/**Antimatter electrons or positrons that can be found in interstellar space. */
+exports.positrons_1 = new resource("Positrons", "positrons_1", "positrons", "e+", "Antimatter electrons or positrons that can be found in interstellar space.", 0e-1000, 0.00001, "antimatter", "interstellar_space");
+/**Antimatter electrons or positrons that can be found in interstellar antimatter clusters. */
+exports.positrons_2 = new resource("Positrons", "positrons_2", "positrons", "e+", "Antimatter electrons or positrons that can be found in interstellar antimatter clusters.", 0e-1000, 0.001, "antimatter", "antimatter_anomaly");
+/**Antimatter protons that can be found in interstellar space. */
+exports.anti_protons = new resource("Anti-Protons", "anti_protons", "anti_protons", "p-", "Antimatter protons that can be found in interstellar space.", 2.3e14, 0, "antimatter", "interstellar_space");
+/**Antimatter neutrons that can be found in interstellar space. */
+exports.anti_neutrons = new resource("Anti-Neutrons", "anti_neutrons", "anti_neutrons", "nn'", "Antimatter neutrons that can be found in interstellar space.", 2.2e14, 0, "antimatter", "interstellar_space");
+/**Antihydrogen, an incredibly rare form of antimatter that can be found in interstellar space. */
+exports.anti_hydrogen = new resource("Antihydrogen", "anti_hydrogen", "anti_hydrogen", "H'", "Antihydrogen, an incredibly rare form of antimatter that can be found in interstellar space.", 0.08988, 0, "antimatter", "interstellar_space");
+//* EXOTIC
+/**Neutronium or neutronium matter, a substance made entirely of neutrons. */
+exports.neutronium_matter = new resource("Neutronium Matter", "neutronium", "neutronium", "nn", "Neutronium or neutronium matter, a substance made entirely of neutrons.", 2.2e14, 0.25, "exotic", "neutron_star");
+/**Nuclear pasta, extremely dense matter found in a neutron star's outer crust. */
+exports.nuclear_pasta = new resource("Nuclear Pasta", "nuclear_pasta", "nuclear_pasta", "nnn", "Nuclear pasta, extremely dense matter found in the outer crust of a neutron star.", 2.3e17, 0.75, "exotic", "neutron_star");
 /**Testressource - wird für die resourcemap verwendet*/
 exports.test_0 = new resource("Test1", "test0", "test0", "test0", "Testressource 1 - für die resMap", 1, 0.10, "solid", "test");
 exports.test_1 = new resource("Test2", "test1", "test1", "test1", "Testressource 2 - für die resMap", 1, 0.05, "solid", "test");

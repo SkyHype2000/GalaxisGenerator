@@ -1,576 +1,1062 @@
 {
     "type": "star",
-    "x": 150262.49989110485,
-    "y": 25498.169808900057,
-    "name": "Murwirqir",
-    "distanceToCenter": 152410.5492973757,
+    "x": 430984.979,
+    "y": 36526.257,
+    "name": "Rumzorelx",
+    "distanceToCenter": 432530.022,
     "metadata": {
-        "starLum": 0.030076429596534313,
-        "starMass": 0.4471879157066745,
-        "starMassKG": 8.891884515911515e+29,
-        "starRad": 0.5252814295648686,
+        "starLum": 116.575,
+        "starMass": 3.22532,
+        "starMassKG": 6.413233550889363e+30,
+        "starRad": 2.55,
         "starSpectral": {
-            "h": "M",
-            "s": "8",
-            "name": "Roter Zwergstern",
-            "color": "red"
+            "h": "B",
+            "s": "0",
+            "name": "Blauer Unterriese",
+            "color": "cyan"
         },
-        "starTemperature": 3320,
+        "starTemperature": 11885,
         "planetSystem": [
             {
-                "name": "Tuyanvi",
-                "parent": "Murwirqir",
-                "temperature": 99.21905,
-                "albedo": 0.26918,
-                "height": 1.166669988718429,
-                "massEM": 1.266,
-                "massKG": 7.560552000000001e+24,
-                "r": 8703915.546093697,
-                "d": 2737.29,
-                "OrbitalSpeed": 18440.090556806823,
-                "OrbitalTimeInSec": 59468948.17121241,
-                "OrbitalTimeInYears": 1.884,
-                "orbitPosDegree": 116.09,
-                "orbitPosNorm": 0.32247,
-                "moons": [
-                    {
-                        "name": "Klixapru",
-                        "parent": "Tuyanvi",
-                        "height": 85913.60934702842,
-                        "massEM": 0.0001272499,
-                        "massKG": 759936402800000000000,
-                        "r": 403525.88958422036,
-                        "d": 2761.05,
-                        "OrbitalSpeed": 2423.5312933714017,
-                        "OrbitalTimeInSec": 222737.4284014622,
-                        "OrbitalTimeInYears": 0.007,
-                        "orbitPosDegree": 301,
-                        "orbitPosNorm": 0.836,
-                        "attributes": [
-                            "noAtmosphere"
-                        ],
-                        "resources": [
-                            {
-                                "name": "Siliziumdioxid",
-                                "id": "silica_1",
-                                "short": "SiO2",
-                                "group": "silica",
-                                "density": 2650,
-                                "p": 0.95582,
-                                "n": 476,
-                                "v": 498
-                            },
-                            {
-                                "name": "Eisen",
-                                "id": "iron_ore_0d",
-                                "short": "Fe",
-                                "group": "iron_ore",
-                                "density": 4800,
-                                "p": 0.0241,
-                                "n": 12,
-                                "v": 498
-                            },
-                            {
-                                "name": "Kupfer",
-                                "id": "copper_ore_0d",
-                                "short": "Cu",
-                                "group": "copper_ore",
-                                "density": 5600,
-                                "p": 0.02008,
-                                "n": 10,
-                                "v": 498
-                            }
-                        ]
-                    },
-                    {
-                        "name": "Quanovjum",
-                        "parent": "Tuyanvi",
-                        "height": 137007.94358831394,
-                        "massEM": 0.0417788077,
-                        "massKG": 2.495030395844e+23,
-                        "r": 2797968.948783201,
-                        "d": 2719.31,
-                        "OrbitalSpeed": 1919.1403662351456,
-                        "OrbitalTimeInSec": 448558.2781053896,
-                        "OrbitalTimeInYears": 0.014,
-                        "orbitPosDegree": 46,
-                        "orbitPosNorm": 0.128,
-                        "attributes": [
-                            "noAtmosphere"
-                        ],
-                        "resources": [
-                            {
-                                "name": "Siliziumdioxid",
-                                "id": "silica_1",
-                                "short": "SiO2",
-                                "group": "silica",
-                                "density": 2650,
-                                "p": 0.97282,
-                                "n": 501,
-                                "v": 515
-                            },
-                            {
-                                "name": "Eisen",
-                                "id": "iron_ore_0d",
-                                "short": "Fe",
-                                "group": "iron_ore",
-                                "density": 4800,
-                                "p": 0.01359,
-                                "n": 7,
-                                "v": 515
-                            },
-                            {
-                                "name": "Kupfer",
-                                "id": "copper_ore_0d",
-                                "short": "Cu",
-                                "group": "copper_ore",
-                                "density": 5600,
-                                "p": 0.01359,
-                                "n": 7,
-                                "v": 515
-                            }
-                        ]
-                    }
-                ],
-                "attributes": [
-                    "atmosphere"
-                ],
+                "name": "Vynnovxa",
+                "parent": "Rumzorelx",
+                "temperature": 709.94749,
+                "albedo": 0.28205,
+                "height": 1.4061,
+                "massEM": 1.695,
+                "massKG": 1.012254e+25,
+                "r": 9590922.848,
+                "d": 2739.17,
+                "OrbitalSpeed": 45109.83,
+                "OrbitalTimeInSec": 29298754,
+                "OrbitalTimeInYears": 0.928,
+                "orbitPosDegree": 111.74,
+                "orbitPosNorm": 0.31039,
+                "moons": [],
                 "resources": [
                     {
-                        "name": "Chalkosin",
-                        "id": "copper_ore_0a",
-                        "short": "Cu2S",
-                        "group": "copper_ore",
-                        "density": 5600,
-                        "p": 0.01626,
-                        "n": 8,
-                        "v": 492
-                    },
-                    {
-                        "name": "Siliziumdioxid",
+                        "name": "Silicon Dioxide",
                         "id": "silica_0",
                         "short": "SiO2",
                         "group": "silica",
                         "density": 2650,
-                        "p": 0.96545,
-                        "n": 475,
-                        "v": 492
+                        "p": 0.96505,
+                        "n": 497,
+                        "v": 515
                     },
                     {
-                        "name": "Hämatit",
+                        "name": "Hematite",
                         "id": "iron_ore_0a",
                         "short": "Fe2O3",
                         "group": "iron_ore",
                         "density": 4800,
-                        "p": 0.01829,
+                        "p": 0.01748,
                         "n": 9,
-                        "v": 492
-                    }
-                ]
-            },
-            {
-                "name": "Daxnelbex",
-                "parent": "Murwirqir",
-                "temperature": 70.57771,
-                "albedo": 0.10514,
-                "height": 2.5513816638419557,
-                "massEM": 0.026,
-                "massKG": 1.55272e+23,
-                "r": 2378742.142002671,
-                "d": 2753.99,
-                "OrbitalSpeed": 12469.50884463518,
-                "OrbitalTimeInSec": 192323061.1137388,
-                "OrbitalTimeInYears": 6.094,
-                "orbitPosDegree": 309.3,
-                "orbitPosNorm": 0.85917,
-                "moons": [
-                    {
-                        "name": "Synklimar",
-                        "parent": "Daxnelbex",
-                        "height": 141219.34282404522,
-                        "massEM": 0.0003860882,
-                        "massKG": 2.3057187304e+21,
-                        "r": 584857.9531666321,
-                        "d": 2751.48,
-                        "OrbitalSpeed": 270.8958439992072,
-                        "OrbitalTimeInSec": 3275455.5655870256,
-                        "OrbitalTimeInYears": 0.104,
-                        "orbitPosDegree": 25,
-                        "orbitPosNorm": 0.069,
-                        "attributes": [
-                            "noAtmosphere"
-                        ],
-                        "resources": [
-                            {
-                                "name": "Siliziumdioxid",
-                                "id": "silica_1",
-                                "short": "SiO2",
-                                "group": "silica",
-                                "density": 2650,
-                                "p": 0.95866,
-                                "n": 487,
-                                "v": 508
-                            },
-                            {
-                                "name": "Eisen",
-                                "id": "iron_ore_0d",
-                                "short": "Fe",
-                                "group": "iron_ore",
-                                "density": 4800,
-                                "p": 0.02559,
-                                "n": 13,
-                                "v": 508
-                            },
-                            {
-                                "name": "Kupfer",
-                                "id": "copper_ore_0d",
-                                "short": "Cu",
-                                "group": "copper_ore",
-                                "density": 5600,
-                                "p": 0.01575,
-                                "n": 8,
-                                "v": 508
-                            }
-                        ]
+                        "v": 515
                     },
                     {
-                        "name": "Murbexorn",
-                        "parent": "Daxnelbex",
-                        "height": 172507.65682233663,
-                        "massEM": 0.005451933,
-                        "massKG": 3.2558943876e+22,
-                        "r": 1414251.7164719566,
-                        "d": 2747.9,
-                        "OrbitalSpeed": 245.1010926113738,
-                        "OrbitalTimeInSec": 4422247.013156669,
-                        "OrbitalTimeInYears": 0.14,
-                        "orbitPosDegree": 75,
-                        "orbitPosNorm": 0.208,
-                        "attributes": [
-                            "atmosphere"
-                        ],
-                        "resources": [
-                            {
-                                "name": "Siliziumdioxid",
-                                "id": "silica_1",
-                                "short": "SiO2",
-                                "group": "silica",
-                                "density": 2650,
-                                "p": 0.96192,
-                                "n": 480,
-                                "v": 499
-                            },
-                            {
-                                "name": "Hämatit",
-                                "id": "iron_ore_0c",
-                                "short": "Fe2O3",
-                                "group": "iron_ore",
-                                "density": 4800,
-                                "p": 0.01804,
-                                "n": 9,
-                                "v": 499
-                            },
-                            {
-                                "name": "Chalkosin",
-                                "id": "copper_ore_0c",
-                                "short": "Cu2S",
-                                "group": "copper_ore",
-                                "density": 5600,
-                                "p": 0.02004,
-                                "n": 10,
-                                "v": 499
-                            }
-                        ]
-                    },
-                    {
-                        "name": "Ulnpyyul",
-                        "parent": "Daxnelbex",
-                        "height": 235762.156581656,
-                        "massEM": 0.0041686476,
-                        "massKG": 2.4895163467200004e+22,
-                        "r": 1293810.680236052,
-                        "d": 2744.19,
-                        "OrbitalSpeed": 209.6584581399494,
-                        "OrbitalTimeInSec": 7065478.451787642,
-                        "OrbitalTimeInYears": 0.224,
-                        "orbitPosDegree": 234,
-                        "orbitPosNorm": 0.65,
-                        "attributes": [
-                            "noAtmosphere"
-                        ],
-                        "resources": [
-                            {
-                                "name": "Siliziumdioxid",
-                                "id": "silica_1",
-                                "short": "SiO2",
-                                "group": "silica",
-                                "density": 2650,
-                                "p": 0.96124,
-                                "n": 496,
-                                "v": 516
-                            },
-                            {
-                                "name": "Eisen",
-                                "id": "iron_ore_0d",
-                                "short": "Fe",
-                                "group": "iron_ore",
-                                "density": 4800,
-                                "p": 0.02519,
-                                "n": 13,
-                                "v": 516
-                            },
-                            {
-                                "name": "Kupfer",
-                                "id": "copper_ore_0d",
-                                "short": "Cu",
-                                "group": "copper_ore",
-                                "density": 5600,
-                                "p": 0.01357,
-                                "n": 7,
-                                "v": 516
-                            }
-                        ]
-                    }
-                ],
-                "attributes": [
-                    "atmosphere"
-                ],
-                "resources": [
-                    {
-                        "name": "Siliziumdioxid",
-                        "id": "silica_0",
-                        "short": "SiO2",
-                        "group": "silica",
-                        "density": 2650,
-                        "p": 0.95865,
-                        "n": 510,
-                        "v": 532
-                    },
-                    {
-                        "name": "Hämatit",
-                        "id": "iron_ore_0a",
-                        "short": "Fe2O3",
-                        "group": "iron_ore",
-                        "density": 4800,
-                        "p": 0.02256,
-                        "n": 12,
-                        "v": 532
-                    },
-                    {
-                        "name": "Chalkosin",
+                        "name": "Chalcocite",
                         "id": "copper_ore_0a",
                         "short": "Cu2S",
                         "group": "copper_ore",
                         "density": 5600,
-                        "p": 0.0188,
-                        "n": 10,
-                        "v": 532
+                        "p": 0.01748,
+                        "n": 9,
+                        "v": 515
                     }
-                ]
+                ],
+                "attributes": {
+                    "atm": "atmosphere"
+                },
+                "special": {
+                    "atmosphere": {
+                        "temperature": 1480.96,
+                        "gases": [
+                            {
+                                "id": "CO2",
+                                "k_a": 2000,
+                                "w": 0.12854,
+                                "mol": 0.04401
+                            },
+                            {
+                                "id": "CH4",
+                                "k_a": 150,
+                                "w": 0.39225,
+                                "mol": 0.01604
+                            },
+                            {
+                                "id": "H2O",
+                                "k_a": 3000,
+                                "w": 0.24494,
+                                "mol": 0.018015
+                            },
+                            {
+                                "id": "N2",
+                                "k_a": 0.01,
+                                "w": 0.22949,
+                                "mol": 0.028014
+                            },
+                            {
+                                "id": "O2",
+                                "k_a": 0.01,
+                                "w": 0.00477,
+                                "mol": 0.031999
+                            }
+                        ],
+                        "scaleHeight": 8685.19,
+                        "referenceDensity": 8.99,
+                        "greenhouseEffect": 771.01
+                    }
+                }
             },
             {
-                "name": "Synquavi",
-                "parent": "Murwirqir",
-                "temperature": 58.48998,
-                "albedo": 0.06273,
-                "height": 3.8019140464058827,
-                "massEM": 0.025,
-                "massKG": 1.4930000000000001e+23,
-                "r": 2352388.758433391,
-                "d": 2738.07,
-                "OrbitalSpeed": 10214.94224673291,
-                "OrbitalTimeInSec": 349841767.85601485,
-                "OrbitalTimeInYears": 11.086,
-                "orbitPosDegree": 185.41,
-                "orbitPosNorm": 0.51503,
-                "moons": [
-                    {
-                        "name": "Zunhul",
-                        "parent": "Synquavi",
-                        "height": 84337.66820444656,
-                        "massEM": 0.0220780602,
-                        "massKG": 1.318501755144e+23,
-                        "r": 2253782.2310112757,
-                        "d": 2749.52,
-                        "OrbitalSpeed": 343.73358771478854,
-                        "OrbitalTimeInSec": 1541627.6344331396,
-                        "OrbitalTimeInYears": 0.049,
-                        "orbitPosDegree": 280,
-                        "orbitPosNorm": 0.778,
-                        "attributes": [
-                            "noAtmosphere"
-                        ],
-                        "resources": [
-                            {
-                                "name": "Siliziumdioxid",
-                                "id": "silica_1",
-                                "short": "SiO2",
-                                "group": "silica",
-                                "density": 2650,
-                                "p": 0.96008,
-                                "n": 505,
-                                "v": 526
-                            },
-                            {
-                                "name": "Eisen",
-                                "id": "iron_ore_0d",
-                                "short": "Fe",
-                                "group": "iron_ore",
-                                "density": 4800,
-                                "p": 0.02281,
-                                "n": 12,
-                                "v": 526
-                            },
-                            {
-                                "name": "Kupfer",
-                                "id": "copper_ore_0d",
-                                "short": "Cu",
-                                "group": "copper_ore",
-                                "density": 5600,
-                                "p": 0.01711,
-                                "n": 9,
-                                "v": 526
-                            }
-                        ]
-                    }
-                ],
-                "attributes": [
-                    "noAtmosphere"
-                ],
+                "name": "Vexelxpy",
+                "parent": "Rumzorelx",
+                "temperature": 543.78916,
+                "albedo": 0.13649,
+                "height": 2.62841,
+                "massEM": 8.673,
+                "massKG": 5.1795156e+25,
+                "r": 16486617.545,
+                "d": 2759.34,
+                "OrbitalSpeed": 32993.76,
+                "OrbitalTimeInSec": 74880222,
+                "OrbitalTimeInYears": 2.373,
+                "orbitPosDegree": 172.42,
+                "orbitPosNorm": 0.47894,
+                "moons": [],
                 "resources": [
                     {
-                        "name": "Siliziumdioxid",
+                        "name": "Silicon Dioxide",
                         "id": "silica_0",
                         "short": "SiO2",
                         "group": "silica",
                         "density": 2650,
-                        "p": 0.96356,
-                        "n": 476,
-                        "v": 494
+                        "p": 0.95712,
+                        "n": 491,
+                        "v": 513
                     },
                     {
-                        "name": "Eisen",
-                        "id": "iron_ore_0b",
-                        "short": "Fe",
-                        "group": "iron_ore",
-                        "density": 4800,
-                        "p": 0.02429,
-                        "n": 12,
-                        "v": 494
-                    },
-                    {
-                        "name": "Kupfer",
+                        "name": "Copper",
                         "id": "copper_ore_0b",
                         "short": "Cu",
                         "group": "copper_ore",
                         "density": 5600,
-                        "p": 0.01215,
-                        "n": 6,
-                        "v": 494
+                        "p": 0.02144,
+                        "n": 11,
+                        "v": 513
+                    },
+                    {
+                        "name": "Iron",
+                        "id": "iron_ore_0b",
+                        "short": "Fe",
+                        "group": "iron_ore",
+                        "density": 4800,
+                        "p": 0.02144,
+                        "n": 11,
+                        "v": 513
                     }
-                ]
+                ],
+                "attributes": {
+                    "atm": "noAtmosphere"
+                },
+                "special": {}
             },
             {
-                "name": "Qirqudre",
-                "parent": "Murwirqir",
-                "temperature": 56.27054,
-                "albedo": 0.1573,
-                "height": 3.894998398966282,
-                "massEM": 5.77,
-                "massKG": 3.445844e+25,
-                "r": 14437933.303774599,
-                "d": 2733.33,
-                "OrbitalSpeed": 10092.143587356413,
-                "OrbitalTimeInSec": 362768143.9581365,
-                "OrbitalTimeInYears": 11.495,
-                "orbitPosDegree": 73.68,
-                "orbitPosNorm": 0.20467,
+                "name": "Fenxondav",
+                "parent": "Rumzorelx",
+                "temperature": 426.73833,
+                "albedo": 0.24579,
+                "height": 3.98882,
+                "massEM": 0.037,
+                "massKG": 2.20964e+23,
+                "r": 2683644.175,
+                "d": 2729.34,
+                "OrbitalSpeed": 26782.85,
+                "OrbitalTimeInSec": 139988548,
+                "OrbitalTimeInYears": 4.436,
+                "orbitPosDegree": 224.5,
+                "orbitPosNorm": 0.62361,
+                "moons": [],
+                "resources": [
+                    {
+                        "name": "Silicon Dioxide",
+                        "id": "silica_0",
+                        "short": "SiO2",
+                        "group": "silica",
+                        "density": 2650,
+                        "p": 0.96774,
+                        "n": 540,
+                        "v": 558
+                    },
+                    {
+                        "name": "Copper",
+                        "id": "copper_ore_0b",
+                        "short": "Cu",
+                        "group": "copper_ore",
+                        "density": 5600,
+                        "p": 0.01254,
+                        "n": 7,
+                        "v": 558
+                    },
+                    {
+                        "name": "Iron",
+                        "id": "iron_ore_0b",
+                        "short": "Fe",
+                        "group": "iron_ore",
+                        "density": 4800,
+                        "p": 0.01971,
+                        "n": 11,
+                        "v": 558
+                    }
+                ],
+                "attributes": {
+                    "atm": "noAtmosphere"
+                },
+                "special": {}
+            },
+            {
+                "name": "Ophwexsyl",
+                "parent": "Rumzorelx",
+                "temperature": 440.82555,
+                "albedo": 0.13693,
+                "height": 3.99863,
+                "massEM": 0.074,
+                "massKG": 4.41928e+23,
+                "r": 3374109.338,
+                "d": 2746.54,
+                "OrbitalSpeed": 26749.96,
+                "OrbitalTimeInSec": 140505480,
+                "OrbitalTimeInYears": 4.452,
+                "orbitPosDegree": 75.68,
+                "orbitPosNorm": 0.21022,
                 "moons": [
                     {
-                        "name": "Uvocloyul",
-                        "parent": "Qirqudre",
-                        "height": 89704.67378868558,
-                        "massEM": 0.0149209766,
-                        "massKG": 8.91080722552e+22,
-                        "r": 1979044.662946579,
-                        "d": 2744.49,
-                        "OrbitalSpeed": 5063.410435348213,
-                        "OrbitalTimeInSec": 111314.51726678875,
-                        "OrbitalTimeInYears": 0.004,
-                        "orbitPosDegree": 314,
-                        "orbitPosNorm": 0.872,
-                        "attributes": [
-                            "atmosphere"
-                        ],
+                        "name": "Klitorbex",
+                        "parent": "Ophwexsyl",
+                        "height": 108785.6277100974,
+                        "massEM": 0.001,
+                        "massKG": 5.535319502401842e+21,
+                        "r": 777784.8383638205,
+                        "d": 2808.51,
+                        "OrbitalSpeed": 520.7063335598467,
+                        "OrbitalTimeInSec": 1312678.9777790036,
+                        "OrbitalTimeInYears": 0.042,
+                        "orbitPosDegree": 125,
+                        "orbitPosNorm": 0.347,
                         "resources": [
                             {
-                                "name": "Siliziumdioxid",
+                                "name": "Silicon Dioxide",
                                 "id": "silica_1",
                                 "short": "SiO2",
                                 "group": "silica",
                                 "density": 2650,
-                                "p": 0.96356,
-                                "n": 476,
-                                "v": 494
+                                "p": 0.93784,
+                                "n": 513,
+                                "v": 547
                             },
                             {
-                                "name": "Hämatit",
+                                "name": "Chalcocite",
+                                "id": "copper_ore_0c",
+                                "short": "Cu2S",
+                                "group": "copper_ore",
+                                "density": 5600,
+                                "p": 0.03108,
+                                "n": 17,
+                                "v": 547
+                            },
+                            {
+                                "name": "Hematite",
                                 "id": "iron_ore_0c",
                                 "short": "Fe2O3",
                                 "group": "iron_ore",
                                 "density": 4800,
+                                "p": 0.03108,
+                                "n": 17,
+                                "v": 547
+                            }
+                        ],
+                        "attributes": {
+                            "atm": "atmosphere"
+                        },
+                        "special": {}
+                    },
+                    {
+                        "name": "Nojinzor",
+                        "parent": "Ophwexsyl",
+                        "height": 193469.43339774042,
+                        "massEM": 0.009,
+                        "massKG": 5.569584148075716e+22,
+                        "r": 1689979.619356629,
+                        "d": 2754.8,
+                        "OrbitalSpeed": 390.456306103111,
+                        "OrbitalTimeInSec": 3113291.5061487765,
+                        "OrbitalTimeInYears": 0.099,
+                        "orbitPosDegree": 63,
+                        "orbitPosNorm": 0.175,
+                        "resources": [
+                            {
+                                "name": "Silicon Dioxide",
+                                "id": "silica_1",
+                                "short": "SiO2",
+                                "group": "silica",
+                                "density": 2650,
+                                "p": 0.95948,
+                                "n": 521,
+                                "v": 543
+                            },
+                            {
+                                "name": "Hematite",
+                                "id": "iron_ore_0c",
+                                "short": "Fe2O3",
+                                "group": "iron_ore",
+                                "density": 4800,
+                                "p": 0.01842,
+                                "n": 10,
+                                "v": 543
+                            },
+                            {
+                                "name": "Chalcocite",
+                                "id": "copper_ore_0c",
+                                "short": "Cu2S",
+                                "group": "copper_ore",
+                                "density": 5600,
+                                "p": 0.0221,
+                                "n": 12,
+                                "v": 543
+                            }
+                        ],
+                        "attributes": {
+                            "atm": "atmosphere"
+                        },
+                        "special": {}
+                    }
+                ],
+                "resources": [
+                    {
+                        "name": "Silicon Dioxide",
+                        "id": "silica_0",
+                        "short": "SiO2",
+                        "group": "silica",
+                        "density": 2650,
+                        "p": 0.96154,
+                        "n": 500,
+                        "v": 520
+                    },
+                    {
+                        "name": "Chalcocite",
+                        "id": "copper_ore_0a",
+                        "short": "Cu2S",
+                        "group": "copper_ore",
+                        "density": 5600,
+                        "p": 0.01731,
+                        "n": 9,
+                        "v": 520
+                    },
+                    {
+                        "name": "Hematite",
+                        "id": "iron_ore_0a",
+                        "short": "Fe2O3",
+                        "group": "iron_ore",
+                        "density": 4800,
+                        "p": 0.02115,
+                        "n": 11,
+                        "v": 520
+                    }
+                ],
+                "attributes": {
+                    "atm": "atmosphere"
+                },
+                "special": {
+                    "atmosphere": {
+                        "temperature": 845.06,
+                        "gases": [
+                            {
+                                "id": "CO2",
+                                "k_a": 2000,
+                                "w": 0.07372,
+                                "mol": 0.04401
+                            },
+                            {
+                                "id": "CH4",
+                                "k_a": 150,
+                                "w": 0.19685,
+                                "mol": 0.01604
+                            },
+                            {
+                                "id": "H2O",
+                                "k_a": 3000,
+                                "w": 0.19797,
+                                "mol": 0.018015
+                            },
+                            {
+                                "id": "N2",
+                                "k_a": 0.01,
+                                "w": 0.38511,
+                                "mol": 0.028014
+                            },
+                            {
+                                "id": "O2",
+                                "k_a": 0.01,
+                                "w": 0.14635,
+                                "mol": 0.031999
+                            }
+                        ],
+                        "scaleHeight": 8522.99,
+                        "referenceDensity": 0.055,
+                        "greenhouseEffect": 404.24
+                    }
+                }
+            },
+            {
+                "name": "Umeshazan",
+                "parent": "Rumzorelx",
+                "temperature": 373.05246,
+                "albedo": 0.2305,
+                "height": 5.27214,
+                "massEM": 9.922,
+                "massKG": 5.9254184e+25,
+                "r": 17312107.751,
+                "d": 2726.34,
+                "OrbitalSpeed": 23296.21,
+                "OrbitalTimeInSec": 212719206,
+                "OrbitalTimeInYears": 6.741,
+                "orbitPosDegree": 268.25,
+                "orbitPosNorm": 0.74514,
+                "moons": [
+                    {
+                        "name": "Noxwra",
+                        "parent": "Umeshazan",
+                        "height": 108735.4196443116,
+                        "massEM": 0.001,
+                        "massKG": 3.2574318297003427e+21,
+                        "r": 656692.9109957345,
+                        "d": 2745.99,
+                        "OrbitalSpeed": 6030.826788372021,
+                        "OrbitalTimeInSec": 113285.42752984146,
+                        "OrbitalTimeInYears": 0.004,
+                        "orbitPosDegree": 280,
+                        "orbitPosNorm": 0.778,
+                        "resources": [
+                            {
+                                "name": "Silicon Dioxide",
+                                "id": "silica_1",
+                                "short": "SiO2",
+                                "group": "silica",
+                                "density": 2650,
+                                "p": 0.9635,
+                                "n": 528,
+                                "v": 548
+                            },
+                            {
+                                "name": "Copper",
+                                "id": "copper_ore_0d",
+                                "short": "Cu",
+                                "group": "copper_ore",
+                                "density": 5600,
+                                "p": 0.0219,
+                                "n": 12,
+                                "v": 548
+                            },
+                            {
+                                "name": "Iron",
+                                "id": "iron_ore_0d",
+                                "short": "Fe",
+                                "group": "iron_ore",
+                                "density": 4800,
+                                "p": 0.0146,
+                                "n": 8,
+                                "v": 548
+                            }
+                        ],
+                        "attributes": {
+                            "atm": "noAtmosphere"
+                        },
+                        "special": {}
+                    }
+                ],
+                "resources": [
+                    {
+                        "name": "Silicon Dioxide",
+                        "id": "silica_0",
+                        "short": "SiO2",
+                        "group": "silica",
+                        "density": 2650,
+                        "p": 0.96819,
+                        "n": 487,
+                        "v": 503
+                    },
+                    {
+                        "name": "Copper",
+                        "id": "copper_ore_0b",
+                        "short": "Cu",
+                        "group": "copper_ore",
+                        "density": 5600,
+                        "p": 0.00994,
+                        "n": 5,
+                        "v": 503
+                    },
+                    {
+                        "name": "Iron",
+                        "id": "iron_ore_0b",
+                        "short": "Fe",
+                        "group": "iron_ore",
+                        "density": 4800,
+                        "p": 0.02187,
+                        "n": 11,
+                        "v": 503
+                    }
+                ],
+                "attributes": {
+                    "atm": "noAtmosphere"
+                },
+                "special": {}
+            },
+            {
+                "name": "Zorcaidax",
+                "parent": "Rumzorelx",
+                "temperature": 342.2631,
+                "albedo": 0.20538,
+                "height": 6.36474,
+                "massEM": 6.171,
+                "massKG": 3.6853212000000004e+25,
+                "r": 14760955.676,
+                "d": 2735.54,
+                "OrbitalSpeed": 21202.57,
+                "OrbitalTimeInSec": 282161168,
+                "OrbitalTimeInYears": 8.941,
+                "orbitPosDegree": 303.04,
+                "orbitPosNorm": 0.84178,
+                "moons": [],
+                "resources": [
+                    {
+                        "name": "Silicon Dioxide",
+                        "id": "silica_0",
+                        "short": "SiO2",
+                        "group": "silica",
+                        "density": 2650,
+                        "p": 0.96703,
+                        "n": 528,
+                        "v": 546
+                    },
+                    {
+                        "name": "Chalcocite",
+                        "id": "copper_ore_0a",
+                        "short": "Cu2S",
+                        "group": "copper_ore",
+                        "density": 5600,
+                        "p": 0.01832,
+                        "n": 10,
+                        "v": 546
+                    },
+                    {
+                        "name": "Hematite",
+                        "id": "iron_ore_0a",
+                        "short": "Fe2O3",
+                        "group": "iron_ore",
+                        "density": 4800,
+                        "p": 0.01465,
+                        "n": 8,
+                        "v": 546
+                    }
+                ],
+                "attributes": {
+                    "atm": "atmosphere"
+                },
+                "special": {
+                    "atmosphere": {
+                        "temperature": 705.79,
+                        "gases": [
+                            {
+                                "id": "CO2",
+                                "k_a": 2000,
+                                "w": 0.13573,
+                                "mol": 0.04401
+                            },
+                            {
+                                "id": "CH4",
+                                "k_a": 150,
+                                "w": 0.24054,
+                                "mol": 0.01604
+                            },
+                            {
+                                "id": "H2O",
+                                "k_a": 3000,
+                                "w": 0.1662,
+                                "mol": 0.018015
+                            },
+                            {
+                                "id": "N2",
+                                "k_a": 0.01,
+                                "w": 0.19234,
+                                "mol": 0.028014
+                            },
+                            {
+                                "id": "O2",
+                                "k_a": 0.01,
+                                "w": 0.26519,
+                                "mol": 0.031999
+                            }
+                        ],
+                        "scaleHeight": 7659.13,
+                        "referenceDensity": 5.664,
+                        "greenhouseEffect": 363.52
+                    }
+                }
+            },
+            {
+                "name": "Ixmurdru",
+                "parent": "Rumzorelx",
+                "temperature": 329.12592,
+                "albedo": 0.22876,
+                "height": 6.78096,
+                "massEM": 0.599,
+                "massKG": 3.577228e+24,
+                "r": 6795401.499,
+                "d": 2721.53,
+                "OrbitalSpeed": 20541.55,
+                "OrbitalTimeInSec": 310286710,
+                "OrbitalTimeInYears": 9.832,
+                "orbitPosDegree": 214.23,
+                "orbitPosNorm": 0.59508,
+                "moons": [
+                    {
+                        "name": "Ophvokpru",
+                        "parent": "Ixmurdru",
+                        "height": 94584.16427544845,
+                        "massEM": 0.026,
+                        "massKG": 1.5506209769501338e+23,
+                        "r": 2378400.6156208464,
+                        "d": 2751.45,
+                        "OrbitalSpeed": 1588.791680810843,
+                        "OrbitalTimeInSec": 374051.44956704526,
+                        "OrbitalTimeInYears": 0.012,
+                        "orbitPosDegree": 207,
+                        "orbitPosNorm": 0.575,
+                        "resources": [
+                            {
+                                "name": "Silicon Dioxide",
+                                "id": "silica_1",
+                                "short": "SiO2",
+                                "group": "silica",
+                                "density": 2650,
+                                "p": 0.96053,
+                                "n": 511,
+                                "v": 532
+                            },
+                            {
+                                "name": "Iron",
+                                "id": "iron_ore_0d",
+                                "short": "Fe",
+                                "group": "iron_ore",
+                                "density": 4800,
+                                "p": 0.0188,
+                                "n": 10,
+                                "v": 532
+                            },
+                            {
+                                "name": "Copper",
+                                "id": "copper_ore_0d",
+                                "short": "Cu",
+                                "group": "copper_ore",
+                                "density": 5600,
+                                "p": 0.02068,
+                                "n": 11,
+                                "v": 532
+                            }
+                        ],
+                        "attributes": {
+                            "atm": "noAtmosphere"
+                        },
+                        "special": {}
+                    }
+                ],
+                "resources": [
+                    {
+                        "name": "Silicon Dioxide",
+                        "id": "silica_0",
+                        "short": "SiO2",
+                        "group": "silica",
+                        "density": 2650,
+                        "p": 0.97222,
+                        "n": 525,
+                        "v": 540
+                    },
+                    {
+                        "name": "Copper",
+                        "id": "copper_ore_0b",
+                        "short": "Cu",
+                        "group": "copper_ore",
+                        "density": 5600,
+                        "p": 0.01481,
+                        "n": 8,
+                        "v": 540
+                    },
+                    {
+                        "name": "Iron",
+                        "id": "iron_ore_0b",
+                        "short": "Fe",
+                        "group": "iron_ore",
+                        "density": 4800,
+                        "p": 0.01296,
+                        "n": 7,
+                        "v": 540
+                    }
+                ],
+                "attributes": {
+                    "atm": "noAtmosphere"
+                },
+                "special": {}
+            },
+            {
+                "name": "Zhovorsyn",
+                "parent": "Rumzorelx",
+                "temperature": 299.43726,
+                "albedo": 0.23411,
+                "height": 8.16384,
+                "massEM": 4.47,
+                "massKG": 2.669484e+25,
+                "r": 13246641.564,
+                "d": 2741.71,
+                "OrbitalSpeed": 18721.1,
+                "OrbitalTimeInSec": 409891228,
+                "OrbitalTimeInYears": 12.989,
+                "orbitPosDegree": 313.48,
+                "orbitPosNorm": 0.87078,
+                "moons": [
+                    {
+                        "name": "Xonlekqua",
+                        "parent": "Zhovorsyn",
+                        "height": 125668.38895463028,
+                        "massEM": 0,
+                        "massKG": 1.4999867494110758e+21,
+                        "r": 509018.58073195117,
+                        "d": 2715.18,
+                        "OrbitalSpeed": 3765.3339416399176,
+                        "OrbitalTimeInSec": 209701.9247946886,
+                        "OrbitalTimeInYears": 0.007,
+                        "orbitPosDegree": 5,
+                        "orbitPosNorm": 0.014,
+                        "resources": [
+                            {
+                                "name": "Silicon Dioxide",
+                                "id": "silica_1",
+                                "short": "SiO2",
+                                "group": "silica",
+                                "density": 2650,
+                                "p": 0.97571,
+                                "n": 482,
+                                "v": 494
+                            },
+                            {
+                                "name": "Chalcocite",
+                                "id": "copper_ore_0c",
+                                "short": "Cu2S",
+                                "group": "copper_ore",
+                                "density": 5600,
                                 "p": 0.01619,
                                 "n": 8,
                                 "v": 494
                             },
                             {
-                                "name": "Chalkosin",
-                                "id": "copper_ore_0c",
-                                "short": "Cu2S",
-                                "group": "copper_ore",
-                                "density": 5600,
-                                "p": 0.02024,
-                                "n": 10,
+                                "name": "Hematite",
+                                "id": "iron_ore_0c",
+                                "short": "Fe2O3",
+                                "group": "iron_ore",
+                                "density": 4800,
+                                "p": 0.0081,
+                                "n": 4,
                                 "v": 494
                             }
-                        ]
+                        ],
+                        "attributes": {
+                            "atm": "atmosphere"
+                        },
+                        "special": {}
+                    },
+                    {
+                        "name": "Xenklifra",
+                        "parent": "Zhovorsyn",
+                        "height": 218149.17732355237,
+                        "massEM": 0,
+                        "massKG": 1.281568399281663e+21,
+                        "r": 479963.50118649984,
+                        "d": 2767.12,
+                        "OrbitalSpeed": 2857.851993360243,
+                        "OrbitalTimeInSec": 479616.0574155669,
+                        "OrbitalTimeInYears": 0.015,
+                        "orbitPosDegree": 236,
+                        "orbitPosNorm": 0.656,
+                        "resources": [
+                            {
+                                "name": "Silicon Dioxide",
+                                "id": "silica_1",
+                                "short": "SiO2",
+                                "group": "silica",
+                                "density": 2650,
+                                "p": 0.95499,
+                                "n": 488,
+                                "v": 511
+                            },
+                            {
+                                "name": "Iron",
+                                "id": "iron_ore_0d",
+                                "short": "Fe",
+                                "group": "iron_ore",
+                                "density": 4800,
+                                "p": 0.01957,
+                                "n": 10,
+                                "v": 511
+                            },
+                            {
+                                "name": "Copper",
+                                "id": "copper_ore_0d",
+                                "short": "Cu",
+                                "group": "copper_ore",
+                                "density": 5600,
+                                "p": 0.02544,
+                                "n": 13,
+                                "v": 511
+                            }
+                        ],
+                        "attributes": {
+                            "atm": "noAtmosphere"
+                        },
+                        "special": {}
                     }
-                ],
-                "attributes": [
-                    "noAtmosphere"
                 ],
                 "resources": [
                     {
-                        "name": "Eisen",
-                        "id": "iron_ore_0b",
-                        "short": "Fe",
-                        "group": "iron_ore",
-                        "density": 4800,
-                        "p": 0.01524,
-                        "n": 8,
-                        "v": 525
-                    },
-                    {
-                        "name": "Siliziumdioxid",
+                        "name": "Silicon Dioxide",
                         "id": "silica_0",
                         "short": "SiO2",
                         "group": "silica",
                         "density": 2650,
-                        "p": 0.96762,
-                        "n": 508,
-                        "v": 525
+                        "p": 0.96226,
+                        "n": 510,
+                        "v": 530
                     },
                     {
-                        "name": "Kupfer",
+                        "name": "Hematite",
+                        "id": "iron_ore_0a",
+                        "short": "Fe2O3",
+                        "group": "iron_ore",
+                        "density": 4800,
+                        "p": 0.02453,
+                        "n": 13,
+                        "v": 530
+                    },
+                    {
+                        "name": "Chalcocite",
+                        "id": "copper_ore_0a",
+                        "short": "Cu2S",
+                        "group": "copper_ore",
+                        "density": 5600,
+                        "p": 0.01321,
+                        "n": 7,
+                        "v": 530
+                    }
+                ],
+                "attributes": {
+                    "atm": "atmosphere"
+                },
+                "special": {
+                    "atmosphere": {
+                        "temperature": 595.3,
+                        "gases": [
+                            {
+                                "id": "CO2",
+                                "k_a": 2000,
+                                "w": 0.24609,
+                                "mol": 0.04401
+                            },
+                            {
+                                "id": "CH4",
+                                "k_a": 150,
+                                "w": 0.1281,
+                                "mol": 0.01604
+                            },
+                            {
+                                "id": "H2O",
+                                "k_a": 3000,
+                                "w": 0.15009,
+                                "mol": 0.018015
+                            },
+                            {
+                                "id": "N2",
+                                "k_a": 0.01,
+                                "w": 0.38448,
+                                "mol": 0.028014
+                            },
+                            {
+                                "id": "O2",
+                                "k_a": 0.01,
+                                "w": 0.09124,
+                                "mol": 0.031999
+                            }
+                        ],
+                        "scaleHeight": 8815.38,
+                        "referenceDensity": 0.352,
+                        "greenhouseEffect": 295.86
+                    }
+                }
+            },
+            {
+                "name": "Grineftas",
+                "parent": "Rumzorelx",
+                "temperature": 303.0992,
+                "albedo": 0.11008,
+                "height": 8.58873,
+                "massEM": 0.026,
+                "massKG": 1.55272e+23,
+                "r": 2373290.943,
+                "d": 2773.01,
+                "OrbitalSpeed": 18252.16,
+                "OrbitalTimeInSec": 442302767,
+                "OrbitalTimeInYears": 14.016,
+                "orbitPosDegree": 167.87,
+                "orbitPosNorm": 0.46631,
+                "moons": [],
+                "resources": [
+                    {
+                        "name": "Silicon Dioxide",
+                        "id": "silica_0",
+                        "short": "SiO2",
+                        "group": "silica",
+                        "density": 2650,
+                        "p": 0.95358,
+                        "n": 493,
+                        "v": 517
+                    },
+                    {
+                        "name": "Iron",
+                        "id": "iron_ore_0b",
+                        "short": "Fe",
+                        "group": "iron_ore",
+                        "density": 4800,
+                        "p": 0.01741,
+                        "n": 9,
+                        "v": 517
+                    },
+                    {
+                        "name": "Copper",
                         "id": "copper_ore_0b",
                         "short": "Cu",
                         "group": "copper_ore",
                         "density": 5600,
-                        "p": 0.01714,
-                        "n": 9,
-                        "v": 525
+                        "p": 0.02901,
+                        "n": 15,
+                        "v": 517
                     }
-                ]
+                ],
+                "attributes": {
+                    "atm": "noAtmosphere"
+                },
+                "special": {}
+            },
+            {
+                "name": "Tasmiplur",
+                "parent": "Rumzorelx",
+                "temperature": 280.98938,
+                "albedo": 0.27483,
+                "height": 9.02113,
+                "massEM": 0.492,
+                "massKG": 2.9382240000000003e+24,
+                "r": 6354912.346,
+                "d": 2733.18,
+                "OrbitalSpeed": 17809.36,
+                "OrbitalTimeInSec": 476121612,
+                "OrbitalTimeInYears": 15.087,
+                "orbitPosDegree": 221.04,
+                "orbitPosNorm": 0.614,
+                "moons": [
+                    {
+                        "name": "Bexhelshi",
+                        "parent": "Tasmiplur",
+                        "height": 116182.30748050216,
+                        "massEM": 0,
+                        "massKG": 2.3114297166027972e+21,
+                        "r": 585543.62714264,
+                        "d": 2748.62,
+                        "OrbitalSpeed": 1299.1979119161822,
+                        "OrbitalTimeInSec": 561881.2658335058,
+                        "OrbitalTimeInYears": 0.018,
+                        "orbitPosDegree": 191,
+                        "orbitPosNorm": 0.531,
+                        "resources": [
+                            {
+                                "name": "Silicon Dioxide",
+                                "id": "silica_1",
+                                "short": "SiO2",
+                                "group": "silica",
+                                "density": 2650,
+                                "p": 0.96071,
+                                "n": 489,
+                                "v": 509
+                            },
+                            {
+                                "name": "Hematite",
+                                "id": "iron_ore_0c",
+                                "short": "Fe2O3",
+                                "group": "iron_ore",
+                                "density": 4800,
+                                "p": 0.02161,
+                                "n": 11,
+                                "v": 509
+                            },
+                            {
+                                "name": "Chalcocite",
+                                "id": "copper_ore_0c",
+                                "short": "Cu2S",
+                                "group": "copper_ore",
+                                "density": 5600,
+                                "p": 0.01768,
+                                "n": 9,
+                                "v": 509
+                            }
+                        ],
+                        "attributes": {
+                            "atm": "atmosphere"
+                        },
+                        "special": {}
+                    }
+                ],
+                "resources": [
+                    {
+                        "name": "Silicon Dioxide",
+                        "id": "silica_0",
+                        "short": "SiO2",
+                        "group": "silica",
+                        "density": 2650,
+                        "p": 0.96768,
+                        "n": 509,
+                        "v": 526
+                    },
+                    {
+                        "name": "Iron",
+                        "id": "iron_ore_0b",
+                        "short": "Fe",
+                        "group": "iron_ore",
+                        "density": 4800,
+                        "p": 0.01521,
+                        "n": 8,
+                        "v": 526
+                    },
+                    {
+                        "name": "Copper",
+                        "id": "copper_ore_0b",
+                        "short": "Cu",
+                        "group": "copper_ore",
+                        "density": 5600,
+                        "p": 0.01711,
+                        "n": 9,
+                        "v": 526
+                    }
+                ],
+                "attributes": {
+                    "atm": "noAtmosphere"
+                },
+                "special": {}
             }
         ]
     }
