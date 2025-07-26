@@ -594,6 +594,7 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
                         html += `<u>Planet ${idx + 1}: ${planet.name}</u> <br>`;
                         if (planet.attributes?.atm == "atmosphere") {
                             html += `&nbsp;Temperature: ${planet.special.atmosphere.temperature.toFixed(3)} °K (${(planet.special.atmosphere.temperature - 273.15).toFixed(3)} °C)<br>`;
+                            html += `&nbsp;Atmosphärendruck: ${planet.special.atmosphere.atm.toFixed(2)} atm<br>`
                             html += `&nbsp;Greenhouse Effect: ${planet.special.atmosphere.greenhouseEffect.toFixed(3)} °C<br>`
                         }
                         else {

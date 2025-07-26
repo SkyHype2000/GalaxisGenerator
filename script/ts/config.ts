@@ -258,6 +258,7 @@ export type planetSystemDataDef = {
     height: number,
     massEM: number,
     massKG: number,
+    g: number,
     r: number,
     d: number,
     OrbitalSpeed: number,
@@ -268,7 +269,7 @@ export type planetSystemDataDef = {
     resources: res.webResourceInformation[],
     moons: moonSystemDataDef[],
     attributes: CelestialAttributeData,
-    special: {atmosphere?:AtmosphericInformation},
+    special: {atm?:AtmosphericInformation},
 }
 
 /**
@@ -279,12 +280,13 @@ export type roguePlanetDataDef = {
     temperature: number,
     massEM: number,
     massKG: number,
-    r: number, // Radius
-    d: number, // Dichte
+    g: number,
+    r: number,
+    d: number,
     moons: moonSystemDataDef[],
     resources: res.webResourceInformation[],
     attributes: CelestialAttributeData,
-    special: {atmosphere?:AtmosphericInformation},
+    special: {atm?:AtmosphericInformation},
 }
 
 /**
@@ -296,6 +298,7 @@ export type moonSystemDataDef = {
     height: number,
     massEM: number,
     massKG: number,
+    g: number,
     r: number,
     d: number,
     OrbitalSpeed: number,
@@ -314,6 +317,7 @@ export type moonSystemDataDef = {
 export type AtmosphericInformation = {
     temperature: number,
     gases: GasInformationType[],
+    atmPressure: number,
     scaleHeight: number,
     referenceDensity: number,
     greenhouseEffect: number
@@ -324,7 +328,7 @@ export type CelestialAttributeData = {
 }
 
 export type CelestialSpecialData = {
-    atmosphere?:AtmosphericInformation
+    atm?:AtmosphericInformation
 }
 
 /**

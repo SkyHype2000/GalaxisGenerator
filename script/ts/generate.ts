@@ -471,7 +471,7 @@ export function calculatePlanetTemperature(StarLum: number, albedo: number, dist
 }
 
 /**
- * Generiert ein Planetensystem .  
+ * Generiert ein Planetensystem.  
  * Jeder Planet hat: höhe (Abstand), masse, rotation (in Grad), und (wemm überhaupt) Monde.  
  * Und neuerdings Ressourcen.
  * 
@@ -505,10 +505,11 @@ export function generatePlanetSystemData(parentStarName: string, parentStarMass:
         // Ressourcen für diesen Planeten generieren
         let resources: res.webResourceInformation[] = GenerateResources(planetType ? "planet:atmosphere" : "planet:noAtmosphere", 1000);
         let { d, r } = calculatePlanetRadius(resources, mass * config.EARTH_MASS_KG);
+        const g = +(config.G * (mass / r**2)).toFixed(3)
 
         let special: config.CelestialSpecialData = {}
         if (planetType) {
-            special.atmosphere = generateAtmosphericInformation(parentStarLum, lastDistance, albedo);
+            special.atm = generateAtmosphericInformation(parentStarLum, lastDistance, albedo, g);
         }
 
         planets.push({
@@ -519,6 +520,7 @@ export function generatePlanetSystemData(parentStarName: string, parentStarMass:
             height: +lastDistance.toFixed(5),
             massEM: mass,
             massKG: mass * config.EARTH_MASS_KG,
+            g,
             r: +r.toFixed(3), // Radius
             d, // Dichte
             OrbitalSpeed: +OrbitalSpeed.toFixed(2),
@@ -560,17 +562,20 @@ export function generateRoguePlanetData(): config.roguePlanetDataDef {
     // Ressourcen für diesen Planeten generieren
     let resources: res.webResourceInformation[] = GenerateResources(planetType ? "planet:atmosphere" : "planet:noAtmosphere", 1000);
     let { d, r } = calculatePlanetRadius(resources, mass * config.EARTH_MASS_KG);
+    const g = +(config.G * (mass / r**2)).toFixed(3)
 
-    let special: { atmosphere: config.AtmosphericInformation } | any = {};
+    let special: { atm?: config.AtmosphericInformation } = {};
+
     if (planetType) {
-        special.atmosphere = generateAtmosphericInformation(0, 0, 0);
-        temperature = special.atmosphere.temperature;
+        special.atm = generateAtmosphericInformation(0, 0, 0, g);
+        temperature = special.atm.temperature;
     }
     return {
         name,
         temperature,
         massEM: mass,
         massKG: mass * config.EARTH_MASS_KG,
+        g,
         r, // Radius
         d, // Dichte
         moons,
@@ -606,6 +611,7 @@ export function generateMoonSystemData(parentPlanetName: string, parentPlanetMas
 
         let resources = GenerateResources(moonType ? "moon:atmosphere" : "moon:noAtmosphere", 1000);
         let { d, r } = calculatePlanetRadius(resources, mass * config.EARTH_MASS_KG);
+        const g = +(config.G * (mass / r**2)).toFixed(3)
         //// console.log(resources);
 
 
@@ -615,6 +621,7 @@ export function generateMoonSystemData(parentPlanetName: string, parentPlanetMas
             height: lastDistance,
             massEM: +mass.toFixed(3),
             massKG: +(mass * config.EARTH_MASS_KG).toFixed(1),
+            g,
             r, // Radius
             d, // Dichte
             OrbitalSpeed,
@@ -656,7 +663,7 @@ function generateGasMix(): config.GasInformationType[] {
  * @param maxDensity 
  * @returns 
  */
-export function generateAtmosphericInformation(StarLum: number, StarDistance: number, albedo: number, minDensity = 0.01, maxDensity = 10): config.AtmosphericInformation {
+export function generateAtmosphericInformation(StarLum: number, StarDistance: number, albedo: number, gravitation: number, minDensity = 0.01, maxDensity = 10): config.AtmosphericInformation {
     const gasInfo = generateGasMix();
 
     const referenceDensity = Math.max(Math.min(Math.pow(config.rng(), 3.95) * maxDensity, maxDensity), minDensity);
@@ -677,9 +684,13 @@ export function generateAtmosphericInformation(StarLum: number, StarDistance: nu
     const T_noGH = Math.pow(((F * (1 - albedo)) / (4 * config.SB)), 0.25);
     const greenhouseEffect = +(Math.max(T - T_noGH, 0).toFixed(2));
 
+    // Atmosphärendruck in atm
+    const atmPressure = +(referenceDensity * gravitation * scaleHeight / 101325).toFixed(3);
+
     return {
         temperature: +T.toFixed(2),
         gases: gasInfo,
+        atmPressure: +atmPressure.toFixed(3),
         scaleHeight: +scaleHeight.toFixed(2),
         referenceDensity: +referenceDensity.toFixed(3),
         greenhouseEffect

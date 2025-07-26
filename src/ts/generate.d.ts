@@ -158,7 +158,7 @@ export declare function getRandomObjectType(objectType: string): {
 export declare function galaxyPush(type: config.ObjectType, x: number, y: number, name: string): void;
 export declare function calculatePlanetTemperature(StarLum: number, albedo: number, distance: number): number;
 /**
- * Generiert ein Planetensystem .
+ * Generiert ein Planetensystem.
  * Jeder Planet hat: höhe (Abstand), masse, rotation (in Grad), und (wemm überhaupt) Monde.
  * Und neuerdings Ressourcen.
  *
@@ -193,4 +193,4 @@ export declare function generateMoonSystemData(parentPlanetName: string, parentP
  * @param maxDensity
  * @returns
  */
-export declare function generateAtmosphericInformation(StarLum: number, StarDistance: number, albedo: number, minDensity?: number, maxDensity?: number): config.AtmosphericInformation;
+export declare function generateAtmosphericInformation(StarLum: number, StarDistance: number, albedo: number, gravitation: number, minDensity?: number, maxDensity?: number): config.AtmosphericInformation;
