@@ -312,6 +312,12 @@ export type moonSystemDataDef = {
 }
 
 /**
+ * Damit es Überall ein Typ gibt :D  
+ * Ich mab das Type-System einfach, nagut ich bin ja auch ein fan von C#
+ */
+export type ObjectInformationType = null|"star"|"rogue_planet"
+
+/**
  * Atmosphereninformationen (Type)
  */
 export type AtmosphericInformation = {
@@ -321,7 +327,7 @@ export type AtmosphericInformation = {
     scaleHeight: number,
     referenceDensity: number,
     greenhouseEffect: number
-}
+}|null
 
 export type CelestialAttributeData = {
     atm?: "atmosphere" | "noAtmosphere"

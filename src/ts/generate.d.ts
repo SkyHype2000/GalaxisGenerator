@@ -185,12 +185,5 @@ export declare function generateRoguePlanetData(): config.roguePlanetDataDef;
 export declare function generateMoonSystemData(parentPlanetName: string, parentPlanetMass: number, maxMoons?: number): config.moonSystemDataDef[];
 /**
  * Hier berechne ich die Atmosphäreninformationen
- *
- * @param StarLum
- * @param StarDistance
- * @param albedo
- * @param minDensity
- * @param maxDensity
- * @returns
  */
 export declare function generateAtmosphericInformation(StarLum: number, StarDistance: number, albedo: number, gravitation: number, minDensity?: number, maxDensity?: number): config.AtmosphericInformation;

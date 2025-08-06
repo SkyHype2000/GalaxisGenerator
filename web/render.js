@@ -1,53 +1,56 @@
+const MAX_OBJECT_SIZE = 3;
+const MIN_OBJECT_SIZE = 3;
+const MAX_OBJECT_HOVER_SIZE = 2;
+const MIN_OBJECT_HOVER_SIZE = 1;
+const FONT_SIZE = 15;
+const MAX_ZOOM_DISTANCE = 0.0000000001;
+const MIN_ZOOM_DISTANCE = 25;
+let OBJECT_DISTANCE_VISUALIZATION_LIMIT = 10;
+
+let zoom = 0.004;
+let offsetX = 0;
+let offsetY = 0;
+let isDragging = false;
+let dragStartX = 0;
+let dragStartY = 0;
+
+let hoveredType = null;
+let hoveredObject = null;
+let selectedObject = null;
+let hoveredSpectralClass = null;
+
+let NAME_VANISH_DISTANCE = 0.70;
+let SHOW_NAMES = true;
+let SHOW_LINE_DISTANCE = false;
+let CLICK_TO_SELECT = false;
+let UNIFORM_STAR_COLOR = true;
+let DETAILED_RESOURCE_NAMES = false;
+
+let DEV_SHOW_CONSOLE_INFORMATION = false;
+console.log(`If you want to see Object Information(Complete JSON when hovering over a Object), then set this to true via console.\nSo you can admire my Complete Inefficient data. XD\n\noff:     DEV_SHOW_CONSOLE_INFORMATION = false\non:      DEV_SHOW_CONSOLE_INFORMATION = true\ncurrent: ${DEV_SHOW_CONSOLE_INFORMATION}`)
+
+const canvas = document.getElementById("galaxy");
+const ctx = canvas.getContext("2d");
+
+const legend = document.getElementById("galaxy");
+
+const legendDivs = document.querySelectorAll('.legend div');
+
+const info_panel = document.getElementById('info_panel');
+const info_content = document.getElementById('info_content');
+
+const nameShowDistance = document.getElementById('nameDistance');
+const showNames = document.getElementById('showNames');
+const showDistanceLines = document.getElementById('showDistanceLines');
+const maxDistanceLines = document.getElementById('maxDistanceLines');
+const clickToSelect = document.getElementById('clickToSelect');
+const uniformStarColor = document.getElementById('uniformStarColor');
+const detailResourceNames = document.getElementById('detailResourceNames');
+
+const currentZoom = document.getElementById('currentZoom');
+currentZoom.innerText = zoom.toFixed(5);
+
 fetch("galaxy.json").then(res => res.json()).then(data => {
-    const MAX_OBJECT_SIZE = 3;
-    const MIN_OBJECT_SIZE = 3;
-    const MAX_OBJECT_HOVER_SIZE = 2;
-    const MIN_OBJECT_HOVER_SIZE = 1;
-    const FONT_SIZE = 15;
-    const MAX_ZOOM_DISTANCE = 0.0000000001;
-    const MIN_ZOOM_DISTANCE = 25;
-    let OBJECT_DISTANCE_VISUALIZATION_LIMIT = 10;
-
-    let zoom = 0.004;
-    let offsetX = 0;
-    let offsetY = 0;
-    let isDragging = false;
-    let dragStartX = 0;
-    let dragStartY = 0;
-
-    let hoveredType = null;
-    let hoveredObject = null;
-    let selectedObject = null;
-    let hoveredSpectralClass = null;
-
-    let NAME_VANISH_DISTANCE = 0.70;
-    let SHOW_NAMES = true;
-    let SHOW_LINE_DISTANCE = false;
-    let CLICK_TO_SELECT = false;
-    let UNIFORM_STAR_COLOR = true;
-    let DETAILED_RESOURCE_NAMES = false;
-
-    const canvas = document.getElementById("galaxy");
-    const ctx = canvas.getContext("2d");
-
-    const legend = document.getElementById("galaxy");
-
-    const legendDivs = document.querySelectorAll('.legend div');
-
-    const info_panel = document.getElementById('info_panel');
-    const info_content = document.getElementById('info_content');
-
-    const nameShowDistance = document.getElementById('nameDistance');
-    const showNames = document.getElementById('showNames');
-    const showDistanceLines = document.getElementById('showDistanceLines');
-    const maxDistanceLines = document.getElementById('maxDistanceLines');
-    const clickToSelect = document.getElementById('clickToSelect');
-    const uniformStarColor = document.getElementById('uniformStarColor');
-    const detailResourceNames = document.getElementById('detailResourceNames');
-
-    const currentZoom = document.getElementById('currentZoom');
-    currentZoom.innerText = zoom.toFixed(5);
-
     nameShowDistance.addEventListener('change', () => {
         NAME_VANISH_DISTANCE = nameShowDistance.value;
         draw();
@@ -559,6 +562,8 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
             info_content.innerHTML = `<span>Hover with the Mouse over a Object...</span>`;
             return;
         }
+        
+        if (DEV_SHOW_CONSOLE_INFORMATION) console.log(obj);
 
         let html = `<b>Name:</b> ${obj.name}<br>`;
         html += `<b>Type:</b> ${obj.type}<br>`;
@@ -568,6 +573,7 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
         if (obj.metadata) {
             const info = obj;
             if (obj.type === "star") {
+
                 html += `<hr><b>Stardata:</b><br>`;
                 html += `Spectral Class: ${info.metadata.starSpectral?.h ?? "-"}-${info.metadata.starSpectral.s ?? "-"} (${info.metadata.starSpectral.name ?? "-"})<br>`;
                 html += `Tempreature: ${info.metadata.starTemperature ?? "-"} °K (${info.metadata.starSpectral.color ?? "-"})<br>`;
@@ -592,7 +598,7 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
                         }
 
                         html += `<u>Planet ${idx + 1}: ${planet.name}</u> <br>`;
-                        if (planet.attributes?.atm == "atmosphere") {
+                        if (planet.attributes?.atm == "atmosphere" && planet.special.atmosphere != null) {
                             html += `&nbsp;Temperature: ${planet.special.atmosphere.temperature.toFixed(3)} °K (${(planet.special.atmosphere.temperature - 273.15).toFixed(3)} °C)<br>`;
                             html += `&nbsp;Atmosphärendruck: ${planet.special.atmosphere.atm.toFixed(2)} atm<br>`
                             html += `&nbsp;Greenhouse Effect: ${planet.special.atmosphere.greenhouseEffect.toFixed(3)} °C<br>`

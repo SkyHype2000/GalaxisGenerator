@@ -489,11 +489,15 @@ function generatePlanetSystemData(parentStarName, parentStarMass, parentStarLum,
     for (let i = 0; i < planetCount; i++) {
         lastDistance += config.rng() * 1.5;
         const rotation = +(config.rng() * 360).toFixed(2);
-        const planetType = !!Math.round(config.rng());
+        /**
+         * Ob der Planet eine Atmosphäre hat oder nicht. 0 = Nein, 1 = Ja
+         */
+        let planetType = false;
+        // let planetType = !!Math.round(config.rng());
         const mass = +((0.0025 + (config.rng() ** 4.5)) * 10).toFixed(3);
         const name = generateUniqueName("planet");
         const albedo = +(0.05 + (config.rng() * (0.3 - 0.05)));
-        const temperature = calculatePlanetTemperature(parentStarLum, albedo, lastDistance * config.AE);
+        let temperature = calculatePlanetTemperature(parentStarLum, albedo, lastDistance * config.AE);
         const maxMoons = Math.round(config.rng() * config.MAX_MOONS_PER_PLANET);
         let moons = [];
         if (maxMoons > 0) {
@@ -504,10 +508,13 @@ function generatePlanetSystemData(parentStarName, parentStarMass, parentStarLum,
         // Ressourcen für diesen Planeten generieren
         let resources = GenerateResources(planetType ? "planet:atmosphere" : "planet:noAtmosphere", 1000);
         let { d, r } = calculatePlanetRadius(resources, mass * config.EARTH_MASS_KG);
-        const g = +(config.G * (mass / r ** 2)).toFixed(3);
+        const g = +(config.G * ((mass * config.EARTH_MASS_KG) / r ** 2)).toFixed(6);
+        console.log(g);
         let special = {};
-        if (planetType) {
-            special.atm = generateAtmosphericInformation(parentStarLum, lastDistance, albedo, g);
+        special.atm = generateAtmosphericInformation(parentStarLum, lastDistance, albedo, g);
+        if (special.atm != null) {
+            planetType = true;
+            temperature = special.atm.temperature;
         }
         planets.push({
             name,
@@ -542,10 +549,14 @@ function generatePlanetSystemData(parentStarName, parentStarMass, parentStarLum,
  * @param parentStarLum In W
  */
 function generateRoguePlanetData() {
-    const planetType = !!Math.round(config.rng());
+    /**
+     * Ob der Einzelgänger Planet eine Atmosphäre hat oder nicht. 0 = Nein, 1 = Ja
+     */
+    let planetType = false;
+    // let planetType = !!Math.round(config.rng());
     const mass = +((0.0025 + (config.rng() ** 4.5)) * 10).toFixed(3);
     const name = generateUniqueName("planet");
-    const albedo = +(0.05 + (config.rng() * (0.3 - 0.05))).toFixed(5);
+    // const albedo = +(0.05 + (config.rng() * (0.3 - 0.05))).toFixed(5);
     let temperature = 0;
     const maxMoons = Math.round(config.rng() * config.MAX_MOONS_PER_PLANET);
     let moons = [];
@@ -557,8 +568,9 @@ function generateRoguePlanetData() {
     let { d, r } = calculatePlanetRadius(resources, mass * config.EARTH_MASS_KG);
     const g = +(config.G * (mass / r ** 2)).toFixed(3);
     let special = {};
-    if (planetType) {
-        special.atm = generateAtmosphericInformation(0, 0, 0, g);
+    special.atm = generateAtmosphericInformation(0, 0, 0, g);
+    if (special.atm != null) {
+        planetType = true;
         temperature = special.atm.temperature;
     }
     return {
@@ -566,7 +578,7 @@ function generateRoguePlanetData() {
         temperature,
         massEM: mass,
         massKG: mass * config.EARTH_MASS_KG,
-        g,
+        g, // grAvItAtioN
         r, // Radius
         d, // Dichte
         moons,
@@ -590,7 +602,7 @@ function generateMoonSystemData(parentPlanetName, parentPlanetMass, maxMoons = 5
         /**
          * Ob der Mond eine Atmosphäre hat oder nicht. 0 = Nein, 1 = Ja
          */
-        const moonType = !!Math.round(config.rng());
+        let moonType = !!Math.round(config.rng());
         const rotation = Math.round(config.rng() * 360);
         const mass = (0.0025 + (config.rng() ** 4.5)) * 0.05;
         const name = generateUniqueName("moon");
@@ -634,31 +646,38 @@ function generateGasMix() {
 }
 /**
  * Hier berechne ich die Atmosphäreninformationen
- *
- * @param StarLum
- * @param StarDistance
- * @param albedo
- * @param minDensity
- * @param maxDensity
- * @returns
  */
-function generateAtmosphericInformation(StarLum, StarDistance, albedo, gravitation, minDensity = 0.01, maxDensity = 10) {
+function generateAtmosphericInformation(StarLum, StarDistance, albedo, gravitation, minDensity = 0.0001, maxDensity = 10) {
+    console.log("gravitation: " + gravitation);
+    if (gravitation <= 0)
+        return null;
     const gasInfo = generateGasMix();
     const referenceDensity = Math.max(Math.min(Math.pow(config.rng(), 3.95) * maxDensity, maxDensity), minDensity);
+    console.log("referenceDensity: " + referenceDensity);
+    if (referenceDensity <= 0)
+        return null;
     const scaleHeight = 8000 + 2000 * (config.rng() - 0.5);
+    console.log("scaleHeight: " + scaleHeight);
+    if (scaleHeight <= 0)
+        return null;
     let tau = 0;
     for (const gas of gasInfo) {
         tau += gas.k_a * gas.w * referenceDensity * scaleHeight;
     }
     const d_m = StarDistance * config.AE;
     const F = StarLum / (4 * Math.PI * d_m ** 2);
-    // Tau wegen den Extrem Hohen Temperaturen gedämpft, ich denke nicht das eine Atmosphäre von einem Planeten der 1000 AU Entfernt ist auf einmal 100000°C hat lol
+    // Tau wegen den Extrem Hohen Temperaturen gedämpft, ich denke nicht das eine Atmosphäre
+    // von einem Planeten der 1000 AU Entfernt ist auf einmal 100000°C hat lol
     const tauEff = Math.log(1 + (3 / 4) * tau);
     const T = Math.pow(((F * (1 - albedo)) / (4 * config.SB)) * (1 + tauEff), 0.25);
     const T_noGH = Math.pow(((F * (1 - albedo)) / (4 * config.SB)), 0.25);
     const greenhouseEffect = +(Math.max(T - T_noGH, 0).toFixed(2));
     // Atmosphärendruck in atm
     const atmPressure = +(referenceDensity * gravitation * scaleHeight / 101325).toFixed(3);
+    console.log(atmPressure);
+    console.log("atmPressure: " + atmPressure);
+    if (atmPressure <= 0.0001)
+        return null;
     return {
         temperature: +T.toFixed(2),
         gases: gasInfo,
