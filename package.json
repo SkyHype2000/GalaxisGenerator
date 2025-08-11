@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "fflate": "^0.8.2",
     "pngjs": "^7.0.0",
     "seedrandom": "^3.0.5"
   },

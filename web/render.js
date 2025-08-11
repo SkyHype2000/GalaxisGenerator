@@ -1,3 +1,5 @@
+import {gunzipSync} from 'https://cdn.skypack.dev/fflate@0.8.2?min';
+
 const MAX_OBJECT_SIZE = 3;
 const MIN_OBJECT_SIZE = 3;
 const MAX_OBJECT_HOVER_SIZE = 2;
@@ -47,10 +49,16 @@ const clickToSelect = document.getElementById('clickToSelect');
 const uniformStarColor = document.getElementById('uniformStarColor');
 const detailResourceNames = document.getElementById('detailResourceNames');
 
+const showObjectDataButton = document.getElementById('showObjectDataButton')
+
 const currentZoom = document.getElementById('currentZoom');
 currentZoom.innerText = zoom.toFixed(5);
 
-fetch("galaxy.json").then(res => res.json()).then(data => {
+fetch("galaxy.json.gz")
+  .then(res => res.arrayBuffer())
+  .then(buf => {
+    const json = new TextDecoder().decode(gunzipSync(new Uint8Array(buf)));
+    const data = JSON.parse(json);
     nameShowDistance.addEventListener('change', () => {
         NAME_VANISH_DISTANCE = nameShowDistance.value;
         draw();
@@ -560,8 +568,19 @@ fetch("galaxy.json").then(res => res.json()).then(data => {
     function updateInfoPanel(obj) {
         if (!obj) {
             info_content.innerHTML = `<span>Hover with the Mouse over a Object...</span>`;
+            showObjectDataButton.disabled = true;
             return;
         }
+
+        showObjectDataButton.disabled = false;
+        showObjectDataButton.addEventListener("click", () => {
+            const jsonStr = JSON.stringify(obj, null, 2);
+            const popup = window.open("", "Object Data", "width=600,height=600,resizable,scrollbars");
+            if (popup) {
+                popup.document.body.innerHTML = `<pre style="white-space:pre-wrap;word-break:break-all;font-family:monospace;">${jsonStr}</pre>`;
+                popup.document.title = obj.name ? `Object: ${obj.name}` : "Object Data";
+            }
+        })
         
         if (DEV_SHOW_CONSOLE_INFORMATION) console.log(obj);
 

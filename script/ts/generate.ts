@@ -1,6 +1,7 @@
 import fs from "fs";
 import seedrandom from "seedrandom";
 import * as cc from "./consolecolor";
+import { gzipSync } from "fflate";
 
 //// throw new Error("test")
 // Config
@@ -387,6 +388,10 @@ export function getRandomObjectType(objectType: string) {
     return all[(config.rng() * (all.length - 1))];
 }
 
+let currentObject = 0;
+let startTime = Date.now();
+let currentTime = Date.now();
+
 /**
  * Diese Informationen werden Automatisch Via Seed "Erfunden"  
  * star:  
@@ -457,7 +462,14 @@ export function galaxyPush(type: config.ObjectType, x: number, y: number, name: 
         distanceToCenter: +distanceToCenter.toFixed(3),
         metadata: metadata.informationBase
     }
-    console.log(JSON.stringify(d));
+    // console.log(JSON.stringify(d));
+
+    currentObject++;
+    if (currentObject%100 == 0) {
+        let delta = currentTime
+        currentTime = Date.now();
+        console.log(`${currentObject}/${config.count} Objekte (${((currentObject/config.count)*100).toFixed(2)} %) ${currentTime-startTime}ms (+${currentTime-delta}ms)`)
+    }
 
     //// console.log(d.chosenType);
 
@@ -510,7 +522,6 @@ export function generatePlanetSystemData(parentStarName: string, parentStarMass:
         let resources: res.webResourceInformation[] = GenerateResources(planetType ? "planet:atmosphere" : "planet:noAtmosphere", 1000);
         let { d, r } = calculatePlanetRadius(resources, mass * config.EARTH_MASS_KG);
         const g = +(config.G * ((mass * config.EARTH_MASS_KG) / r**2)).toFixed(6)
-        console.log(g);
 
         let special: config.CelestialSpecialData = {}
         special.atm = generateAtmosphericInformation(parentStarLum, lastDistance, albedo, g);
@@ -670,16 +681,13 @@ function generateGasMix(): config.GasInformationType[] {
  * Hier berechne ich die Atmosphäreninformationen
  */
 export function generateAtmosphericInformation(StarLum: number, StarDistance: number, albedo: number, gravitation: number, minDensity = 0.0001, maxDensity = 10): config.AtmosphericInformation {
-    console.log("gravitation: " + gravitation);
     if (gravitation <= 0) return null;
 
     const gasInfo = generateGasMix();
 
     const referenceDensity = Math.max(Math.min(Math.pow(config.rng(), 3.95) * maxDensity, maxDensity), minDensity);
-    console.log("referenceDensity: " + referenceDensity);
     if (referenceDensity <= 0) return null;
     const scaleHeight = 8000 + 2000 * (config.rng() - 0.5);
-    console.log("scaleHeight: " + scaleHeight);
     if (scaleHeight <= 0) return null;
 
     let tau = 0;
@@ -700,8 +708,6 @@ export function generateAtmosphericInformation(StarLum: number, StarDistance: nu
 
     // Atmosphärendruck in atm
     const atmPressure = +(referenceDensity * gravitation * scaleHeight / 101325).toFixed(3);
-    console.log(atmPressure);
-    console.log("atmPressure: " + atmPressure)
     if (atmPressure <= 0.0001) return null;
 
     return {
@@ -744,7 +750,15 @@ while (galaxy.length < config.count) {
             const target = stars[Math.floor(config.rng() * stars.length)];
 
             const angleTo = config.rng() * Math.PI * 2;
-            const dist = nearMin + config.rng() * (nearMax - nearMin);
+            let dist = nearMin + config.rng() * (nearMax - nearMin);
+
+            // Begrenzung: Objekt darf nicht außerhalb des Galaxie-Radius landen
+            const maxDistToCenter = config.radius;
+            const centerDist = Math.sqrt(target.x * target.x + target.y * target.y);
+            // Wenn das Ziel zu weit weg ist, dist reduzieren
+            if (centerDist + dist > maxDistToCenter) {
+                dist = Math.max(0, maxDistToCenter - centerDist);
+            }
 
             const x = target.x + Math.cos(angleTo) * dist;
             const y = target.y + Math.sin(angleTo) * dist;
@@ -769,8 +783,11 @@ while (galaxy.length < config.count) {
 //// console.log(GenerateResources("interstellar_t2_astroid"));
 //// console.log(GenerateResources("interstellar_t2_astroid"));
 
-
-fs.writeFileSync("./web/galaxy.json", JSON.stringify(galaxy));
+// console.log("Speichere Normale JSON")
+// fs.writeFileSync("./web/galaxy.json", JSON.stringify(galaxy));
+// fs.writeFileSync("./test-galaxy.json.gz", gzipSync(new Buffer(JSON.stringify(galaxy), "utf-8")));
+console.log("Speichere gzipJSON");
+fs.writeFileSync("./web/galaxy.json.gz", gzipSync(Buffer.from(JSON.stringify(galaxy), "utf-8")));
 
 console.log("Galaxie generiert mit", galaxy.length, "Objekten.");
 console.log("Seed:", cc.string(config.seed));

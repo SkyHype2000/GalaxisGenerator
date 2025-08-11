@@ -58,6 +58,7 @@ exports.generateMoonSystemData = generateMoonSystemData;
 exports.generateAtmosphericInformation = generateAtmosphericInformation;
 const fs_1 = __importDefault(require("fs"));
 const cc = __importStar(require("./consolecolor"));
+const fflate_1 = require("fflate");
 //// throw new Error("test")
 // Config
 const config = __importStar(require("./config"));
@@ -400,6 +401,9 @@ function getRandomObjectType(objectType) {
     const all = getObjectType(objectType);
     return all[(config.rng() * (all.length - 1))];
 }
+let currentObject = 0;
+let startTime = Date.now();
+let currentTime = Date.now();
 /**
  * Diese Informationen werden Automatisch Via Seed "Erfunden"
  * star:
@@ -465,7 +469,13 @@ function galaxyPush(type, x, y, name) {
         distanceToCenter: +distanceToCenter.toFixed(3),
         metadata: metadata.informationBase
     };
-    console.log(JSON.stringify(d));
+    // console.log(JSON.stringify(d));
+    currentObject++;
+    if (currentObject % 100 == 0) {
+        let delta = currentTime;
+        currentTime = Date.now();
+        console.log(`${currentObject}/${config.count} Objekte (${((currentObject / config.count) * 100).toFixed(2)} %) ${currentTime - startTime}ms (+${currentTime - delta}ms)`);
+    }
     //// console.log(d.chosenType);
     exports.galaxy.push(d);
 }
@@ -509,7 +519,6 @@ function generatePlanetSystemData(parentStarName, parentStarMass, parentStarLum,
         let resources = GenerateResources(planetType ? "planet:atmosphere" : "planet:noAtmosphere", 1000);
         let { d, r } = calculatePlanetRadius(resources, mass * config.EARTH_MASS_KG);
         const g = +(config.G * ((mass * config.EARTH_MASS_KG) / r ** 2)).toFixed(6);
-        console.log(g);
         let special = {};
         special.atm = generateAtmosphericInformation(parentStarLum, lastDistance, albedo, g);
         if (special.atm != null) {
@@ -648,16 +657,13 @@ function generateGasMix() {
  * Hier berechne ich die Atmosphäreninformationen
  */
 function generateAtmosphericInformation(StarLum, StarDistance, albedo, gravitation, minDensity = 0.0001, maxDensity = 10) {
-    console.log("gravitation: " + gravitation);
     if (gravitation <= 0)
         return null;
     const gasInfo = generateGasMix();
     const referenceDensity = Math.max(Math.min(Math.pow(config.rng(), 3.95) * maxDensity, maxDensity), minDensity);
-    console.log("referenceDensity: " + referenceDensity);
     if (referenceDensity <= 0)
         return null;
     const scaleHeight = 8000 + 2000 * (config.rng() - 0.5);
-    console.log("scaleHeight: " + scaleHeight);
     if (scaleHeight <= 0)
         return null;
     let tau = 0;
@@ -674,8 +680,6 @@ function generateAtmosphericInformation(StarLum, StarDistance, albedo, gravitati
     const greenhouseEffect = +(Math.max(T - T_noGH, 0).toFixed(2));
     // Atmosphärendruck in atm
     const atmPressure = +(referenceDensity * gravitation * scaleHeight / 101325).toFixed(3);
-    console.log(atmPressure);
-    console.log("atmPressure: " + atmPressure);
     if (atmPressure <= 0.0001)
         return null;
     return {
@@ -711,7 +715,14 @@ while (exports.galaxy.length < config.count) {
             const nearMax = parseFloat(parts[2]);
             const target = stars[Math.floor(config.rng() * stars.length)];
             const angleTo = config.rng() * Math.PI * 2;
-            const dist = nearMin + config.rng() * (nearMax - nearMin);
+            let dist = nearMin + config.rng() * (nearMax - nearMin);
+            // Begrenzung: Objekt darf nicht außerhalb des Galaxie-Radius landen
+            const maxDistToCenter = config.radius;
+            const centerDist = Math.sqrt(target.x * target.x + target.y * target.y);
+            // Wenn das Ziel zu weit weg ist, dist reduzieren
+            if (centerDist + dist > maxDistToCenter) {
+                dist = Math.max(0, maxDistToCenter - centerDist);
+            }
             const x = target.x + Math.cos(angleTo) * dist;
             const y = target.y + Math.sin(angleTo) * dist;
             const { tooClose } = validateDistance(0, 0, chosenType);
@@ -730,6 +741,10 @@ while (exports.galaxy.length < config.count) {
 //// console.log(GenerateResources("interstellar_t2_astroid"));
 //// console.log(GenerateResources("interstellar_t2_astroid"));
 //// console.log(GenerateResources("interstellar_t2_astroid"));
-fs_1.default.writeFileSync("./web/galaxy.json", JSON.stringify(exports.galaxy));
+// console.log("Speichere Normale JSON")
+// fs.writeFileSync("./web/galaxy.json", JSON.stringify(galaxy));
+// fs.writeFileSync("./test-galaxy.json.gz", gzipSync(new Buffer(JSON.stringify(galaxy), "utf-8")));
+console.log("Speichere gzipJSON");
+fs_1.default.writeFileSync("./web/galaxy.json.gz", (0, fflate_1.gzipSync)(Buffer.from(JSON.stringify(exports.galaxy), "utf-8")));
 console.log("Galaxie generiert mit", exports.galaxy.length, "Objekten.");
 console.log("Seed:", cc.string(config.seed));

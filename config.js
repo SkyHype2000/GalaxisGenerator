@@ -24,9 +24,9 @@ exports.rng = (0, seedrandom_1.default)(exports.seed);
  *
  * ---
  *
- * Standard_ `1ßßßßßß`
+ * Standard_ `1ßßßß`
  */
-exports.radius = 1_000_000;
+exports.radius = 100_000;
 /**
  * Die Anzahl der Objekte innerhalb der Galaxie
  * Beeinflusst nicht die Stellaren Objekte!
@@ -38,9 +38,9 @@ exports.radius = 1_000_000;
  *
  * ---
  *
- * Standard: `2500`
+ * Standard: `4500`
  */
-exports.count = 2500;
+exports.count = 50000;
 /**
  * Die Minimalen und Maximalen Planeten in einem Sternensystem,
  * Beeinflusst aber nicht die Monde.
@@ -124,13 +124,13 @@ exports.types = [
     new ObjectType("moon", 0.15, 0, 0, "planet_orbit"),
     new ObjectType("stellar_astroid", 0.2, 0, 0, "sun_orbit"),
     new ObjectType("interstellar_t1_astroid", 0.05, 5, 0, "neaStar-0.1-2"),
-    new ObjectType("interstellar_t2_astroid", 0.05, 8000, 0, "deepSpace-1000"),
-    new ObjectType("interstellar_t3_astroid", 0.05, 15000, 0, "deepSpace-4000"),
+    new ObjectType("interstellar_t2_astroid", 0.05, 1000, 0, "deepSpace-500"),
+    new ObjectType("interstellar_t3_astroid", 0.05, 2000, 0, "deepSpace-1000"),
     new ObjectType("rogue_planet", 0.01, 5, 0, "nearStar-2-15"),
     new ObjectType("anomaly", 0.01, 1000, 0, "deepSpace-2000"),
     new ObjectType("antimatter_anomaly", 0.0001, 3000, 0, "deepSpace-5000"),
     new ObjectType("mainBlackHole", 0, 0, 0, ""),
-    new ObjectType("blackHole", 0.001, 50000, 0, "deepSpace-10000"),
+    new ObjectType("blackHole", 0.001, 2000, 0, "deepSpace-1000"),
     new ObjectType("gas_planet", 0.2, 0, 0, "sun_orbit")
 ];
 function chooseTypeByChance() {

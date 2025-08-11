@@ -18,9 +18,9 @@ export declare const rng: seedrandom.PRNG;
  *
  * ---
  *
- * Standard_ `1ßßßßßß`
+ * Standard_ `1ßßßß`
  */
-export declare const radius: 1000000 | number;
+export declare const radius: 10000 | number;
 /**
  * Die Anzahl der Objekte innerhalb der Galaxie
  * Beeinflusst nicht die Stellaren Objekte!
@@ -32,9 +32,9 @@ export declare const radius: 1000000 | number;
  *
  * ---
  *
- * Standard: `2500`
+ * Standard: `4500`
  */
-export declare const count: 2500 | number;
+export declare const count: 4500 | number;
 /**
  * Die Minimalen und Maximalen Planeten in einem Sternensystem,
  * Beeinflusst aber nicht die Monde.
