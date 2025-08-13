@@ -26,7 +26,7 @@ exports.rng = (0, seedrandom_1.default)(exports.seed);
  *
  * Standard_ `1ßßßß`
  */
-exports.radius = 100_000;
+exports.radius = 1_000;
 /**
  * Die Anzahl der Objekte innerhalb der Galaxie
  * Beeinflusst nicht die Stellaren Objekte!
@@ -40,7 +40,7 @@ exports.radius = 100_000;
  *
  * Standard: `4500`
  */
-exports.count = 50000;
+exports.count = 1000;
 /**
  * Die Minimalen und Maximalen Planeten in einem Sternensystem,
  * Beeinflusst aber nicht die Monde.

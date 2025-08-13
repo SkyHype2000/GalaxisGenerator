@@ -8,7 +8,10 @@ export type CelestialObjectTypes =
     "none" | "stellar_astroid" | "interstellar_t1_astroid" | "interstellar_t2_astroid" | "interstellar_t3_astroid" | "planet" | "moon" | "star" | "gas_planet" |
     "stellar_space" | "interstellar_space" | "anomaly" | "antimatter_anomaly" | "neutron_star" | "planet:noAtmosphere" | "planet:atmosphere" | "moon:noAtmosphere" |
     "moon:atmosphere" | "test" | "dev" | "everywhere" | "blackHole" | "mainBlackHole" | "rogue_planet"
-export const CelestialObjectTypesArray:CelestialObjectTypes[] = []
+export const CelestialObjectTypesArray:CelestialObjectTypes[] = [
+    "none", "stellar_astroid", "interstellar_t1_astroid", "interstellar_t2_astroid", "interstellar_t3_astroid", "planet", "moon", "star", "gas_planet",
+    "stellar_space", "interstellar_space", "anomaly", "antimatter_anomaly", "neutron_star", "planet:noAtmosphere", "planet:atmosphere", "moon:noAtmosphere",
+    "moon:atmosphere", "test", "dev", "everywhere", "blackHole", "mainBlackHole", "rogue_planet"]
 export type ResourceTypes = "solid" | "liquid" | "gas" | "antimatter" | "exotic" | "plastic_bag"
 
 /**
@@ -138,12 +141,6 @@ export class webResourceInformation {
                 name: this.name.replaceAll(":", "_"), id: this.id, short: this.short, group: this.group, density: this.density, p: this.p, n: this.n, v: this.v
             }
         }
-    }
-
-    toWebJSON(p?: number): {name:string, id:string, short:string, p:number} {
-        if ((p != null || p != undefined) && typeof p == "number") this.p = p;
-        if (this.p == null) throw new Error("p was null, maybe it wasn't defined before use?");
-        return {name:this.name, id:this.id, short:this.short, p:this.p}
     }
 }
 

@@ -9,7 +9,7 @@ const MAX_ZOOM_DISTANCE = 0.0000000001;
 const MIN_ZOOM_DISTANCE = 25;
 let OBJECT_DISTANCE_VISUALIZATION_LIMIT = 10;
 
-let zoom = 0.004;
+let zoom = 0.4;
 let offsetX = 0;
 let offsetY = 0;
 let isDragging = false;
@@ -24,7 +24,7 @@ let hoveredSpectralClass = null;
 let NAME_VANISH_DISTANCE = 0.70;
 let SHOW_NAMES = true;
 let SHOW_LINE_DISTANCE = false;
-let CLICK_TO_SELECT = false;
+let CLICK_TO_SELECT = true;
 let UNIFORM_STAR_COLOR = true;
 let DETAILED_RESOURCE_NAMES = false;
 

@@ -11,6 +11,6 @@
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true
     },
-    "include": ["./script/ts/**/*"],
+    "include": ["./script/ts/**/*", "oldTS/config.ts", "oldTS/generate.ts"],
     "exclude": []
 }
