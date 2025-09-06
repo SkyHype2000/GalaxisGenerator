@@ -20,4 +20,25 @@ export declare class Vector2 {
     };
     /**Get The Distance Between the Main Vector and another Vector */
     getDistance(other: Vector2): number;
+    /**Number of digits after the decimal point */
+    toFixed(fractionDigits?: number): Vector2;
+    /**
+     * Compares 2 Vectors and tell you what Position is smaller, same or bigger
+     * `false`: smaller
+     * `null`: same
+     * `true`: larger
+     */
+    comparePosition(other: Vector2): false | null | true;
 }
+/**
+ * Returns a name based on the type of planet.
+ *
+ * It's very interesting that it's generated based on syllables; I didn't even know that was possible before.
+ * Thanks, ChatGPT XD.
+ *
+ * But seriously, it's really interesting that something like this works.
+ *
+ * @param {res.CelestialObjectTypes} type The Type of the Object
+ * @returns {string}
+ */
+export declare function generateName(): string;

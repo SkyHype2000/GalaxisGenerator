@@ -1,3 +1,6 @@
+import {Decimal} from 'decimal.js'
+import * as config from './config'
+
 /**
  * 2D Vector
  */
@@ -36,4 +39,68 @@ export class Vector2 {
         
         return Math.hypot(x, y)
     }
+
+    /**Number of digits after the decimal point */
+    toFixed(fractionDigits:number = 0):Vector2 {
+        const x = new Decimal(this.x).toDecimalPlaces(fractionDigits).toNumber();
+        const y = new Decimal(this.y).toDecimalPlaces(fractionDigits).toNumber();
+        return new Vector2(x, y)
+    }
+
+    /**
+     * Compares 2 Vectors and tell you what Position is smaller, same or bigger
+     * `false`: smaller
+     * `null`: same
+     * `true`: larger
+     */
+    comparePosition(other: Vector2):false|null|true {
+        if (this.x < other.x || (this.x === other.x && this.y < other.y)) {
+            return false;
+        }
+        if (this.x > other.x || (this.x === other.x && this.y > other.y)) {
+            return true;
+        }
+        return null;
+    }
+}
+
+/**
+ * Returns a name based on the type of planet.
+ * 
+ * It's very interesting that it's generated based on syllables; I didn't even know that was possible before.  
+ * Thanks, ChatGPT XD.
+ * 
+ * But seriously, it's really interesting that something like this works.
+ * 
+ * @param {res.CelestialObjectTypes} type The Type of the Object
+ * @returns {string}
+ */
+export function generateName(): string {
+    /**Silben von ChatGPT für die Namensgenerierung */
+    const syllables: string[] = [
+        // Silben V1
+        "ka", "lo", "ra", "ze", "tu", "mi", "xa", "vi", "no",
+        "shi", "dra", "qu", "ly", "tor", "zan", "ny", "fel", "vra",
+        "zur", "kre", "tho", "bal", "ix", "sy", "jen", "kul", "orn",
+        "nef", "ria", "sol", "mek", "tas", "lur", "xen", "cai", "vor",
+        "hel", "ume", "zan", "tha", "py", "rek", "gri", "yul", "zan",
+        "eph", "ari", "zho", "the", "mur", "dax", "nix", "zor", "lim",
+
+        // Silben V2
+        "bri", "clo", "dre", "fen", "gla", "hro", "jor", "kli", "mar",
+        "nel", "oph", "pra", "qua", "rin", "sha", "tre", "uln", "vex",
+        "wra", "xis", "yra", "zor", "bex", "dru", "fla", "gra", "hul",
+        "jum", "kor", "lek", "mip", "nox", "opl", "pru", "qui", "rax",
+        "syl", "tri", "uvo", "vyn", "wex", "xil", "yan", "zep", "zor",
+        "bax", "cro", "dav", "elx", "fra", "gyn", "hax", "jin", "kre",
+        "lom", "myr", "nov", "oph", "plu", "qir", "rum", "syn", "tor",
+        "urn", "vok", "wir", "xon", "yar", "zun"
+    ];
+
+    let name = "";
+    const length = 2 + Math.floor(config.rng() * 2);
+    for (let i = 0; i < length; i++) {
+        name += syllables[Math.floor(config.rng() * syllables.length)];
+    }
+    return name.charAt(0).toUpperCase() + name.slice(1);
 }

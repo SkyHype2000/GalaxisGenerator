@@ -6,11 +6,10 @@ import * as res from './resources';
  */
 export declare function galaxyObjectGenerator(): void;
 /**
- * Validates the Distance of the Givin Object and his Position,
- * if there is no Valid Position after 100 Trys, it will return `null`
+ * Returns the position if valid, otherwise null.
  *
  * @param {config.ObjectType} objectType Type of the Object
- * @param {Vector2} pos Tge Position of the Object
+ * @param {Vector2} pos Position of the Object
  * @returns {Vector2|null}
  */
 export declare function validateDistance(objectType: config.ObjectType, pos: Vector2): Vector2 | null;
@@ -58,18 +57,6 @@ export declare const usedNames: Set<string>;
  */
 export declare function generateUniqueName(): string;
 /**
- * Returns a name based on the type of planet.
- *
- * It's very interesting that it's generated based on syllables; I didn't even know that was possible before.
- * Thanks, ChatGPT XD.
- *
- * But seriously, it's really interesting that something like this works.
- *
- * @param {res.CelestialObjectTypes} type The Type of the Object
- * @returns {string}
- */
-export declare function generateName(): string;
-/**
  * There is a special function for generating anomaly names.
  * I didn't want to just use syllables for the names, so I decided to use this one.
  *
@@ -94,3 +81,10 @@ export declare function calculateObjectMass(radius: number, resources: {
     resource: res.resource;
     per: number;
 }[]): number;
+/**
+console.log("Sector object count grid:");
+// console.log(sectorGrid);
+for (let i = 0; i < sectorGrid.length; i++) {
+    console.log(JSON.stringify(sectorGrid[i]));
+}
+*/ 

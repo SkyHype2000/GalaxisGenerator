@@ -43,7 +43,6 @@ exports.getRandomPosition = getRandomPosition;
 exports.getRandomDistance = getRandomDistance;
 exports.polarToCartesian = polarToCartesian;
 exports.generateUniqueName = generateUniqueName;
-exports.generateName = generateName;
 exports.generateAnomalyName = generateAnomalyName;
 exports.generateStarSystem = generateStarSystem;
 exports.generateInterstellarAstroidField = generateInterstellarAstroidField;
@@ -98,7 +97,7 @@ function galaxyObjectGenerator() {
         objects.push({ pos: position, type: "mainBlackHole" });
         if (!objectTypesPresent.has("mainBlackHole"))
             objectTypesPresent.add("mainBlackHole");
-        files.set("0,0", data);
+        files.set("0_0", data);
         console.log(JSON.stringify(data));
         return;
     }
@@ -110,9 +109,18 @@ function galaxyObjectGenerator() {
         //// console.log(objects.length);
         //// console.log(objectTypesPresent.has("star"));
         while (valPosition == null) {
-            const randomPosition = getRandomPosition();
+            const randomPosition = getRandomPosition().toFixed(3);
             // console.log(randomPosition);
             valPosition = validateDistance(ObjectType, randomPosition);
+            if (valPosition == null) {
+                nulls++;
+                if ((nulls % 10000) == 0) {
+                    // console.log(`${nulls} Nulls`);
+                }
+                if (nulls > 25000) {
+                    ObjectType = config.chooseObjectTypeByChance();
+                }
+            }
         }
         const sector = config.getSectorPos(valPosition);
         const sectorRelativePos = new tool_1.Vector2(valPosition.x - (sector.x * config.SectorSize.x), valPosition.y - (sector.y * config.SectorSize.y));
@@ -167,6 +175,7 @@ function galaxyObjectGenerator() {
         data.objects.push(objectInfo);
         files.set(sector.toString(true), data);
         //// console.log(JSON.stringify(objectInfo));
+        // console.log(JSON.stringify(objectInfo));
         return;
     }
 }
@@ -183,61 +192,44 @@ function getLocalSectorPos(pos) {
     return new tool_1.Vector2(mod(pos.x, config.SectorSize.x), mod(pos.y, config.SectorSize.y));
 }
 /**
- * Validates the Distance of the Givin Object and his Position,
- * if there is no Valid Position after 100 Trys, it will return `null`
+ * Returns the position if valid, otherwise null.
  *
  * @param {config.ObjectType} objectType Type of the Object
- * @param {Vector2} pos Tge Position of the Object
+ * @param {Vector2} pos Position of the Object
  * @returns {Vector2|null}
  */
 function validateDistance(objectType, pos) {
-    let distance;
-    // console.log(objectType.type);
-    if (objects.length === 0)
-        return pos;
-    // console.log(`Has Star: ${objectTypesPresent.has("star")} Type: ${objectType.type}`);
-    // console.log(objectTypesPresent.has("star"));
-    // console.log(objects.length);
-    if (objectType.preferred == "near_star" && !objectTypesPresent.has("star"))
+    if (files.size === 0)
         return null;
-    if (objectType.preferred == "distance" && !objectTypesPresent.has("star"))
-        return pos;
-    if (objectType.preferred == "deep_space" && !objectTypesPresent.has("star"))
-        return pos;
-    if (objectType.preferred == "near_star") {
-        for (let e_i of objects) {
-            if (e_i.type != "star")
-                continue;
-            distance = pos.getDistance(e_i.pos);
-            // console.log(`pos_a: ${e_i.pos.toString(true)}; pos_b: ${pos.toString(true)}; distance: ${distance}`);
-            if (distance >= objectType.dist.x && (distance <= objectType.dist.y || objectType.dist.y === 0)) {
-                return pos;
+    // Determine the sector of the given position
+    const sector = config.getSectorPos(pos);
+    // Iterate over the 3x3 neighboring sectors
+    for (let dx = -1; dx <= 1; dx++) {
+        for (let dy = -1; dy <= 1; dy++) {
+            const neighborSectorKey = `${sector.x + dx}_${sector.y + dy}`;
+            const neighborSector = files.get(neighborSectorKey);
+            if (!neighborSector)
+                continue; // Skip if the sector doesn't exist
+            // Check each object in the neighboring sector
+            for (const obj of neighborSector.objects) {
+                // Convert relative position to global position
+                const globalPos = new tool_1.Vector2(obj.position.x + neighborSector.position.x * config.SectorSize.x, obj.position.y + neighborSector.position.y * config.SectorSize.y);
+                const distance = pos.getDistance(globalPos);
+                // Validate distance based on objectType preferences
+                if (objectType.preferred === "near_star" && obj.metadata.objectType === "star") {
+                    if (distance >= objectType.dist.x && (distance <= objectType.dist.y || objectType.dist.y === 0)) {
+                        return pos;
+                    }
+                }
+                else if (objectType.preferred === "distance" || objectType.preferred === "deep_space") {
+                    if (distance < objectType.dist.x || (objectType.dist.y !== 0 && distance > objectType.dist.y)) {
+                        return null;
+                    }
+                }
             }
         }
     }
-    if (objectType.preferred == "distance") {
-        for (let e_i of objects) {
-            if (e_i.type != "star")
-                continue;
-            distance = pos.getDistance(e_i.pos);
-            // console.log(`pos_a: ${e_i.pos.toString(true)}; pos_b: ${pos.toString(true)}; distance: ${distance}`);
-            if (distance >= objectType.dist.x) {
-                return pos;
-            }
-        }
-    }
-    if (objectType.preferred == "deep_space") {
-        for (let e_i of objects) {
-            if (e_i.type != "star")
-                continue;
-            distance = pos.getDistance(e_i.pos);
-            // console.log(`pos_a: ${e_i.pos.toString(true)}; pos_b: ${pos.toString(true)}; distance: ${distance}`);
-            if (distance >= objectType.dist.x) {
-                return pos;
-            }
-        }
-    }
-    return null;
+    return pos;
 }
 /**
  * Generates a Random Position that is inside of the Radius of the config.
@@ -299,7 +291,7 @@ function generateUniqueName() {
     let name;
     let tries = 0;
     do {
-        name = generateName();
+        name = (0, tool_1.generateName)();
         tries++;
         if (tries > 100) {
             name += `-TAKKER${Math.floor(config.rng() * 100000)}`;
@@ -307,44 +299,6 @@ function generateUniqueName() {
     } while (exports.usedNames.has(name));
     exports.usedNames.add(name);
     return name;
-}
-/**
- * Returns a name based on the type of planet.
- *
- * It's very interesting that it's generated based on syllables; I didn't even know that was possible before.
- * Thanks, ChatGPT XD.
- *
- * But seriously, it's really interesting that something like this works.
- *
- * @param {res.CelestialObjectTypes} type The Type of the Object
- * @returns {string}
- */
-function generateName() {
-    /**Silben von ChatGPT für die Namensgenerierung */
-    const syllables = [
-        // Silben V1
-        "ka", "lo", "ra", "ze", "tu", "mi", "xa", "vi", "no",
-        "shi", "dra", "qu", "ly", "tor", "zan", "ny", "fel", "vra",
-        "zur", "kre", "tho", "bal", "ix", "sy", "jen", "kul", "orn",
-        "nef", "ria", "sol", "mek", "tas", "lur", "xen", "cai", "vor",
-        "hel", "ume", "zan", "tha", "py", "rek", "gri", "yul", "zan",
-        "eph", "ari", "zho", "the", "mur", "dax", "nix", "zor", "lim",
-        // Silben V2
-        "bri", "clo", "dre", "fen", "gla", "hro", "jor", "kli", "mar",
-        "nel", "oph", "pra", "qua", "rin", "sha", "tre", "uln", "vex",
-        "wra", "xis", "yra", "zor", "bex", "dru", "fla", "gra", "hul",
-        "jum", "kor", "lek", "mip", "nox", "opl", "pru", "qui", "rax",
-        "syl", "tri", "uvo", "vyn", "wex", "xil", "yan", "zep", "zor",
-        "bax", "cro", "dav", "elx", "fra", "gyn", "hax", "jin", "kre",
-        "lom", "myr", "nov", "oph", "plu", "qir", "rum", "syn", "tor",
-        "urn", "vok", "wir", "xon", "yar", "zun"
-    ];
-    let name = "";
-    const length = 2 + Math.floor(config.rng() * 2);
-    for (let i = 0; i < length; i++) {
-        name += syllables[Math.floor(config.rng() * syllables.length)];
-    }
-    return name.charAt(0).toUpperCase() + name.slice(1);
 }
 /**
  * There is a special function for generating anomaly names.
@@ -385,7 +339,7 @@ function generateStarSystem() {
     if (PlanetCount > 0)
         planets = generatePlanetSystemData(PlanetCount, returnData.metadata.mass);
     return {
-        name: generateName(),
+        name: (0, tool_1.generateName)(),
         metadata: {
             mass,
             spectral: config.StarSpectralClassDataToMetadata(spectralData),
@@ -397,7 +351,7 @@ function generateStarSystem() {
 }
 function generateInterstellarAstroidField() {
     let returnData = {};
-    returnData.name = generateName();
+    returnData.name = (0, tool_1.generateName)();
     return returnData;
 }
 function generateAnomaly() {
@@ -440,7 +394,7 @@ function generatePlanetSystemData(planetCount = 0, StarMass) {
 }
 function generatePlanetData(MoonCount, OrbitalHeight, StarMass) {
     let returnData = {};
-    returnData.name = generateName();
+    returnData.name = (0, tool_1.generateName)();
     const generatedResources = res.generateResources();
     returnData.resources = generatedResources.map((e) => ({ name: e.resource.name, id: e.resource.id, short: e.resource.short, p: e.per }));
     returnData.radius = (config.rng() * (config.planetRadius.y - config.planetRadius.x)) + config.planetRadius.x;
@@ -464,7 +418,7 @@ function generateMoonSystemData(PlanetMass, moonCount = 0) {
 }
 function generateMoonData(OrbitalHeight, PlanetMass) {
     let returnData = {};
-    returnData.name = generateName();
+    returnData.name = (0, tool_1.generateName)();
     const generatedResources = res.generateResources();
     returnData.resources = generatedResources.map((e) => ({ name: e.resource.name, id: e.resource.id, short: e.resource.short, p: e.per }));
     returnData.radius = (config.rng() * (config.moonRadius.y - config.moonRadius.x)) + config.moonRadius.x;
@@ -499,9 +453,37 @@ while (objects.length < config.count) {
         lastTime = timeNow;
     }
 }
+let range = { min: new tool_1.Vector2(), max: new tool_1.Vector2(), array: [] };
 files.forEach((e, i) => {
     const file = files.get(i);
-    console.log(file?.name + " Wird Gespeichert");
+    // console.log(file?.name + " Wird Gespeichert");
     fs_1.default.writeFileSync(`./galaxyLists/${time}/${i}.json`, JSON.stringify(file), "utf-8");
+    const filePositionVector = new tool_1.Vector2(file?.position.x, file?.position.y);
+    if (filePositionVector.comparePosition(range.min) == false) {
+        range.min = filePositionVector;
+    }
+    if (filePositionVector.comparePosition(range.max) == true) {
+        range.max = filePositionVector;
+    }
     console.log(file?.name + " Gespeichert");
 });
+console.log(range);
+// Create a 2D array representing the sector grid, counting objects per sector
+const gridWidth = range.max.x - range.min.x + 1;
+const gridHeight = range.max.y - range.min.y + 1;
+const sectorGrid = Array.from({ length: gridHeight }, () => Array.from({ length: gridWidth }, () => 0));
+files.forEach((sectorFile) => {
+    const x = sectorFile.position.x - range.min.x;
+    const y = sectorFile.position.y - range.min.y;
+    if (y >= 0 && y < gridHeight &&
+        x >= 0 && x < gridWidth) {
+        sectorGrid[y][x] = sectorFile.objects.length;
+    }
+});
+/**
+console.log("Sector object count grid:");
+// console.log(sectorGrid);
+for (let i = 0; i < sectorGrid.length; i++) {
+    console.log(JSON.stringify(sectorGrid[i]));
+}
+*/ 

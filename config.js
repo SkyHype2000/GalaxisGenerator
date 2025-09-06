@@ -51,7 +51,7 @@ exports.radius = 10_000;
  *
  * Standard: `4500`
  */
-exports.count = 1000;
+exports.count = 4500;
 /**
  * The Size of a File-Sector
  *

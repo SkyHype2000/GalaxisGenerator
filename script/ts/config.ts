@@ -44,7 +44,7 @@ export const radius: 10000 | number = 10_000;
  * 
  * Standard: `4500`
  */
-export const count: 4500 | number = 1000;
+export const count: 4500 | number = 4500;
 /**
  * The Size of a File-Sector
  * 
