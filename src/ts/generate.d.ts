@@ -1,189 +1,96 @@
 import * as config from './config';
+import { Vector2 } from './tool';
 import * as res from './resources';
 /**
- * Alle Objekte in der Galaxie die bisher Generiert wurden
+ * Generate and Pushes The Object Data into the Sector File List thing
  */
-export declare const galaxy: {
-    type: string;
-    x: number;
-    y: number;
-    name: string;
-    metadata: any;
-}[];
+export declare function galaxyObjectGenerator(): void;
 /**
- * ähm... ja, danke ChatGPT. XD
+ * Validates the Distance of the Givin Object and his Position,
+ * if there is no Valid Position after 100 Trys, it will return `null`
  *
- * Ich glaube das generiert die `x` und `y` koordinaten die nicht
- * weiter als der Radius der Galaxie entfernt sein dürfen
+ * @param {config.ObjectType} objectType Type of the Object
+ * @param {Vector2} pos Tge Position of the Object
+ * @returns {Vector2|null}
  */
-export declare function polarToCartesian(r: number, angle: number): {
-    x: number;
-    y: number;
-};
+export declare function validateDistance(objectType: config.ObjectType, pos: Vector2): Vector2 | null;
 /**
- * Hier wird eine Seedbasierte Distanz generiert.
- * hab einfach ChatGPT Gefragt lol.
- */
-export declare function getRandomDistance(min: number, max: number): number;
-/**
- * Die Funktion gibt es Extra dafür um Anomalienamen zu Generieren,
- * ich wollte nicht einfach nur Silben für die Namen verwenden also habe ich mich dafür hier entschieden.
+ * Generates a Random Position that is inside of the Radius of the config.
+ * (i'am horrible at explaining stuff XD)
  *
- * Weil es sich für Anomalien besser anhört.
+ * @returns {Vector2}
+ */
+export declare function getRandomPosition(): Vector2;
+/**
+ * Here i generate the Seedbased Distance of the Object.
+ * So "Random" is not the right thing to say, but its good enough for me.
+ *
+ * I Just asked ChatGPT, lol.
+ *
+ * @param {number} max Maximalabstand
+ * @param {number} min Mindistabstand
+ */
+export declare function getRandomDistance(max: number, min?: number): number;
+/**
+ * uhm... thanks ChatGPT. XD
+ *
+ * I think this generates the `x` and `y` coordinates,
+ * which cannot be further away than the radius of the galaxy.
+ *
+ * After ~ 1 Week i figured it out lol.
+ * it uses the distence generated with the `getRandomDistance()` and Converts it with help of the
+ * angle to the `x` and `y` position.
+ * this is simple 5th Grade math lol, how i couldnt understand it...
+ * [Polar Coordinate System (Wikipedia)](https://en.wikipedia.org/wiki/Polar_coordinate_system)
+ *
+ * @param {number} r Distance From the Center
+ * @param {number} angle Rotation of the Position
+ * @returns {Vector2}
+ */
+export declare function polarToCartesian(r: number, angle: number): Vector2;
+/**Just stores All Used Names so there are no Doppelgänger when Generating a new Name */
+export declare const usedNames: Set<string>;
+/**
+ * generates a unique Name for a Object
+ *
+ * @param {res.CelestialObjectTypes} type The type of Object
+ * @returns {string}
+ */
+export declare function generateUniqueName(): string;
+/**
+ * Returns a name based on the type of planet.
+ *
+ * It's very interesting that it's generated based on syllables; I didn't even know that was possible before.
+ * Thanks, ChatGPT XD.
+ *
+ * But seriously, it's really interesting that something like this works.
+ *
+ * @param {res.CelestialObjectTypes} type The Type of the Object
+ * @returns {string}
+ */
+export declare function generateName(): string;
+/**
+ * There is a special function for generating anomaly names.
+ * I didn't want to just use syllables for the names, so I decided to use this one.
+ *
+ * Because it sounds better for anomalies. Idk why.
  */
 export declare function generateAnomalyName(): string;
+export declare function generateStarSystem(): config.StarObjectMetadata;
+export declare function generateInterstellarAstroidField(): config.InterstellarAstroidFieldObjectMetadata;
+export declare function generateAnomaly(): config.AnomalyObjectMetadata;
+export declare function getSolarSpectralClassData(mass: number): config.SpectralClassData;
+export declare function generatePlanetSystemData(planetCount: number | undefined, StarMass: number): config.PlanetObjectMetadata[];
+export declare function generatePlanetData(MoonCount: number, OrbitalHeight: number, StarMass: number): config.PlanetObjectMetadata;
+export declare function generateMoonSystemData(PlanetMass: number, moonCount?: number): config.MoonObjectMetadata[];
+export declare function generateMoonData(OrbitalHeight: number, PlanetMass: number): config.MoonObjectMetadata;
 /**
- * Gibt den Sonnenmassenwert basierend auf x zurück.
- * Hier wird dafür gesorgt, dass... ja genau das.
- * Das die Sterne hauptsächlich im Rote-Zwerge Bereich Liegen, bin sehr stolz darauf
+ * Very Effective at premitivly calculating the Mass of a Planet
  *
- * @param x wert zwischen `0.0000000000000001` - `1.0000000000000000`
- * @returns wert zwischen `0.0086` - `100+`
+ * @param radius Radius in meters
+ * @param resources Array of resources
  */
-export declare function generateSolarMass(x: number): number;
-/**
- * Alle Validen Werte für jedes Sub-Spektrum.
- */
-export declare const VALID_SUBSPECTRAL_CLASS_VALUES: {
-    class: string;
-    name: string;
-    color: string;
-    tempmin: number;
-    tempmax: number;
-    massmin: number;
-    massmax: number;
-}[];
-/**
- * Generiert alle Sipspektralwerte
- */
-export declare function initSubspectralClassValues(): void;
-/**
- * Hier wird die Spektralklasse des Sterns einfach basierend auf der Masse ausgegeben.
- * Sehr Simpel Gehalten, ich meine wir brauchen hier keine Wissenschaftliche Simulation.
- * Oder?
- *
- * @param mass Die Masse des STerns
- */
-export declare function getSolarSpectralClassData(mass: number): {
-    class: string;
-    subclass: string;
-    name: string;
-    color: string;
-    temp: number;
-    mass_sol: number;
-    lum_sol: number;
-    lum: number;
-    r_sol: number;
-};
-/**
- * Gibt Einen Namen basierend auf den Typ des Planeten zurück.
- *
- * Sehr Interessant ist das er Basierend auf Silben Generiert wird, ich wusste davor nicht einmal, dass das geht.
- * Danke ChatGPT XD.
- * Aber mal im ernst, das ist echt interessant dass sowas funktioniert.
- *
- * Wer das liest ist Dumm.
- *
- * @param type typ des Objektes
- */
-export declare function generateName(type: res.CelestialObjectTypes): string;
-export declare const usedNames: Set<unknown>;
-export declare function generateUniqueName(type: res.CelestialObjectTypes): string;
-/**
- * Generiert die Ressourcen eines Bestimmten Typs
- * Offensichtlich noch nicht fertig
- *
- * @param type Der Planetentyp für den die Ressourcen generiert werden sollen
- * @param tries Die anzahl der Versuche die es durchführt
- */
-export declare function GenerateResources(type: res.CelestialObjectTypes, tries?: 1000 | number): res.webResourceInformation[];
-/**
- * Berechnet den Radius
- * wirklich Primitiv
- *
- * @param resources
- * @param mass Masse In KG
- */
-export declare function calculatePlanetRadius(resources: res.webResourceInformation[], mass: number): {
-    d: number;
-    r: number;
-};
-/**
- * Validiert die Distanz zwischen Objekten, sodass Objekte nicht zu nah und auch nicht zu weit voneinander sind, basierend auf der config.
- *
- * @param {number} distance
- * @param {number} angle
- * @param {number} chosenType
- */
-export declare function validateDistance(distance: number, angle: number, chosenType: config.ObjectType): {
-    tooClose: boolean;
-    x: number;
-    y: number;
-    dx: number;
-    dy: number;
-};
-/**
- * Gibt alle Objekte eines Typs das momentan im galaxy-Array gespeichert sind zurück.
- */
-export declare function getObjectType(objectType: string): {
-    type: string;
-    x: number;
-    y: number;
-    name: string;
-    metadata: any;
-}[];
-/**
- * Gibt dir ein Semi-Zufälliges Objekt Des Galaxy-Arrays eines typs zurück
- */
-export declare function getRandomObjectType(objectType: string): {
-    type: string;
-    x: number;
-    y: number;
-    name: string;
-    metadata: any;
-};
-/**
- * Diese Informationen werden Automatisch Via Seed "Erfunden"
- * star:
- * Spektralklasse via Seed + Tabelle
- * Masse via Spektralklasse + Tabelle
- * Subspektralklasse via Seed + Masse
- * Temperatur via Seed + Subspektralklasse
- *
- * `gas_planet` | `moon` | `planet` | `stellar_astroid` sind zwar Valide objekte sind\
- * aber deaktiviert für die Galaxiegenerierung, weil sie nix in der Galaxie zu suchen haben,\
- * sie werden separat in den Sternensystemen Generiert.\
- * Die Gesammtmenge der Objekte in der Galaxie wird dennoch `config.amount` erreichen.
- */
-export declare function galaxyPush(type: config.ObjectType, x: number, y: number, name: string): void;
-export declare function calculatePlanetTemperature(StarLum: number, albedo: number, distance: number): number;
-/**
- * Generiert ein Planetensystem.
- * Jeder Planet hat: höhe (Abstand), masse, rotation (in Grad), und (wemm überhaupt) Monde.
- * Und neuerdings Ressourcen.
- *
- * @param parentStarMass In KG
- * @param parentStarLum In W
- */
-export declare function generatePlanetSystemData(parentStarName: string, parentStarMass: number, parentStarLum: number, minPlanets?: number, maxPlanets?: number): config.planetSystemDataDef[];
-/**
- * Generiert ein Planetensystem .
- * Jeder Planet hat: höhe (Abstand), masse, rotation (in Grad), und (wemm überhaupt) Monde.
- * Und neuerdings Ressourcen.
- *
- * @param parentStarMass In KG
- * @param parentStarLum In W
- */
-export declare function generateRoguePlanetData(): config.roguePlanetDataDef;
-/**
- * Generiert ein Mondsystem für einen Planeten.
- *
- * @param parentPlanetName
- * @param parentPlanetMass in KG
- * @param maxMoons
- */
-export declare function generateMoonSystemData(parentPlanetName: string, parentPlanetMass: number, maxMoons?: number): config.moonSystemDataDef[];
-/**
- * Hier berechne ich die Atmosphäreninformationen
- */
-export declare function generateAtmosphericInformation(StarLum: number, StarDistance: number, albedo: number, gravitation: number, minDensity?: number, maxDensity?: number): config.AtmosphericInformation;
+export declare function calculateObjectMass(radius: number, resources: {
+    resource: res.resource;
+    per: number;
+}[]): number;

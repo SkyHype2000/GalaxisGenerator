@@ -5,7 +5,7 @@ const MIN_OBJECT_SIZE = 3;
 const MAX_OBJECT_HOVER_SIZE = 2;
 const MIN_OBJECT_HOVER_SIZE = 1;
 const FONT_SIZE = 15;
-const MAX_ZOOM_DISTANCE = 0.0000000001;
+const MAX_ZOOM_DISTANCE = 0.1;
 const MIN_ZOOM_DISTANCE = 25;
 let OBJECT_DISTANCE_VISUALIZATION_LIMIT = 10;
 
@@ -52,7 +52,7 @@ const detailResourceNames = document.getElementById('detailResourceNames');
 const showObjectDataButton = document.getElementById('showObjectDataButton')
 
 const currentZoom = document.getElementById('currentZoom');
-currentZoom.innerText = zoom.toFixed(5);
+currentZoom.innerText = zoom.toFixed(2);
 
 fetch("galaxy.json.gz")
   .then(res => res.arrayBuffer())
@@ -426,7 +426,7 @@ fetch("galaxy.json.gz")
             offsetX = mouseX - worldX * zoom;
             offsetY = mouseY - worldY * zoom;
 
-            currentZoom.innerText = zoom.toFixed(10);
+            currentZoom.innerText = zoom.toFixed(2);
             draw();
             return;
         }

@@ -1,17 +1,48 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.nothing = exports.test_5 = exports.test_4 = exports.test_3 = exports.test_2 = exports.test_1 = exports.test_0 = exports.nuclear_pasta = exports.neutronium_matter = exports.anti_hydrogen = exports.anti_neutrons = exports.anti_protons = exports.positrons_2 = exports.positrons_1 = exports.positrons_0 = exports.ammonia_ice = exports.methane_ice_2 = exports.methane_ice_1 = exports.methane_ice_0 = exports.water_ice_3 = exports.water_ice_2 = exports.water_ice_1 = exports.water_ice_0 = exports.silica_5 = exports.silica_4 = exports.silica_3 = exports.silica_2 = exports.silica_1 = exports.silica_0 = exports.copper_ore_4 = exports.copper_ore_3 = exports.copper_ore_2 = exports.copper_ore_1 = exports.copper_ore_0d = exports.copper_ore_0c = exports.copper_ore_0b = exports.copper_ore_0a = exports.iron_ore_4 = exports.iron_ore_3 = exports.iron_ore_2 = exports.iron_ore_1 = exports.iron_ore_0d = exports.iron_ore_0c = exports.iron_ore_0b = exports.iron_ore_0a = exports.webResourceInformation = exports.resource = exports.CelestialObjectTypesArray = exports.allResources = void 0;
+exports.webResourceInformation = exports.resource = exports.CelestialObjectTypesArray = exports.allResources = void 0;
 exports.getResourceByID = getResourceByID;
+exports.generateResources = generateResources;
+const config = __importStar(require("./config"));
 /**
  * Die Liste an Allen Ressourcen damit man sie am Ende nicht Separat nochmal erstellen muss,
  * wird sie direkt beim einspeichern der Einzelnen Elemente erstellt.
  */
 exports.allResources = [];
-exports.CelestialObjectTypesArray = [
-    "none", "stellar_astroid", "interstellar_t1_astroid", "interstellar_t2_astroid", "interstellar_t3_astroid", "planet", "moon", "star", "gas_planet",
-    "stellar_space", "interstellar_space", "anomaly", "antimatter_anomaly", "neutron_star", "planet:noAtmosphere", "planet:atmosphere", "moon:noAtmosphere",
-    "moon:atmosphere", "test", "dev", "everywhere", "blackHole", "mainBlackHole", "rogue_planet"
-];
+exports.CelestialObjectTypesArray = [];
 /**
  * Das ist quasi die Class wo die Struktur aller Ressourcen verbaut ist.\
  * Also nicht "quasi" sondern "ja hier sind alle Elemente verbaut"
@@ -148,6 +179,13 @@ class webResourceInformation {
             };
         }
     }
+    toWebJSON(p) {
+        if ((p != null || p != undefined) && typeof p == "number")
+            this.p = p;
+        if (this.p == null)
+            throw new Error("p was null, maybe it wasn't defined before use?");
+        return { name: this.name, id: this.id, short: this.short, p: this.p };
+    }
 }
 exports.webResourceInformation = webResourceInformation;
 /**
@@ -163,95 +201,36 @@ function getResourceByID(id) {
     }
     return null;
 }
-//* IRON ORE
-/**Hematite that can be found on planets. */
-exports.iron_ore_0a = new resource("Hematite", "iron_ore_0a", "iron_ore", "Fe2O3", "Hematite (iron ore) that can be found on planets.", 4800, 0.01, "solid", "planet:atmosphere");
-/**Elemental iron that can be found on planets without atmospheres. */
-exports.iron_ore_0b = new resource("Iron", "iron_ore_0b", "iron_ore", "Fe", "Elemental iron that can be found on planets without atmospheres.", 4800, 0.01, "solid", "planet:noAtmosphere");
-/**Hematite that can be found on moons. */
-exports.iron_ore_0c = new resource("Hematite", "iron_ore_0c", "iron_ore", "Fe2O3", "Hematite (iron ore) that can be found on moons.", 4800, 0.01, "solid", "moon:atmosphere");
-/**Elemental iron that can be found on moons without atmospheres. */
-exports.iron_ore_0d = new resource("Iron", "iron_ore_0d", "iron_ore", "Fe", "Elemental iron that can be found on moons without atmospheres.", 4800, 0.01, "solid", "moon:noAtmosphere");
-/**Elemental iron that can be found on stellar asteroids. */
-exports.iron_ore_1 = new resource("Iron", "iron_ore_1", "iron_ore", "Fe", "Elemental iron that can be found on stellar asteroids.", 4800, 0.03, "solid", "stellar_astroid");
-/**Elemental iron that can be found on interstellar T1 asteroids. */
-exports.iron_ore_2 = new resource("Iron", "iron_ore_2", "iron_ore", "Fe", "Elemental iron that can be found on interstellar T1 asteroids.", 4800, 0.08, "solid", "interstellar_t1_astroid");
-/**Elemental iron that can be found on interstellar T2 asteroids. */
-exports.iron_ore_3 = new resource("Iron", "iron_ore_3", "iron_ore", "Fe", "Elemental iron that can be found on interstellar T2 asteroids.", 4800, 0.1, "solid", "interstellar_t2_astroid");
-/**Elemental iron that can be found on interstellar T3 asteroids. */
-exports.iron_ore_4 = new resource("Iron", "iron_ore_4", "iron_ore", "Fe", "Elemental iron that can be found on interstellar T3 asteroids.", 4800, 0.2, "solid", "interstellar_t3_astroid");
-//* COPPER ORE
-/**Chalcocite that can be found on planets. */
-exports.copper_ore_0a = new resource("Chalcocite", "copper_ore_0a", "copper_ore", "Cu2S", "Chalcocite that can be found on planets.", 5600, 0.01, "solid", "planet:atmosphere");
-/**Elemental copper that can be found on planets without atmospheres. */
-exports.copper_ore_0b = new resource("Copper", "copper_ore_0b", "copper_ore", "Cu", "Elemental copper that can be found on planets without atmospheres.", 5600, 0.01, "solid", "planet:noAtmosphere");
-/**Chalcocite that can be found on moons. */
-exports.copper_ore_0c = new resource("Chalcocite", "copper_ore_0c", "copper_ore", "Cu2S", "Chalcocite that can be found on moons.", 5600, 0.01, "solid", "moon:atmosphere");
-/**Elemental copper that can be found on moons without atmospheres. */
-exports.copper_ore_0d = new resource("Copper", "copper_ore_0d", "copper_ore", "Cu", "Elemental copper that can be found on moons without atmospheres.", 5600, 0.01, "solid", "moon:noAtmosphere");
-/**Elemental copper that can be found on stellar asteroids. */
-exports.copper_ore_1 = new resource("Copper", "copper_ore_1", "copper_ore", "Cu", "Elemental copper that can be found on stellar asteroids.", 5600, 0.08, "solid", "stellar_astroid");
-/**Elemental copper that can be found on interstellar T1 asteroids. */
-exports.copper_ore_2 = new resource("Copper", "copper_ore_2", "copper_ore", "Cu", "Elemental copper that can be found on interstellar T1 asteroids.", 5600, 0.09, "solid", "interstellar_t1_astroid");
-/**Elemental copper that can be found on interstellar T2 asteroids. */
-exports.copper_ore_3 = new resource("Copper", "copper_ore_3", "copper_ore", "Cu", "Elemental copper that can be found on interstellar T2 asteroids.", 5600, 0.09, "solid", "interstellar_t2_astroid");
-/**Elemental copper that can be found on interstellar T3 asteroids. */
-exports.copper_ore_4 = new resource("Copper", "copper_ore_4", "copper_ore", "Cu", "Elemental copper that can be found on interstellar T3 asteroids.", 5600, 0.09, "solid", "interstellar_t3_astroid");
+function generateResources() {
+    const tries = 1000;
+    const res = new Map();
+    for (let i = 0; i < tries; i++) {
+        const x = config.rng();
+        const candidates = exports.allResources.filter(e => x < e.chance);
+        if (candidates.length === 0)
+            continue;
+        const minChance = Math.min(...candidates.map(e => e.chance));
+        const rarestCandidates = candidates.filter(e => e.chance === minChance);
+        const chosen = rarestCandidates[Math.floor(config.rng() * rarestCandidates.length)];
+        if (res.has(chosen.name)) {
+            res.get(chosen.name).n++;
+        }
+        else {
+            res.set(chosen.name, { resource: chosen, n: 1 });
+        }
+    }
+    return Array.from(res.values()).map(e => ({
+        resource: e.resource,
+        per: e.n / tries,
+        getWebJSON() {
+            return e.resource.webInformation().toWebJSON();
+        },
+    }));
+}
+//* IRON
+//* COPPER
+//* ALUMINIUM
+//* For No Reason at all: PLASTIC BAG
 //* SILICON DIOXIDE
-/**Silicon dioxide that can be found on planets. */
-exports.silica_0 = new resource("Silicon Dioxide", "silica_0", "silica", "SiO2", "Silicon dioxide that can be found on planets.", 2650, 0.5, "solid", "planet");
-/**Silicon dioxide that can be found on moons. */
-exports.silica_1 = new resource("Silicon Dioxide", "silica_1", "silica", "SiO2", "Silicon dioxide that can be found on moons.", 2650, 0.5, "solid", "moon");
-/**Silicon dioxide that can be found on stellar asteroids. */
-exports.silica_2 = new resource("Silicon Dioxide", "silica_2", "silica", "SiO2", "Silicon dioxide that can be found on stellar asteroids.", 2650, 0.5, "solid", "stellar_astroid");
-/**Silicon dioxide that can be found on interstellar T1 asteroids. */
-exports.silica_3 = new resource("Silicon Dioxide", "silica_3", "silica", "SiO2", "Silicon dioxide that can be found on interstellar T1 asteroids.", 2650, 0.5, "solid", "interstellar_t1_astroid");
-/**Silicon dioxide that can be found on interstellar T2 asteroids. */
-exports.silica_4 = new resource("Silicon Dioxide", "silica_4", "silica", "SiO2", "Silicon dioxide that can be found on interstellar T2 asteroids.", 2650, 0.5, "solid", "interstellar_t2_astroid");
-/**Silicon dioxide that can be found on interstellar T3 asteroids. */
-exports.silica_5 = new resource("Silicon Dioxide", "silica_5", "silica", "SiO2", "Silicon dioxide that can be found on interstellar T3 asteroids.", 2650, 0.5, "solid", "interstellar_t3_astroid");
-//* WATER
-/**Water ice that can be found on stellar asteroids. */
-exports.water_ice_0 = new resource("Water Ice", "water_ice_0", "water_ice", "water_ice", "Water ice that can be found on stellar asteroids.", 997, 0.25, "solid", "stellar_astroid");
-/**Water ice that can be found on interstellar T1 asteroids. */
-exports.water_ice_1 = new resource("Water Ice", "water_ice_1", "water_ice", "water_ice", "Water ice that can be found on interstellar T1 asteroids.", 997, 0.25, "solid", "interstellar_t1_astroid");
-/**Water ice that can be found on interstellar T2 asteroids. */
-exports.water_ice_2 = new resource("Water Ice", "water_ice_2", "water_ice", "water_ice", "Water ice that can be found on interstellar T2 asteroids.", 997, 0.25, "solid", "interstellar_t2_astroid");
-/**Water ice that can be found on interstellar T3 asteroids. */
-exports.water_ice_3 = new resource("Water Ice", "water_ice_3", "water_ice", "water_ice", "Water ice that can be found on interstellar T3 asteroids.", 997, 0.25, "solid", "interstellar_t3_astroid");
-//* METHANE
-/**Solid methane ice that can be found on interstellar T1 asteroids. */
-exports.methane_ice_0 = new resource("Methane Ice", "solid_methane_0", "solid_methane", "methane_ice", "Solid methane ice that can be found on interstellar T1 asteroids.", 900, 0.05, "solid", "interstellar_t1_astroid");
-/**Solid methane ice that can be found on interstellar T2 asteroids. */
-exports.methane_ice_1 = new resource("Methane Ice", "solid_methane_1", "solid_methane", "methane_ice", "Solid methane ice that can be found on interstellar T2 asteroids.", 900, 0.06, "solid", "interstellar_t2_astroid");
-/**Solid methane ice that can be found on interstellar T3 asteroids. */
-exports.methane_ice_2 = new resource("Methane Ice", "solid_methane_2", "solid_methane", "methane_ice", "Solid methane ice that can be found on interstellar T3 asteroids.", 900, 0.08, "solid", "interstellar_t3_astroid");
-//* AMMONIA
-/**Solid ammonia ice that can be found in the outer asteroid belts of a star system. */
-exports.ammonia_ice = new resource("Ammonia Ice", "solid_ammonia", "ammonia", "ammonia_ice", "Solid ammonia ice that can be found in the outer asteroid belts of a star system.", 817, 0.002, "solid", "stellar_astroid");
-//* ANTIMATTER
-/**Antimatter electrons or positrons that can be found near massive gas giants. */
-exports.positrons_0 = new resource("Positrons", "positrons_0", "positrons", "e+", "Antimatter electrons or positrons that can be found near massive gas giants.", 0e-1000, 0.001, "antimatter", "gas_planet");
-/**Antimatter electrons or positrons that can be found in interstellar space. */
-exports.positrons_1 = new resource("Positrons", "positrons_1", "positrons", "e+", "Antimatter electrons or positrons that can be found in interstellar space.", 0e-1000, 0.00001, "antimatter", "interstellar_space");
-/**Antimatter electrons or positrons that can be found in interstellar antimatter clusters. */
-exports.positrons_2 = new resource("Positrons", "positrons_2", "positrons", "e+", "Antimatter electrons or positrons that can be found in interstellar antimatter clusters.", 0e-1000, 0.001, "antimatter", "antimatter_anomaly");
-/**Antimatter protons that can be found in interstellar space. */
-exports.anti_protons = new resource("Anti-Protons", "anti_protons", "anti_protons", "p-", "Antimatter protons that can be found in interstellar space.", 2.3e14, 0, "antimatter", "interstellar_space");
-/**Antimatter neutrons that can be found in interstellar space. */
-exports.anti_neutrons = new resource("Anti-Neutrons", "anti_neutrons", "anti_neutrons", "nn'", "Antimatter neutrons that can be found in interstellar space.", 2.2e14, 0, "antimatter", "interstellar_space");
-/**Antihydrogen, an incredibly rare form of antimatter that can be found in interstellar space. */
-exports.anti_hydrogen = new resource("Antihydrogen", "anti_hydrogen", "anti_hydrogen", "H'", "Antihydrogen, an incredibly rare form of antimatter that can be found in interstellar space.", 0.08988, 0, "antimatter", "interstellar_space");
+//* WATER / WATER ICE
 //* EXOTIC
-/**Neutronium or neutronium matter, a substance made entirely of neutrons. */
-exports.neutronium_matter = new resource("Neutronium Matter", "neutronium", "neutronium", "nn", "Neutronium or neutronium matter, a substance made entirely of neutrons.", 2.2e14, 0.25, "exotic", "neutron_star");
-/**Nuclear pasta, extremely dense matter found in a neutron star's outer crust. */
-exports.nuclear_pasta = new resource("Nuclear Pasta", "nuclear_pasta", "nuclear_pasta", "nnn", "Nuclear pasta, extremely dense matter found in the outer crust of a neutron star.", 2.3e17, 0.75, "exotic", "neutron_star");
-/**Testressource - wird für die resourcemap verwendet*/
-exports.test_0 = new resource("Test1", "test0", "test0", "test0", "Testressource 1 - für die resMap", 1, 0.10, "solid", "test");
-exports.test_1 = new resource("Test2", "test1", "test1", "test1", "Testressource 2 - für die resMap", 1, 0.05, "solid", "test");
-exports.test_2 = new resource("Test3", "test2", "test2", "test2", "Testressource 3 - für die resMap", 1, 0.01, "solid", "test");
-exports.test_3 = new resource("Test4", "test3", "test3", "test3", "Testressource 4 - für die resMap", 1, 0.005, "solid", "test");
-exports.test_4 = new resource("Test5", "test4", "test4", "test4", "Testressource 5 - für die resMap", 1, 0.001, "solid", "test");
-exports.test_5 = new resource("Test6", "test5", "test5", "test5", "Testressource 6 - für die resMap", 1, 0.0005, "solid", "test");
-exports.nothing = new resource("Nothing", "nothing", "dev", "nothing", "Indikator für ein Hauch von Garnix", 1, 1, "exotic", "everywhere");

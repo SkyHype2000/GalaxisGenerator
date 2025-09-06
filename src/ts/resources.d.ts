@@ -3,7 +3,7 @@
  * wird sie direkt beim einspeichern der Einzelnen Elemente erstellt.
  */
 export declare const allResources: resource[];
-export type CelestialObjectTypes = "none" | "stellar_astroid" | "interstellar_t1_astroid" | "interstellar_t2_astroid" | "interstellar_t3_astroid" | "planet" | "moon" | "star" | "gas_planet" | "stellar_space" | "interstellar_space" | "anomaly" | "antimatter_anomaly" | "neutron_star" | "planet:noAtmosphere" | "planet:atmosphere" | "moon:noAtmosphere" | "moon:atmosphere" | "test" | "dev" | "everywhere" | "blackHole" | "mainBlackHole" | "rogue_planet";
+export type CelestialObjectTypes = "none" | "stellar_astroid" | "interstellar_t1_astroid" | "interstellar_t2_astroid" | "interstellar_t3_astroid" | "planet" | "moon" | "star" | "gas_planet" | "stellar_space" | "interstellar_space" | "anomaly" | "antimatter_anomaly" | "neutron_star" | "test" | "dev" | "everywhere" | "blackHole" | "mainBlackHole" | "rogue_planet";
 export declare const CelestialObjectTypesArray: CelestialObjectTypes[];
 export type ResourceTypes = "solid" | "liquid" | "gas" | "antimatter" | "exotic" | "plastic_bag";
 /**
@@ -93,94 +93,25 @@ export declare class webResourceInformation {
         n: number;
         v: number;
     };
+    toWebJSON(p?: number): resWebJSONData;
 }
+/**
+ * Data that is getting used an the Website;
+ */
+export type resWebJSONData = {
+    name: string;
+    id: string;
+    short: string;
+    p: number;
+};
 /**
  * Gibt die Ressource Basierend auf der ID zurück
  *
  * `id` = ID der Ressource
  */
 export declare function getResourceByID(id: string): resource | null;
-/**Hematite that can be found on planets. */
-export declare const iron_ore_0a: resource;
-/**Elemental iron that can be found on planets without atmospheres. */
-export declare const iron_ore_0b: resource;
-/**Hematite that can be found on moons. */
-export declare const iron_ore_0c: resource;
-/**Elemental iron that can be found on moons without atmospheres. */
-export declare const iron_ore_0d: resource;
-/**Elemental iron that can be found on stellar asteroids. */
-export declare const iron_ore_1: resource;
-/**Elemental iron that can be found on interstellar T1 asteroids. */
-export declare const iron_ore_2: resource;
-/**Elemental iron that can be found on interstellar T2 asteroids. */
-export declare const iron_ore_3: resource;
-/**Elemental iron that can be found on interstellar T3 asteroids. */
-export declare const iron_ore_4: resource;
-/**Chalcocite that can be found on planets. */
-export declare const copper_ore_0a: resource;
-/**Elemental copper that can be found on planets without atmospheres. */
-export declare const copper_ore_0b: resource;
-/**Chalcocite that can be found on moons. */
-export declare const copper_ore_0c: resource;
-/**Elemental copper that can be found on moons without atmospheres. */
-export declare const copper_ore_0d: resource;
-/**Elemental copper that can be found on stellar asteroids. */
-export declare const copper_ore_1: resource;
-/**Elemental copper that can be found on interstellar T1 asteroids. */
-export declare const copper_ore_2: resource;
-/**Elemental copper that can be found on interstellar T2 asteroids. */
-export declare const copper_ore_3: resource;
-/**Elemental copper that can be found on interstellar T3 asteroids. */
-export declare const copper_ore_4: resource;
-/**Silicon dioxide that can be found on planets. */
-export declare const silica_0: resource;
-/**Silicon dioxide that can be found on moons. */
-export declare const silica_1: resource;
-/**Silicon dioxide that can be found on stellar asteroids. */
-export declare const silica_2: resource;
-/**Silicon dioxide that can be found on interstellar T1 asteroids. */
-export declare const silica_3: resource;
-/**Silicon dioxide that can be found on interstellar T2 asteroids. */
-export declare const silica_4: resource;
-/**Silicon dioxide that can be found on interstellar T3 asteroids. */
-export declare const silica_5: resource;
-/**Water ice that can be found on stellar asteroids. */
-export declare const water_ice_0: resource;
-/**Water ice that can be found on interstellar T1 asteroids. */
-export declare const water_ice_1: resource;
-/**Water ice that can be found on interstellar T2 asteroids. */
-export declare const water_ice_2: resource;
-/**Water ice that can be found on interstellar T3 asteroids. */
-export declare const water_ice_3: resource;
-/**Solid methane ice that can be found on interstellar T1 asteroids. */
-export declare const methane_ice_0: resource;
-/**Solid methane ice that can be found on interstellar T2 asteroids. */
-export declare const methane_ice_1: resource;
-/**Solid methane ice that can be found on interstellar T3 asteroids. */
-export declare const methane_ice_2: resource;
-/**Solid ammonia ice that can be found in the outer asteroid belts of a star system. */
-export declare const ammonia_ice: resource;
-/**Antimatter electrons or positrons that can be found near massive gas giants. */
-export declare const positrons_0: resource;
-/**Antimatter electrons or positrons that can be found in interstellar space. */
-export declare const positrons_1: resource;
-/**Antimatter electrons or positrons that can be found in interstellar antimatter clusters. */
-export declare const positrons_2: resource;
-/**Antimatter protons that can be found in interstellar space. */
-export declare const anti_protons: resource;
-/**Antimatter neutrons that can be found in interstellar space. */
-export declare const anti_neutrons: resource;
-/**Antihydrogen, an incredibly rare form of antimatter that can be found in interstellar space. */
-export declare const anti_hydrogen: resource;
-/**Neutronium or neutronium matter, a substance made entirely of neutrons. */
-export declare const neutronium_matter: resource;
-/**Nuclear pasta, extremely dense matter found in a neutron star's outer crust. */
-export declare const nuclear_pasta: resource;
-/**Testressource - wird für die resourcemap verwendet*/
-export declare const test_0: resource;
-export declare const test_1: resource;
-export declare const test_2: resource;
-export declare const test_3: resource;
-export declare const test_4: resource;
-export declare const test_5: resource;
-export declare const nothing: resource;
+export declare function generateResources(): {
+    resource: resource;
+    per: number;
+    getWebJSON: () => resWebJSONData;
+}[];
