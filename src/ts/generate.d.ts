@@ -81,10 +81,3 @@ export declare function calculateObjectMass(radius: number, resources: {
     resource: res.resource;
     per: number;
 }[]): number;
-/**
-console.log("Sector object count grid:");
-// console.log(sectorGrid);
-for (let i = 0; i < sectorGrid.length; i++) {
-    console.log(JSON.stringify(sectorGrid[i]));
-}
-*/ 

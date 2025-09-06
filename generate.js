@@ -443,21 +443,24 @@ function calculateObjectMass(radius, resources) {
     return volume * avgDensity;
 }
 galaxyObjectGenerator();
+console.log();
 let lastTime = Date.now();
 while (objects.length < config.count) {
     galaxyObjectGenerator();
     if (objects.length % 100 == 0) {
         const timeNow = Date.now();
         const deltaTime = timeNow - lastTime;
-        console.log(`Object ${objects.length}/${config.count} completed. (+${deltaTime})`);
+        console.log('\u001b[1A\u001b[2K' + `Object ${objects.length}/${config.count} completed. (+${deltaTime})`);
         lastTime = timeNow;
     }
 }
 let range = { min: new tool_1.Vector2(), max: new tool_1.Vector2(), array: [] };
+console.log("Speichere Dateien...");
 files.forEach((e, i) => {
     const file = files.get(i);
     // console.log(file?.name + " Wird Gespeichert");
     fs_1.default.writeFileSync(`./galaxyLists/${time}/${i}.json`, JSON.stringify(file), "utf-8");
+    range.array.push(i);
     const filePositionVector = new tool_1.Vector2(file?.position.x, file?.position.y);
     if (filePositionVector.comparePosition(range.min) == false) {
         range.min = filePositionVector;
@@ -465,25 +468,8 @@ files.forEach((e, i) => {
     if (filePositionVector.comparePosition(range.max) == true) {
         range.max = filePositionVector;
     }
-    console.log(file?.name + " Gespeichert");
+    console.log('\u001b[1A\u001b[2K' + file?.name + " Gespeichert");
 });
+console.log('\u001b[1A\u001b[2K' + "Dateien Gespeichert");
 console.log(range);
-// Create a 2D array representing the sector grid, counting objects per sector
-const gridWidth = range.max.x - range.min.x + 1;
-const gridHeight = range.max.y - range.min.y + 1;
-const sectorGrid = Array.from({ length: gridHeight }, () => Array.from({ length: gridWidth }, () => 0));
-files.forEach((sectorFile) => {
-    const x = sectorFile.position.x - range.min.x;
-    const y = sectorFile.position.y - range.min.y;
-    if (y >= 0 && y < gridHeight &&
-        x >= 0 && x < gridWidth) {
-        sectorGrid[y][x] = sectorFile.objects.length;
-    }
-});
-/**
-console.log("Sector object count grid:");
-// console.log(sectorGrid);
-for (let i = 0; i < sectorGrid.length; i++) {
-    console.log(JSON.stringify(sectorGrid[i]));
-}
-*/ 
+fs_1.default.writeFileSync(`./galaxyLists/${time}/range.json`, JSON.stringify(range), "utf-8");

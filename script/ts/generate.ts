@@ -1,6 +1,5 @@
 import fs from "fs";
-import seedrandom from "seedrandom";
-import * as cc from "./consolecolor";
+import seedrandom from "seedrandom"; 
 import { gzipSync } from "fflate";
 // Config
 import * as config from './config';
@@ -470,6 +469,7 @@ export function calculateObjectMass(radius: number, resources: { resource: res.r
 }
 
 galaxyObjectGenerator();
+console.log();
 let lastTime = Date.now();
 while (objects.length < config.count) {
     galaxyObjectGenerator();
@@ -477,17 +477,21 @@ while (objects.length < config.count) {
     if (objects.length % 100 == 0) {
         const timeNow = Date.now();
         const deltaTime = timeNow - lastTime
-        console.log(`Object ${objects.length}/${config.count} completed. (+${deltaTime})`);
+        console.log('\u001b[1A\u001b[2K' + `Object ${objects.length}/${config.count} completed. (+${deltaTime})`);
         lastTime = timeNow;
     }
 }
 
-let range = {min:new Vector2(), max:new Vector2(), array:[]}
+let range:{min:Vector2, max:Vector2, array:string[]} = {min:new Vector2(), max:new Vector2(), array:[]}
+
+console.log("Speichere Dateien...");
 
 files.forEach((e, i) => {
     const file = files.get(i);
     // console.log(file?.name + " Wird Gespeichert");
     fs.writeFileSync(`./galaxyLists/${time}/${i}.json`, JSON.stringify(file), "utf-8")
+
+    range.array.push(i);
 
     const filePositionVector = new Vector2(file?.position.x, file?.position.y);
     if (filePositionVector.comparePosition(range.min) == false) {
@@ -497,32 +501,8 @@ files.forEach((e, i) => {
         range.max = filePositionVector;
     }
 
-    console.log(file?.name + " Gespeichert");
+    console.log('\u001b[1A\u001b[2K' + file?.name + " Gespeichert");
 })
+console.log('\u001b[1A\u001b[2K' + "Dateien Gespeichert");
 console.log(range);
-
-// Create a 2D array representing the sector grid, counting objects per sector
-const gridWidth = range.max.x - range.min.x + 1;
-const gridHeight = range.max.y - range.min.y + 1;
-const sectorGrid: number[][] = Array.from({ length: gridHeight }, () =>
-    Array.from({ length: gridWidth }, () => 0)
-);
-
-files.forEach((sectorFile) => {
-    const x = sectorFile.position.x - range.min.x;
-    const y = sectorFile.position.y - range.min.y;
-    if (
-        y >= 0 && y < gridHeight &&
-        x >= 0 && x < gridWidth
-    ) {
-        sectorGrid[y][x] = sectorFile.objects.length;
-    }
-});
-
-/**
-console.log("Sector object count grid:");
-// console.log(sectorGrid);
-for (let i = 0; i < sectorGrid.length; i++) {
-    console.log(JSON.stringify(sectorGrid[i]));
-}
-*/
+fs.writeFileSync(`./galaxyLists/${time}/range.json`, JSON.stringify(range), "utf-8")
