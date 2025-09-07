@@ -1,12 +1,10 @@
 import fs from "fs";
-import seedrandom from "seedrandom";
+// import seedrandom from "seedrandom";
 // Config
 import * as config from './config';
 import { Vector2, generateName } from './tool';
 // Alle Ressourceninformationen
 import * as res from './resources';
-import { relative } from "path";
-import * as zlib from 'zlib';
 import * as path from 'path';
 import { zipSync, strToU8 } from 'fflate';
 
@@ -477,14 +475,14 @@ let lastTime = Date.now();
 while (objects.length < config.count) {
     galaxyObjectGenerator();
 
-    if (objects.length % 25 == 0) {
+    if (objects.length % 50 == 0) {
         const timeNow = Date.now();
         const deltaTime = timeNow - lastTime
         console.log('\u001b[1A\u001b[2K' + `Object ${objects.length}/${config.count} completed. (+${deltaTime}ms = ${Date.now() - generateStartTime}ms)`);
         lastTime = timeNow;
     }
 }
-console.log(`\u001b[1A\u001b[2K` + `Objekte generiert in ${Date.now() - generateStartTime}ms`)
+console.log(`\u001b[1A\u001b[2K` + `Objects Generated in ${Date.now() - generateStartTime}ms`)
 
 let range: { min: Vector2, max: Vector2, array: string[] } = { min: new Vector2(), max: new Vector2(), array: [] }
 
@@ -494,7 +492,7 @@ const saveStartTime = Date.now();
 files.forEach((e, i) => {
     const file = files.get(i);
     // console.log(file?.name + " Wird Gespeichert");
-    // fs.writeFileSync(`./galaxyLists/${time}/${i}.json`, JSON.stringify(file), "utf-8")
+    fs.writeFileSync(`./galaxyLists/${time}/${i}.json`, JSON.stringify(file), "utf-8")
 
     range.array.push(i);
 
@@ -506,18 +504,18 @@ files.forEach((e, i) => {
         range.max = filePositionVector;
     }
 
-    console.log(`\u001b[1A\u001b[2K${file?.name} Gespeichert`);
+    console.log(`\u001b[1A\u001b[2K${file?.name} Created`);
 })
-console.log('\u001b[1A\u001b[2K' + "Dateien Gespeichert in " + (Date.now() - saveStartTime) + "ms");
+console.log('\u001b[1A\u001b[2K' + "Sector Files Created in " + (Date.now() - saveStartTime) + "ms");
+console.log("Range JSON:");
 console.log(range);
-fs.writeFileSync(`./galaxyLists/${time}/range.json`, JSON.stringify(range), "utf-8")
-
-console.log("Erstelle .gz-Archiv mit fflate...");
+fs.writeFileSync(`./galaxyLists/${time}/range.json`, JSON.stringify(range, null, 4), "utf-8")
 
 const archiveStartTime = Date.now();
 const outputFilePath = `./galaxyLists/${time}/galaxyData.gz`;
 const directoryPath = `./galaxyLists/${time}`;
 
+console.log("Star Creating .gz-Archive");
 // Collect all files except range.json
 const filesToArchive: { [filename: string]: Uint8Array } = {};
 fs.readdirSync(directoryPath).forEach(file => {
@@ -529,15 +527,19 @@ fs.readdirSync(directoryPath).forEach(file => {
 });
 
 // Create a gzipped archive
-const compressedData = zipSync(filesToArchive, { level: 9 }); // Maximum compression
+const compressedData = zipSync(filesToArchive, { level: 9 });
 fs.writeFileSync(outputFilePath, compressedData);
 
+console.log(`\u001b[1A\u001b[2K.gz-Archive Created in ${Date.now() - archiveStartTime}ms: ${outputFilePath}`);
+
+const deleteStartTime = Date.now();
+console.log();
 fs.readdirSync(directoryPath).forEach(file => {
     if (file !== "range.json" && file !== "galaxyData.gz") {
         fs.unlinkSync(path.join(directoryPath, file))
+        console.log(`\u001b[1A\u001b[2K${file} Deleted`);        
     }
 })
+console.log(`\u001b[1A\u001b[2KSectorfiles Deleted in ${Date.now() - deleteStartTime}ms`);
 
-console.log(`.gz-Archiv erstellt in ${Date.now() - archiveStartTime}ms: ${outputFilePath}`);
-
-console.log(`Galaxie Generiert in ${Date.now() - time}ms`);
+console.log(`Galaxy Generated in ${Date.now() - time}ms`);
