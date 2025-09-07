@@ -59,6 +59,8 @@ const config = __importStar(require("./config"));
 const tool_1 = require("./tool");
 // Alle Ressourceninformationen
 const res = __importStar(require("./resources"));
+const path = __importStar(require("path"));
+const tar = __importStar(require("tar"));
 /**
  * I did translate almost everything by my own,
  * So "Maybe" there "could" "some" translation errors.
@@ -444,22 +446,25 @@ function calculateObjectMass(radius, resources) {
 }
 galaxyObjectGenerator();
 console.log();
+const generateStartTime = Date.now();
 let lastTime = Date.now();
 while (objects.length < config.count) {
     galaxyObjectGenerator();
-    if (objects.length % 100 == 0) {
+    if (objects.length % 25 == 0) {
         const timeNow = Date.now();
         const deltaTime = timeNow - lastTime;
-        console.log('\u001b[1A\u001b[2K' + `Object ${objects.length}/${config.count} completed. (+${deltaTime})`);
+        console.log('\u001b[1A\u001b[2K' + `Object ${objects.length}/${config.count} completed. (+${deltaTime}ms = ${Date.now() - generateStartTime}ms)`);
         lastTime = timeNow;
     }
 }
+console.log(`\u001b[1A\u001b[2K` + `Objekte generiert in ${Date.now() - generateStartTime}ms`);
 let range = { min: new tool_1.Vector2(), max: new tool_1.Vector2(), array: [] };
 console.log("Speichere Dateien...");
+const saveStartTime = Date.now();
 files.forEach((e, i) => {
     const file = files.get(i);
     // console.log(file?.name + " Wird Gespeichert");
-    fs_1.default.writeFileSync(`./galaxyLists/${time}/${i}.json`, JSON.stringify(file), "utf-8");
+    // fs.writeFileSync(`./galaxyLists/${time}/${i}.json`, JSON.stringify(file), "utf-8")
     range.array.push(i);
     const filePositionVector = new tool_1.Vector2(file?.position.x, file?.position.y);
     if (filePositionVector.comparePosition(range.min) == false) {
@@ -468,8 +473,25 @@ files.forEach((e, i) => {
     if (filePositionVector.comparePosition(range.max) == true) {
         range.max = filePositionVector;
     }
-    console.log('\u001b[1A\u001b[2K' + file?.name + " Gespeichert");
+    console.log(`\u001b[1A\u001b[2K${file?.name} Gespeichert`);
 });
-console.log('\u001b[1A\u001b[2K' + "Dateien Gespeichert");
+console.log('\u001b[1A\u001b[2K' + "Dateien Gespeichert in " + (Date.now() - saveStartTime) + "ms");
 console.log(range);
 fs_1.default.writeFileSync(`./galaxyLists/${time}/range.json`, JSON.stringify(range), "utf-8");
+console.log(`Galaxie Generiert in ${Date.now() - time}`);
+console.log("Erstelle .gz-Archiv...");
+const archiveStartTime = Date.now();
+const outputFilePath = `./galaxyLists/${time}/galaxyData.tar.gz`;
+const directoryPath = `./galaxyLists/${time}`;
+// Create a tarball and compress it with gzip
+tar.c({
+    gzip: true,
+    file: outputFilePath,
+    cwd: directoryPath, // Set the working directory to the target folder
+    filter: (filePath) => path.basename(filePath) !== 'range.json', // Exclude range.json
+}, fs_1.default.readdirSync(directoryPath).filter(file => file !== 'range.json') // Include all files except range.json
+).then(() => {
+    console.log(`.gz-Archiv erstellt in ${Date.now() - archiveStartTime}ms: ${outputFilePath}`);
+}).catch((err) => {
+    console.error("Fehler beim Erstellen des .gz-Archivs:", err);
+});

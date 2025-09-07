@@ -30,7 +30,7 @@ export const rng = seedrandom(seed);
  * 
  * Standard_ `1ßßßß`
  */
-export const radius: 10000 | number = 10_000;
+export const radius: 10000 | number = 25_000;
 /**
  * Die Anzahl der Objekte innerhalb der Galaxie  
  * Beeinflusst nicht die Stellaren Objekte!
@@ -44,7 +44,7 @@ export const radius: 10000 | number = 10_000;
  * 
  * Standard: `4500`
  */
-export const count: 4500 | number = 4500;
+export const count: 4500 | number = 10_000;
 /**
  * The Size of a File-Sector
  * 

@@ -37,7 +37,7 @@ exports.rng = (0, seedrandom_1.default)(exports.seed);
  *
  * Standard_ `1ßßßß`
  */
-exports.radius = 10_000;
+exports.radius = 25_000;
 /**
  * Die Anzahl der Objekte innerhalb der Galaxie
  * Beeinflusst nicht die Stellaren Objekte!
@@ -51,7 +51,7 @@ exports.radius = 10_000;
  *
  * Standard: `4500`
  */
-exports.count = 4500;
+exports.count = 10_000;
 /**
  * The Size of a File-Sector
  *
