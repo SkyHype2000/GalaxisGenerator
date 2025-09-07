@@ -3,8 +3,7 @@
     "decimal.js": "^10.6.0",
     "fflate": "^0.8.2",
     "pngjs": "^7.0.0",
-    "seedrandom": "^3.0.5",
-    "tar": "^7.4.3"
+    "seedrandom": "^3.0.5"
   },
   "name": "galaxisgenerator",
   "version": "1.0.0",
