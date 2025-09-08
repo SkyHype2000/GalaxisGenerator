@@ -298,13 +298,18 @@ class ObjectType {
     }
 }
 exports.ObjectType = ObjectType;
+/**
+ * All Objects that can appere in the Galaxy.
+ *
+ * `-1` Chance means, that this cannot naturally be generated
+ */
 exports.allObjectTypes = [
     new ObjectType("star", 0.2, "distance", new tool_1.Vector2(2, 0)),
     new ObjectType("interstellar_t1_astroid", 0.05, "near_star", new tool_1.Vector2(0.1, 2)),
     new ObjectType("interstellar_t2_astroid", 0.05, "deep_space", new tool_1.Vector2(500, 0)),
     new ObjectType("interstellar_t3_astroid", 0.05, "deep_space", new tool_1.Vector2(1000, 0)),
     //// new ObjectType("rogue_planet", 0.01, "near_star", new Vector2(2, 15)),
-    new ObjectType("anomaly", 0.01, "deep_space", new tool_1.Vector2(2000, 0)),
+    new ObjectType("anomaly", 0.01, "deep_space", new tool_1.Vector2(1000, 0)),
     //// new ObjectType("antimatter_anomaly", 0.01, "deep_space", new Vector2(5000)),
     new ObjectType("mainBlackHole", -1, "deep_space", new tool_1.Vector2(0, 0)),
 ];

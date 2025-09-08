@@ -92,7 +92,7 @@ export function galaxyObjectGenerator(): void {
         const sectorRelativePos = new Vector2(valPosition.x - (sector.x * config.SectorSize.x), valPosition.y - (sector.y * config.SectorSize.y));
         if (files.has(sector.toString(true))) { data = files.get(sector.toString(true))! }
         else {
-            const temp: config.SectorFile = { name: "Sector " + sector.toString(true), position: sector, objects: [] }
+            const temp: config.SectorFile = { name: sector.toString(true), position: sector, objects: [] }
             files.set(sector.toString(true), temp)
             data = files.get(sector.toString(true))!
         }
@@ -116,6 +116,7 @@ export function galaxyObjectGenerator(): void {
 
             let GeneratedObject: config.InterstellarAstroidFieldObjectMetadata = generateInterstellarAstroidField();
             objectInfo.metadata.name = GeneratedObject.name;
+            objectInfo.metadata.objectType = "interstellar_t1_astroid";
 
             objects.push({ pos: valPosition, type: "interstellar_t1_astroid" })
         }
@@ -125,6 +126,7 @@ export function galaxyObjectGenerator(): void {
 
             let GeneratedObject: config.InterstellarAstroidFieldObjectMetadata = generateInterstellarAstroidField();
             objectInfo.metadata.name = GeneratedObject.name;
+            objectInfo.metadata.objectType = "interstellar_t2_astroid";
 
             objects.push({ pos: valPosition, type: "interstellar_t2_astroid" })
         }
@@ -134,6 +136,7 @@ export function galaxyObjectGenerator(): void {
 
             let GeneratedObject: config.InterstellarAstroidFieldObjectMetadata = generateInterstellarAstroidField();
             objectInfo.metadata.name = GeneratedObject.name;
+            objectInfo.metadata.objectType = "interstellar_t3_astroid";
 
             objects.push({ pos: valPosition, type: "interstellar_t3_astroid" })
         }
@@ -143,6 +146,7 @@ export function galaxyObjectGenerator(): void {
 
             let GeneratedObject: config.AnomalyObjectMetadata = generateAnomaly();
             objectInfo.metadata.name = GeneratedObject.name;
+            objectInfo.metadata.objectType = "anomaly";
 
             objects.push({ pos: valPosition, type: "anomaly" })
         }
@@ -484,62 +488,33 @@ while (objects.length < config.count) {
 }
 console.log(`\u001b[1A\u001b[2K` + `Objects Generated in ${Date.now() - generateStartTime}ms`)
 
-let range: { min: Vector2, max: Vector2, array: string[] } = { min: new Vector2(), max: new Vector2(), array: [] }
+let range: config.range = { min: new Vector2(), max: new Vector2(), array: [], spaceObjectTypes: {} }
 
-console.log("Speichere Dateien...");
+const galaxyJsonPath = path.join("galaxyLists", time.toString(), "galaxy.json.gz");
+const rangeJsonPath = path.join("galaxyLists", time.toString(), "range.json");
 
-const saveStartTime = Date.now();
-files.forEach((e, i) => {
-    const file = files.get(i);
-    // console.log(file?.name + " Wird Gespeichert");
-    fs.writeFileSync(`./galaxyLists/${time}/${i}.json`, JSON.stringify(file), "utf-8")
+// Prepare galaxy data for saving (not an array, just the files map as an object)
+const galaxyData = Object.fromEntries(files);
 
-    range.array.push(i);
+// Compress and write galaxy.json.gz
+const compressedGalaxy = zipSync({ "galaxy.json": strToU8(JSON.stringify(galaxyData)) });
+fs.writeFileSync(galaxyJsonPath, compressedGalaxy);
 
-    const filePositionVector = new Vector2(file?.position.x, file?.position.y);
-    if (filePositionVector.comparePosition(range.min) == false) {
-        range.min = filePositionVector;
-    }
-    if (filePositionVector.comparePosition(range.max) == true) {
-        range.max = filePositionVector;
-    }
+files.forEach((e_i, i) => {
+    range.array.push(e_i.name);
 
-    console.log(`\u001b[1A\u001b[2K${file?.name} Created`);
+    e_i.objects.forEach((e_j, j) => {
+        if (e_j.metadata.objectType == undefined) {
+            throw new Error(JSON.stringify(e_j, null, 4));
+        }
+        if (range.spaceObjectTypes[e_j.metadata.objectType] == null) {
+            range.spaceObjectTypes[e_j.metadata.objectType] = { objectType: e_j.metadata.objectType, amount: 1 };
+        }
+        else { range.spaceObjectTypes[e_j.metadata.objectType].amount++; }
+    })
 })
-console.log('\u001b[1A\u001b[2K' + "Sector Files Created in " + (Date.now() - saveStartTime) + "ms");
-console.log("Range JSON:");
-console.log(range);
-fs.writeFileSync(`./galaxyLists/${time}/range.json`, JSON.stringify(range, null, 4), "utf-8")
 
-const archiveStartTime = Date.now();
-const outputFilePath = `./galaxyLists/${time}/galaxyData.gz`;
-const directoryPath = `./galaxyLists/${time}`;
-
-console.log("Star Creating .gz-Archive");
-// Collect all files except range.json
-const filesToArchive: { [filename: string]: Uint8Array } = {};
-fs.readdirSync(directoryPath).forEach(file => {
-    if (file !== 'range.json') {
-        const filePath = path.join(directoryPath, file);
-        const fileContent = fs.readFileSync(filePath);
-        filesToArchive[file] = new Uint8Array(fileContent);
-    }
-});
-
-// Create a gzipped archive
-const compressedData = zipSync(filesToArchive, { level: 9 });
-fs.writeFileSync(outputFilePath, compressedData);
-
-console.log(`\u001b[1A\u001b[2K.gz-Archive Created in ${Date.now() - archiveStartTime}ms: ${outputFilePath}`);
-
-const deleteStartTime = Date.now();
-console.log();
-fs.readdirSync(directoryPath).forEach(file => {
-    if (file !== "range.json" && file !== "galaxyData.gz") {
-        fs.unlinkSync(path.join(directoryPath, file))
-        console.log(`\u001b[1A\u001b[2K${file} Deleted`);        
-    }
-})
-console.log(`\u001b[1A\u001b[2KSectorfiles Deleted in ${Date.now() - deleteStartTime}ms`);
+// Save range.json separately
+fs.writeFileSync(rangeJsonPath, JSON.stringify(range));
 
 console.log(`Galaxy Generated in ${Date.now() - time}ms`);

@@ -310,13 +310,18 @@ export class ObjectType {
     }
 }
 
+/**
+ * All Objects that can appere in the Galaxy.
+ * 
+ * `-1` Chance means, that this cannot naturally be generated
+ */
 export const allObjectTypes: ObjectType[] = [
     new ObjectType("star", 0.2, "distance", new Vector2(2, 0)),
     new ObjectType("interstellar_t1_astroid", 0.05, "near_star", new Vector2(0.1, 2)),
     new ObjectType("interstellar_t2_astroid", 0.05, "deep_space", new Vector2(500, 0)),
     new ObjectType("interstellar_t3_astroid", 0.05, "deep_space", new Vector2(1000, 0)),
     //// new ObjectType("rogue_planet", 0.01, "near_star", new Vector2(2, 15)),
-    new ObjectType("anomaly", 0.01, "deep_space", new Vector2(2000, 0)),
+    new ObjectType("anomaly", 0.01, "deep_space", new Vector2(1000, 0)),
     //// new ObjectType("antimatter_anomaly", 0.01, "deep_space", new Vector2(5000)),
     new ObjectType("mainBlackHole", -1, "deep_space", new Vector2(0, 0)),
 ]
@@ -451,3 +456,7 @@ export type InterstellarAstroidFieldTypes = "interstellar_t1_astroid"|"interstel
 export type AnomalyObjectMetadata = {
     name:string,
 }
+/**
+ * Range Data for the Web-Oriantation File.
+ */
+export type range = { min: Vector2, max: Vector2, array: string[], spaceObjectTypes: {[k: string]: {objectType:res.CelestialObjectTypes,amount:number}} }

@@ -300,6 +300,11 @@ export declare class ObjectType {
     dist: Vector2;
     constructor(type: res.CelestialObjectTypes, chance: number, preferred: "near_star" | "deep_space" | "distance" | "", dist: Vector2);
 }
+/**
+ * All Objects that can appere in the Galaxy.
+ *
+ * `-1` Chance means, that this cannot naturally be generated
+ */
 export declare const allObjectTypes: ObjectType[];
 export declare function chooseObjectTypeByChance(): ObjectType;
 /**
@@ -414,4 +419,18 @@ export type InterstellarAstroidFieldTypes = "interstellar_t1_astroid" | "interst
  */
 export type AnomalyObjectMetadata = {
     name: string;
+};
+/**
+ * Range Data for the Web-Oriantation File.
+ */
+export type range = {
+    min: Vector2;
+    max: Vector2;
+    array: string[];
+    spaceObjectTypes: {
+        [k: string]: {
+            objectType: res.CelestialObjectTypes;
+            amount: number;
+        };
+    };
 };

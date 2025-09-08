@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Galaxie</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: black;
+        }
+
+        canvas {
+            display: block;
+        }
+
+        .legend {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            font-family: sans-serif;
+            font-size: 12px;
+            padding: 8px;
+            border-radius: 5px;
+            pointer-events: none;
+        }
+
+        .legend span {
+            pointer-events: all;
+        }
+
+        .legend div span {
+            pointer-events: all;
+        }
+
+        .legend div {
+            margin: 4px 0;
+        }
+
+        .dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            margin-right: 6px;
+            border-radius: 50%;
+        }
+
+        input,
+        select,
+        option {
+            background-color: darkslategray;
+            color: white;
+            border-radius: 5px;
+            outline: white 2px;
+            pointer-events: all;
+        }
+
+        input:focus,
+        select {
+            outline: none
+        }
+
+        input:disabled,
+        select:disabled,
+        option:disabled {
+            background-color: rgb(23, 23, 23);
+            color: #3f3f3f;
+        }
+
+        .info_panel {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            font-family: sans-serif;
+            font-size: 12px;
+            padding: 8px;
+            border-radius: 5px;
+            max-width: 300px;
+            max-height: 50vh;
+            /* NEU: Maximal 50% der Viewport-Höhe */
+            overflow-y: auto;
+            /* NEU: Scrollbar bei Überlauf */
+        }
+
+        /* Nur für das Info-Panel */
+        .info_panel::-webkit-scrollbar {
+            width: 10px;
+            background: #222;
+        }
+
+        .info_panel::-webkit-scrollbar-thumb {
+            background: #444;
+            border-radius: 5px;
+        }
+
+        .info_panel::-webkit-scrollbar-thumb:hover {
+            background: #666;
+        }
+
+        /* Optional: Für Firefox */
+        .info_panel {
+            scrollbar-width: thin;
+            scrollbar-color: #444 #222;
+        }
+
+        select {
+            pointer-events: all;
+            width: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="galaxy"></canvas>
+    <div class="legend">
+        <h3>Legend</h3>
+        <div id="legend.star" data-spectral-class=""><span class="dot" style="background: yellow;"></span>
+            <span>Star</span>
+            <span id="star_count">(?)</span>
+        </div>
+        <div id="legend.o_star" data-spectral-class="O">
+            <span class="dot" style="background: lightblue;"></span>
+            <span>Class O Star</span>
+            <span id="o_star_count">(?)</span>
+        </div>
+        <div id="legend.b_star" data-spectral-class="B">
+            <span class="dot" style="background: darkcyan;"></span>
+            <span>Class B Star</span>
+            <span id="b_star_count">(?)</span>
+        </div>
+        <div id="legend.a_star" data-spectral-class="A">
+            <span class="dot" style="background: lightblue;"></span>
+            <span>Class A Star</span>
+            <span id="a_star_count">(?)</span>
+        </div>
+        <div id="legend.f_star" data-spectral-class="F">
+            <span class="dot" style="background: white;"></span>
+            <span>Class F Star</span>
+            <span id="f_star_count">(?)</span>
+        </div>
+        <div id="legend.g_star" data-spectral-class="G">
+            <span class="dot" style="background: yellow;"></span>
+            <span>Class G Star</span>
+            <span id="g_star_count">(?)</span>
+        </div>
+        <div id="legend.k_star" data-spectral-class="K">
+            <span class="dot" style="background: orange;"></span>
+            <span>Class K Star</span>
+            <span id="k_star_count">(?)</span>
+        </div>
+        <div id="legend.m_star" data-spectral-class="M">
+            <span class="dot" style="background: red;"></span>
+            <span>Class M Star</span>
+            <span id="m_star_count">(?)</span>
+        </div>
+        <div id="legend.l_star" data-spectral-class="L">
+            <span class="dot" style="background: darkred;"></span>
+            <span>Class L Star</span>
+            <span id="l_star_count">(?)</span>
+        </div>
+        <div id="legend.t_star" data-spectral-class="T">
+            <span class="dot" style="background: purple;"></span>
+            <span>Class T Star</span>
+            <span id="t_star_count">(?)</span>
+        </div>
+        <div id="legend.y_star" data-spectral-class="Y">
+            <span class="dot" style="background: darkslategray;"></span>
+            <span>Class Y Star</span>
+            <span id="y_star_count">(?)</span>
+        </div>
+
+        <div id="legend.interstellar_t1_astroid">
+            <span class="dot" style="background: lightgray;"></span>
+            <span>Interstellar Type 1 Astroid Field</span>
+            <span id="interstellar_t1_astroid_count">(?)</span>
+        </div>
+        <div id="legend.interstellar_t2_astroid">
+            <span class="dot" style="background: gray;"></span>
+            <span>Interstellar Type 2 Astroid Field</span>
+            <span id="interstellar_t2_astroid_count">(?)</span>
+        </div>
+        <div id="legend.interstellar_t3_astroid">
+            <span class="dot" style="background: darkgreen;"></span>
+            <span>Interstellar Type 3 Astroid Field</span>
+            <span id="interstellar_t3_astroid_count">(?)</span>
+        </div>
+        <div id="legend.rogue_planet">
+            <span class="dot" style="background: blue;"></span>
+            <span>Rogue Planet</span>
+            <span id="rogue_planet_count">(?)</span>
+        </div>
+        <div id="legend.anomaly">
+            <span class="dot" style="background: magenta;"></span>
+            <span>Anomaly</span>
+            <span id="anomaly_count">(?)</span>
+        </div>
+        <div id="legend.blackHole">
+            <span class="dot" style="background: pink;"></span>
+            <span>Black Hole</span>
+            <span id="blackHole_count">(?)</span>
+        </div>
+        <div id="legend.mainBlackHole">
+            <span class="dot" style="background: magenta;"></span>
+            <span>Black Hole (Center)</span>
+            <span id="mainBlackHole_count">(?)</span>
+        </div>
+        <h3>Navigation</h3>
+        <span>Mouseweel = Vertical</span><br>
+        <span>SHIFT + Mouseweel = Horizontal</span><br>
+        <span>CTRL + Mouseweel = Zoom</span>
+        <h3>Options</h3>
+
+        <div>
+            <span><span de_text="Momentaner Zoom" en_text="Current Zoom">Momentaner Zoom</span>: <span id="currentZoom">-</span>x</span><br>
+        </div>
+        <div>
+            <span>Name Visibility: </span><input type="checkbox" id="showNames" checked><br>
+            <span>Name-Zoomvisibility Distance: </span><input type="number" min="0.00001" max="10.0000" step="0.0001"value="0.7000" id="nameDistance">
+        </div>
+        <div>
+            <span>Distance Lines: </span><input type="checkbox" id="showDistanceLines"><br>
+            <span>Max Distance Lines: </span>
+            <input type="number" value="10" step="1" min="1" , max="25" id="maxDistanceLines" disabled>
+        </div>
+        <div>
+            <span>Click to Select: </span><input type="checkbox" id="clickToSelect" checked>
+        </div>
+        <div>
+            <span>Uniform Star Colors (Show all Stars in Yellow): </span><input type="checkbox" id="uniformStarColor" checked><br>
+        </div>
+        <div>
+            <span>Detailed Resource Names: </span><input type="checkbox" id="detailResourceNames"><br>
+        </div>
+    </div>
+
+    <div class="info_panel" id="info_panel">
+        <h3>Object Information</h3>
+        <input type="button" value="Show Object Data" id="showObjectDataButton" disabled style="margin-bottom: 10px;">
+        <div id="info_content">
+            <span>Hover with the Mouse over a Object...</span>
+        </div>
+    </div>
+    <script type="module" src="render.js"></script>
+</body>
+
+</html>
