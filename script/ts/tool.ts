@@ -47,6 +47,14 @@ export class Vector2 {
         return new Vector2(x, y)
     }
 
+    round():Vector2 {
+        return new Vector2(Math.round(this.x), Math.round(this.y))
+    }
+
+    floor():Vector2 {
+        return new Vector2(Math.floor(this.x), Math.floor(this.y))
+    }
+
     /**
      * Compares 2 Vectors and tell you what Position is smaller, same or bigger
      * `false`: smaller

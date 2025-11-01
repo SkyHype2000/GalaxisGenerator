@@ -30,7 +30,7 @@ export const rng = seedrandom(seed);
  * 
  * Standard_ `1ßßßß`
  */
-export const radius: 10000 | number = 25_000;
+export const radius: 10000 | number = 10_000;
 /**
  * Die Anzahl der Objekte innerhalb der Galaxie  
  * Beeinflusst nicht die Stellaren Objekte!
@@ -44,7 +44,7 @@ export const radius: 10000 | number = 25_000;
  * 
  * Standard: `4500`
  */
-export const count: 4500 | number = 10_000;
+export const count: 4500 | number = 3_000;
 /**
  * The Size of a File-Sector
  * 
@@ -85,7 +85,7 @@ export const planetRadius: Vector2 = new Vector2(0.1, 3)
  * 
  * Standard: `0.1`
  * 
- * For Reference, The average distance between Mercury and the Sun is ~0.387 AU  
+ * Did some googling and For Reference, The average distance between Mercury and the Sun is ~0.387 AU  
  * So `.1` AU is pretty close.
  */
 export const planetToSunStartDistance: number = 0.1
@@ -118,9 +118,9 @@ export const moonRadius: Vector2 = new Vector2(0.05, 0.8)
  * 
  * Values in the Middle are More common than the Values on the Edges.
  * 
- * Standard: `0.05-2`
+ * Standard: `0.0005-0.002`
  */
-export const moonToMoonChangeDistance: Vector2 = new Vector2(75_000_000/149_597_870_700, 300_000_000/149_597_870_700)
+export const moonToMoonChangeDistance: Vector2 = new Vector2(0.0005, 0.002)
 /**
  * The Minimal and Maximal Astroidbelt Count of a Starsystem
  * 
@@ -158,7 +158,7 @@ export const SB: 5.670373e-8 = 5.670373e-8;
 /**
  * The Length of a Astromical Unit in meters.
  */
-export const AU: 149597870700 = 149_597_870_700;
+export const AU: number = 149_597_870_700;
 /**
  * The Length of a Light Year in meters.
  */
@@ -172,9 +172,9 @@ export const YEAR_IN_SEC: 31557600 = 31_557_600;
  */
 export const SUN_MASS_KG: 1.9884e30 = 1.9884e30;
 /**
- * The Radius of the sun in KM
+ * The Radius of the sun in meters
  */
-export const R_SOL_KM: 695700 = 695700; // KM
+export const R_SOL: number = 696_342_000; // m
 /**
  * The luminosity of the sun in watts
  */
@@ -187,6 +187,10 @@ export const T_SOL: 5778 = 5778; // °K
  * The mass of the Earth in KG
  */
 export const EARTH_MASS_KG: 5.972e24 = 5.972e24;
+/**
+ * The Radius of the Earth in meters
+ */
+export const EARTH_RADIUS: number = 6_371_000
 
 /**
  * Spectral Class
@@ -199,7 +203,7 @@ export type SpectralClassData = { class: string, subclass: string, name: string,
 /**
  * Final Star Object Data
  */
-export type StarObjectSpectralMetadata = {class:string,subclass:string,name:string,lum:number}
+export type StarObjectSpectralMetadata = { class: string, subclass: string, name: string, lum: number }
 /**
  * Alle Validen Werte für jedesSpektrum.
  *
@@ -222,6 +226,7 @@ export const VALID_SPECTRAL_CLASS_VALUES: SpectralClassType[] = [
  * All Valid Subspectral Class Values
  */
 export const VALID_SUBSPECTRAL_CLASS_VALUES: SpectralClassType[] = [];
+
 for (let i = 0; i < VALID_SPECTRAL_CLASS_VALUES.length; i++) {
     const e_i = VALID_SPECTRAL_CLASS_VALUES[i];
     for (let j = 0; j < 10; j++) {
@@ -261,18 +266,18 @@ for (let i = 0; i < VALID_SPECTRAL_CLASS_VALUES.length; i++) {
  * If you Asking "why did you do that?"  
  * Answer: "I Have no life and I'am pretty sure that the Gravitational Constant was Determinated the same way XD"
  * 
- * This is what ChatGPT said to my constant: "Historisch wurden viele Konstanten tatsächlich erst mal so rumgestochert, bis man halbwegs konsistente Ergebnisse hatte."
+ * This is what ChatGPT said to my constant: "Historisch wurden viele Konstanten tatsächlich erst mal so rumgestochert, bis man halbwegs konsistente Ergebnisse hatte."  
  * = "Historically, many constants were actually fiddled around with until reasonably consistent results were achieved."
  * 
- * But after writing some code, this would be the most precise Number:
- * 1.0216388735543742521887522130876091683703957473078500310054178421533504358657415429775215553538366594
+ * But after writing some code, this would be the most precise Number:  
+ * `1.0216388735543742521887522130876091683703957473078500310054178421533504358657415429775215553538366594`  
  * So i will take that
  * 
  * ---
  * 
  * Now at least we also have L, T, and Y stars, which wouldn't have been possible with just 1.2.
  */
-export const STAR_GENERATION_CONSTANT:1.0216388735543742521887522130876091683703957473078500310054178421533504358657415429775215553538366594 = 1.0216388735543742521887522130876091683703957473078500310054178421533504358657415429775215553538366594;
+export const STAR_GENERATION_CONSTANT: 1.0216388735543742521887522130876091683703957473078500310054178421533504358657415429775215553538366594 = 1.0216388735543742521887522130876091683703957473078500310054178421533504358657415429775215553538366594;
 
 /**
  * Alle Beforzugten typen (Type)
@@ -375,6 +380,8 @@ export type FilesObjectTypeInfo = {
  * 
  * `extra`: Optional Object Spesific Data, for Example Star Information
  * - `star?`: the Metadata for a Star
+ * - `planet?`: the Metadata for a Planet
+ * - `interstellarAstroidField?`: the Metadata for a Interstellar Astroid Field
  */
 export type ObjectMetadata = {
     name: string,
@@ -388,7 +395,7 @@ export type ObjectMetadata = {
     }
 }
 
-export function StarSpectralClassDataToMetadata(classData:SpectralClassData):StarObjectSpectralMetadata {
+export function StarSpectralClassDataToMetadata(classData: SpectralClassData): StarObjectSpectralMetadata {
     return {
         name: classData.name,
         class: classData.class,
@@ -402,11 +409,11 @@ export function StarSpectralClassDataToMetadata(classData:SpectralClassData):Sta
 export type StarObjectMetadata = {
     name: string,
     metadata: {
-        spectral:StarObjectSpectralMetadata,
-        mass:number,
-        temperature:number,
-        radius:number,
-        planets:PlanetObjectMetadata[]
+        spectral: StarObjectSpectralMetadata,
+        mass: number,
+        temperature: number,
+        radius: number,
+        planets: PlanetObjectMetadata[]
     },
 }
 /**
@@ -417,29 +424,36 @@ export type StarObjectMetadata = {
  * `OrbitalPeriod`: Priod in Seconds
  */
 export type PlanetObjectMetadata = {
-    name:string,
-    type:res.CelestialObjectTypes,
-    mass:number,
-    radius:number,
-    gravitation:number,
-    resources:res.resWebJSONData[],
-    moons:MoonObjectMetadata[],
-    OrbitalPeriod:number,
-    OrbitalHeigth:number,
+    name: string,
+    type: res.CelestialObjectTypes,
+    mass: number,
+    radius: number,
+    gravitation: number,
+    resources: res.resWebJSONData[],
+    moons: MoonObjectMetadata[],
+    Orbit: OrbitalInformation,
 }
 /**
  * Metadata for a Moon  
  * Like Luna :D
  */
 export type MoonObjectMetadata = {
-    name:string,
-    type:res.CelestialObjectTypes,
-    mass:number,
-    radius:number,
-    gravitation:number,
-    resources:res.resWebJSONData[],
-    OrbitalPeriod:number,
-    OrbitalHeigth:number,
+    name: string,
+    type: res.CelestialObjectTypes,
+    mass: number,
+    radius: number,
+    gravitation: number,
+    resources: res.resWebJSONData[],
+    Orbit: OrbitalInformation,
+}
+/**
+ * Orbital Information of a Planet/Moon
+ */
+export type OrbitalInformation = {
+    OrbitalPeriod: number,
+    OrbitalSpeed: number,
+    OrbitalLength: number,
+    OrbitalHeight: number,
 }
 /**
  * Metadata for a InterstellarAstroidField
@@ -447,16 +461,35 @@ export type MoonObjectMetadata = {
  * Really Long Name lol
  */
 export type InterstellarAstroidFieldObjectMetadata = {
-    name:string,
+    name: string,
 }
-export type InterstellarAstroidFieldTypes = "interstellar_t1_astroid"|"interstellar_t2_astroid"|"interstellar_t3_astroid"
+export type InterstellarAstroidFieldTypes = "interstellar_t1_astroid" | "interstellar_t2_astroid" | "interstellar_t3_astroid"
 /**
  * Metadata for a Anomaly
  */
 export type AnomalyObjectMetadata = {
-    name:string,
+    name: string,
 }
+
 /**
- * Range Data for the Web-Oriantation File.
+ * Range Data for the Web-Orientation File.
+ * 
+ * ---
+ * 
+ * The Min-Value declares how big the Map is on the smallest (Everything in the Bottom-Left) (in Sectors)  
+ * The Max-Value declares how big the Map is on the highest (Everything in the Top-Right) (in Sectors)
+ * 
+ * In the `array`, all Sectors are Written Down  
+ * In the `spaceObjectAmount` all objects are Counted  
+ * In the `spaceObjectTypes` are all Object ans the amount of how many there are for that Object-Type
  */
-export type range = { min: Vector2, max: Vector2, array: string[], spaceObjectTypes: {[k: string]: {objectType:res.CelestialObjectTypes,amount:number}} }
+export type range = { min: Vector2, max: Vector2, array: string[], spaceObjectAmount: number, spaceObjectTypes: { [k: string]: { objectType: res.CelestialObjectTypes, amount: number } } }
+
+/**
+ * Final Galaxy Information
+ */
+export type galaxyInformation = {
+    seed: string,
+    name: string,
+    range: range,
+}

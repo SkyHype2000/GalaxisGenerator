@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.allObjectTypes = exports.ObjectType = exports.STAR_GENERATION_CONSTANT = exports.VALID_SUBSPECTRAL_CLASS_VALUES = exports.VALID_SPECTRAL_CLASS_VALUES = exports.EARTH_MASS_KG = exports.T_SOL = exports.LUM_SOL_W = exports.R_SOL_KM = exports.SUN_MASS_KG = exports.YEAR_IN_SEC = exports.LJ = exports.AU = exports.SB = exports.G = exports.exponent = exports.stellarAstroidCount = exports.moonToMoonChangeDistance = exports.moonRadius = exports.planetaryMoonCount = exports.planetToPlanetChangeDistance = exports.planetToSunStartDistance = exports.planetRadius = exports.stellarPlanetCount = exports.SectorSize = exports.count = exports.radius = exports.rng = exports.seed = exports.mainBlackHoleName = void 0;
+exports.allObjectTypes = exports.ObjectType = exports.STAR_GENERATION_CONSTANT = exports.VALID_SUBSPECTRAL_CLASS_VALUES = exports.VALID_SPECTRAL_CLASS_VALUES = exports.EARTH_RADIUS = exports.EARTH_MASS_KG = exports.T_SOL = exports.LUM_SOL_W = exports.R_SOL = exports.SUN_MASS_KG = exports.YEAR_IN_SEC = exports.LJ = exports.AU = exports.SB = exports.G = exports.exponent = exports.stellarAstroidCount = exports.moonToMoonChangeDistance = exports.moonRadius = exports.planetaryMoonCount = exports.planetToPlanetChangeDistance = exports.planetToSunStartDistance = exports.planetRadius = exports.stellarPlanetCount = exports.SectorSize = exports.count = exports.radius = exports.rng = exports.seed = exports.mainBlackHoleName = void 0;
 exports.getSectorPos = getSectorPos;
 exports.chooseObjectTypeByChance = chooseObjectTypeByChance;
 exports.StarSpectralClassDataToMetadata = StarSpectralClassDataToMetadata;
@@ -37,7 +37,7 @@ exports.rng = (0, seedrandom_1.default)(exports.seed);
  *
  * Standard_ `1ßßßß`
  */
-exports.radius = 25_000;
+exports.radius = 10_000;
 /**
  * Die Anzahl der Objekte innerhalb der Galaxie
  * Beeinflusst nicht die Stellaren Objekte!
@@ -51,7 +51,7 @@ exports.radius = 25_000;
  *
  * Standard: `4500`
  */
-exports.count = 10_000;
+exports.count = 3_000;
 /**
  * The Size of a File-Sector
  *
@@ -92,7 +92,7 @@ exports.planetRadius = new tool_1.Vector2(0.1, 3);
  *
  * Standard: `0.1`
  *
- * For Reference, The average distance between Mercury and the Sun is ~0.387 AU
+ * Did some googling and For Reference, The average distance between Mercury and the Sun is ~0.387 AU
  * So `.1` AU is pretty close.
  */
 exports.planetToSunStartDistance = 0.1;
@@ -125,9 +125,9 @@ exports.moonRadius = new tool_1.Vector2(0.05, 0.8);
  *
  * Values in the Middle are More common than the Values on the Edges.
  *
- * Standard: `0.05-2`
+ * Standard: `0.0005-0.002`
  */
-exports.moonToMoonChangeDistance = new tool_1.Vector2(75_000_000 / 149_597_870_700, 300_000_000 / 149_597_870_700);
+exports.moonToMoonChangeDistance = new tool_1.Vector2(0.0005, 0.002);
 /**
  * The Minimal and Maximal Astroidbelt Count of a Starsystem
  *
@@ -179,9 +179,9 @@ exports.YEAR_IN_SEC = 31_557_600;
  */
 exports.SUN_MASS_KG = 1.9884e30;
 /**
- * The Radius of the sun in KM
+ * The Radius of the sun in meters
  */
-exports.R_SOL_KM = 695700; // KM
+exports.R_SOL = 696_342_000; // m
 /**
  * The luminosity of the sun in watts
  */
@@ -194,6 +194,10 @@ exports.T_SOL = 5778; // °K
  * The mass of the Earth in KG
  */
 exports.EARTH_MASS_KG = 5.972e24;
+/**
+ * The Radius of the Earth in meters
+ */
+exports.EARTH_RADIUS = 6_371_000;
 /**
  * Alle Validen Werte für jedesSpektrum.
  *
@@ -260,7 +264,7 @@ for (let i = 0; i < exports.VALID_SPECTRAL_CLASS_VALUES.length; i++) {
  * = "Historically, many constants were actually fiddled around with until reasonably consistent results were achieved."
  *
  * But after writing some code, this would be the most precise Number:
- * 1.0216388735543742521887522130876091683703957473078500310054178421533504358657415429775215553538366594
+ * `1.0216388735543742521887522130876091683703957473078500310054178421533504358657415429775215553538366594`
  * So i will take that
  *
  * ---

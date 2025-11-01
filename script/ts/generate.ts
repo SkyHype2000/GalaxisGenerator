@@ -6,7 +6,7 @@ import { Vector2, generateName } from './tool';
 // Alle Ressourceninformationen
 import * as res from './resources';
 import * as path from 'path';
-import { zipSync, strToU8 } from 'fflate';
+import { gzipSync, strToU8 } from 'fflate';
 
 /**  
  * I did translate almost everything by my own,
@@ -24,7 +24,7 @@ fs.mkdirSync(`./galaxyLists/${time}`, { recursive: true })
 /**
  * The Sector Data that is getting put into the Files.
  * 
- * Suprisenly, this was my Idea, someone told me a while back that this is more efficient
+ * surprisingly, this was my Idea, someone told me a while back that this is "more efficient" (incredible, i finally took someones Advice)
 */
 const files: Map<string, config.SectorFile> = new Map();
 
@@ -47,7 +47,7 @@ export function galaxyObjectGenerator(): void {
         const sector: Vector2 = config.getSectorPos(position)
         const relativePosition: Vector2 = getLocalSectorPos(position)
 
-        const data: config.SectorFile = { name: "Sector " + sector.toString(true), position: { x: 0, y: 0 }, objects: [] }
+        const data: config.SectorFile = { name: sector.toString(true), position: { x: 0, y: 0 }, objects: [] }
 
         data.objects.push({ id: "mainBlackHole", position: position, metadata: { name: config.mainBlackHoleName, position: relativePosition, objectType: "mainBlackHole" } })
 
@@ -72,7 +72,7 @@ export function galaxyObjectGenerator(): void {
         //// console.log(objectTypesPresent.has("star"));
 
         while (valPosition == null) {
-            const randomPosition = getRandomPosition().toFixed(3);
+            const randomPosition = getRandomPosition();
             // console.log(randomPosition);
 
             valPosition = validateDistance(ObjectType, randomPosition);
@@ -235,7 +235,7 @@ export function getRandomPosition(): Vector2 {
     const a = config.rng() * Math.PI * 2
     const r = getRandomDistance(config.radius)
 
-    const pos = polarToCartesian(r, a)
+    const pos = polarToCartesian(r, a).round();
     // console.log(pos);
 
     return pos;
@@ -248,7 +248,7 @@ export function getRandomPosition(): Vector2 {
  * I Just asked ChatGPT, lol.
  * 
  * @param {number} max Maximalabstand
- * @param {number} min Mindistabstand
+ * @param {number} min Mindestabstand
  */
 export function getRandomDistance(max: number, min: number = 0): number {
     if (max === 0) max = config.radius;
@@ -267,9 +267,9 @@ export function getRandomDistance(max: number, min: number = 0): number {
  * which cannot be further away than the radius of the galaxy.
  * 
  * After ~ 1 Week i figured it out lol.  
- * it uses the distence generated with the `getRandomDistance()` and Converts it with help of the
+ * it uses the distance generated with the `getRandomDistance()` and Converts it with help of the
  * angle to the `x` and `y` position.  
- * this is simple 5th Grade math lol, how i couldnt understand it...  
+ * this is simple 5th Grade math lol, how i couldn't understand it...  
  * [Polar Coordinate System (Wikipedia)](https://en.wikipedia.org/wiki/Polar_coordinate_system)
  * 
  * @param {number} r Distance From the Center
@@ -310,7 +310,7 @@ export function generateUniqueName(): string {
  * There is a special function for generating anomaly names.
  * I didn't want to just use syllables for the names, so I decided to use this one.
  * 
- * Because it sounds better for anomalies. Idk why.
+ * Because it sounds "more cool" for anomalies. Idk why.
  */
 export function generateAnomalyName(): string {
     /**
@@ -337,12 +337,12 @@ export function generateAnomalyName(): string {
 export function generateStarSystem(): config.StarObjectMetadata {
     let returnData = { name: "", metadata: {} } as config.StarObjectMetadata;
 
-    const mass = -(1 - Math.pow(config.rng() / config.STAR_GENERATION_CONSTANT, -0.4) * config.SUN_MASS_KG);
-    const spectralData = getSolarSpectralClassData(returnData.metadata.mass);
+    //? berechnung der Masse in M_sol
+    const mass = -(1 - Math.pow(config.rng() / config.STAR_GENERATION_CONSTANT, -0.4));
+    const spectralData = getSolarSpectralClassData(mass);
 
-    let planets: config.PlanetObjectMetadata[] = [];
     const PlanetCount = Math.round(config.rng() * (config.stellarPlanetCount.y - config.stellarPlanetCount.x)) + config.stellarPlanetCount.x;
-    if (PlanetCount > 0) planets = generatePlanetSystemData(PlanetCount, returnData.metadata.mass);
+    let planets: config.PlanetObjectMetadata[] = PlanetCount > 0 ? generatePlanetSystemData(PlanetCount, mass * config.SUN_MASS_KG, spectralData.rad) : [];
 
     return {
         name: generateName(),
@@ -372,16 +372,30 @@ export function generateAnomaly(): config.AnomalyObjectMetadata {
     return returnData;
 }
 
+let recordedSpectralClasses = {
+    O: 0,
+    B: 0,
+    A: 0,
+    F: 0,
+    G: 0,
+    K: 0,
+    M: 0,
+    L: 0,
+    T: 0,
+    Y: 0,
+}
+
 export function getSolarSpectralClassData(mass: number): config.SpectralClassData {
     let returnData = {} as config.SpectralClassData;
+    returnData.mass = mass;
 
     let currentClass = {} as config.SpectralClassType;
     for (let i = 0; i < config.VALID_SUBSPECTRAL_CLASS_VALUES.length; i++) {
         const e = config.VALID_SUBSPECTRAL_CLASS_VALUES[i];
         if (mass >= e.massmin && mass < e.massmax) {
             currentClass = e;
-            returnData.class = e.class;
-            returnData.subclass = e.class + i
+            returnData.class = e.class.split("-")[0];
+            returnData.subclass = e.class
             returnData.name = e.name;
             returnData.color = e.color;
             break;
@@ -390,58 +404,81 @@ export function getSolarSpectralClassData(mass: number): config.SpectralClassDat
 
     const temperature = Math.round((config.rng() * (currentClass.tempmax - currentClass.tempmin)) + currentClass.tempmin);
     returnData.temperature = temperature;
-    returnData.rad = Math.pow(returnData.mass, 0.8);
+    //* Annäherung, gibt sicherlich bessere Wege
+    const radius = Math.pow(mass, 0.8) * config.R_SOL;
+    returnData.rad = radius;
     // lum (Watt) = 4 * PI * r^2 * sigma * T^4
-    returnData.lum = 4 * Math.PI * Math.pow(returnData.rad, 2) * config.SB * Math.pow(temperature, 4)
-
+    const lum = 4 * Math.PI * Math.pow(radius, 2) * config.SB * Math.pow(temperature, 4);
+    returnData.lum = lum;
     return returnData;
 }
 
-export function generatePlanetSystemData(planetCount: number = 0, StarMass: number): config.PlanetObjectMetadata[] {
+export function generatePlanetSystemData(planetCount: number, StarMass: number, StarRadius:number): config.PlanetObjectMetadata[] {
     let returnData = [] as config.PlanetObjectMetadata[];
-    if (planetCount == 0) planetCount = Math.round(config.rng() * (config.stellarPlanetCount.y - config.stellarPlanetCount.x)) + config.stellarPlanetCount.x;
+    if (planetCount == 0) return returnData;
 
-    let lastDistance = config.planetToSunStartDistance;
+    let lastDistance = config.planetToSunStartDistance + (StarRadius/config.AU);
 
     for (let i = 0; i < planetCount; i++) {
-        lastDistance += config.planetToPlanetChangeDistance.x + (1 - Math.pow(2 * config.rng() - 1, 2.8)) * (config.planetToPlanetChangeDistance.y - config.planetToPlanetChangeDistance.x)
+        lastDistance += config.planetToPlanetChangeDistance.x + (config.rng() * (config.planetToPlanetChangeDistance.y - config.planetToPlanetChangeDistance.x));
+
         const MoonCount = Math.round(config.rng() * (config.planetaryMoonCount.y - config.planetaryMoonCount.x)) + config.planetaryMoonCount.x
-        returnData.push(generatePlanetData(MoonCount, lastDistance, StarMass));
+        returnData.push(generatePlanetData(MoonCount, lastDistance*config.AU, StarMass));
     }
 
     return returnData;
 }
+
+/**
+ * 
+ * @param MoonCount How Many Moons it should have
+ * @param OrbitalHeight The Orbital Height of the Object in m
+ * @param StarMass Mass of the Star in KG
+ * @returns 
+ */
 export function generatePlanetData(MoonCount: number, OrbitalHeight: number, StarMass: number): config.PlanetObjectMetadata {
     let returnData = {} as config.PlanetObjectMetadata;
 
     returnData.name = generateName();
     const generatedResources = res.generateResources()
     returnData.resources = generatedResources.map((e: { resource: res.resource, per: number }) => ({ name: e.resource.name, id: e.resource.id, short: e.resource.short, p: e.per }));
-    returnData.radius = (config.rng() * (config.planetRadius.y - config.planetRadius.x)) + config.planetRadius.x;
-    returnData.mass = calculateObjectMass(returnData.radius, generatedResources);
+    returnData.radius = (config.rng() * ((config.planetRadius.y - config.planetRadius.x)) + config.planetRadius.x);
+    const mass = calculateObjectMass(returnData.radius, generatedResources);
+    returnData.mass = mass
     returnData.gravitation = (config.G * returnData.mass) / Math.pow(returnData.radius, 2);
 
-    returnData.OrbitalPeriod = 2 * Math.PI * Math.sqrt(Math.pow(OrbitalHeight, 3) / (config.G * returnData.mass))
+    returnData.Orbit = calculateOrbitalInformation(StarMass, OrbitalHeight)
 
-    returnData.moons = generateMoonSystemData(returnData.mass, MoonCount)
-    returnData.OrbitalHeigth = OrbitalHeight;
+    returnData.moons =  MoonCount > 0 ? generateMoonSystemData(mass * config.EARTH_MASS_KG, MoonCount) : [];
 
     return returnData;
 }
 
+/**
+ * Generates the Moonsystemdata for a Planet
+ * 
+ * @param PlanetMass Planet Mass in KG
+ * @param moonCount Moon Count
+ */
 export function generateMoonSystemData(PlanetMass: number, moonCount: number = 0): config.MoonObjectMetadata[] {
     let returnData = [] as config.MoonObjectMetadata[];
-    if (moonCount == 0) moonCount = Math.round(config.rng() * (config.planetaryMoonCount.y - config.planetaryMoonCount.x)) + config.planetaryMoonCount.x;
+    if (moonCount == 0) return returnData;
 
     let lastDistance = config.planetToSunStartDistance;
     for (let i = 0; i < moonCount; i++) {
-        lastDistance += config.planetToPlanetChangeDistance.x + (1 - Math.pow(2 * config.rng() - 1, 2.8)) * (config.planetToPlanetChangeDistance.y - config.planetToPlanetChangeDistance.x)
-        returnData.push(generateMoonData(lastDistance, PlanetMass));
+        lastDistance += config.moonToMoonChangeDistance.x + (config.rng() * (config.moonToMoonChangeDistance.y-config.moonToMoonChangeDistance.y))
+        returnData.push(generateMoonData(lastDistance * config.AU, PlanetMass));
     }
 
     return returnData;
 }
 
+/**
+ * Like the Function Says, it generates the Moon Data of a blanet
+ * 
+ * @param OrbitalHeight Height of the Orbit in m
+ * @param PlanetMass Mass Of the Planet in kg
+ */
 export function generateMoonData(OrbitalHeight: number, PlanetMass: number): config.MoonObjectMetadata {
     let returnData = {} as config.MoonObjectMetadata;
 
@@ -452,24 +489,38 @@ export function generateMoonData(OrbitalHeight: number, PlanetMass: number): con
     returnData.mass = calculateObjectMass(returnData.radius, generatedResources);
     returnData.gravitation = (config.G * returnData.mass) / Math.pow(returnData.radius, 2);
 
-    returnData.OrbitalPeriod = 2 * Math.PI * Math.sqrt(Math.pow(OrbitalHeight, 3) / (config.G * returnData.mass));
-    returnData.OrbitalHeigth = OrbitalHeight;
+    returnData.Orbit = calculateOrbitalInformation(PlanetMass, OrbitalHeight)
 
     return returnData;
 }
 
 /**
- * Very Effective at premitivly calculating the Mass of a Planet
+ * Calculates Orbital Information.
+ */
+export function calculateOrbitalInformation(mass: number, height: number): config.OrbitalInformation {
+    let returnData = {} as config.OrbitalInformation;
+    const T = 2 * Math.PI * Math.sqrt(Math.pow(height, 3) / (config.G * mass));
+    returnData.OrbitalPeriod = T;
+    const U = 2 * Math.PI * height;
+    returnData.OrbitalLength = U;
+    returnData.OrbitalSpeed = U/T;
+    returnData.OrbitalHeight = height;
+
+    return returnData;
+}
+
+/**
+ * Very Effective at primitively calculating the Mass of a Planet very Inefficiently
  * 
  * @param radius Radius in meters
  * @param resources Array of resources
  */
 export function calculateObjectMass(radius: number, resources: { resource: res.resource, per: number }[]): number {
-    if (radius === 0 || resources.length === 0) return 0;
+    if (radius == 0 || resources.length == 0) return 0;
     const totalPer = resources.reduce((sum, r) => sum + r.per, 0);
     const avgDensity = resources.reduce((sum, r) => sum + r.resource.density * (r.per / totalPer), 0);
     const volume = (4 / 3) * Math.PI * Math.pow(radius, 3);
-    return volume * avgDensity;
+    return volume * avgDensity || 0;
 }
 
 galaxyObjectGenerator();
@@ -488,22 +539,22 @@ while (objects.length < config.count) {
 }
 console.log(`\u001b[1A\u001b[2K` + `Objects Generated in ${Date.now() - generateStartTime}ms`)
 
-let range: config.range = { min: new Vector2(), max: new Vector2(), array: [], spaceObjectTypes: {} }
+let range: config.range = { min: new Vector2(), max: new Vector2(), array: [], spaceObjectAmount: 0, spaceObjectTypes: {} }
 
-const galaxyJsonPath = path.join("galaxyLists", time.toString(), "galaxy.json.gz");
-const rangeJsonPath = path.join("galaxyLists", time.toString(), "range.json");
+const galaxyJsonPath = `./galaxyLists/${time}/galaxy.json.gz`;
+const rangeJsonPath = `./galaxyLists/${time}/galaxyInformation.json`;
 
-// Prepare galaxy data for saving (not an array, just the files map as an object)
 const galaxyData = Object.fromEntries(files);
 
-// Compress and write galaxy.json.gz
-const compressedGalaxy = zipSync({ "galaxy.json": strToU8(JSON.stringify(galaxyData)) });
+const compressedGalaxy = gzipSync(strToU8(JSON.stringify(galaxyData)));
 fs.writeFileSync(galaxyJsonPath, compressedGalaxy);
 
 files.forEach((e_i, i) => {
     range.array.push(e_i.name);
 
     e_i.objects.forEach((e_j, j) => {
+        range.spaceObjectAmount++;
+
         if (e_j.metadata.objectType == undefined) {
             throw new Error(JSON.stringify(e_j, null, 4));
         }
@@ -511,10 +562,25 @@ files.forEach((e_i, i) => {
             range.spaceObjectTypes[e_j.metadata.objectType] = { objectType: e_j.metadata.objectType, amount: 1 };
         }
         else { range.spaceObjectTypes[e_j.metadata.objectType].amount++; }
+
+        if (e_i.position.x < range.min.x) range.min.x = e_i.position.x;
+        if (e_i.position.y < range.min.y) range.min.y = e_i.position.y;
+        if (e_i.position.x > range.max.x) range.max.x = e_i.position.x;
+        if (e_i.position.y > range.max.y) range.max.y = e_i.position.y;
     })
 })
 
-// Save range.json separately
-fs.writeFileSync(rangeJsonPath, JSON.stringify(range));
+let galaxyInformation = {} as config.galaxyInformation;
+
+galaxyInformation.seed = config.seed;
+galaxyInformation.name = generateName();
+galaxyInformation.range = range;
+
+fs.writeFileSync(rangeJsonPath, JSON.stringify(galaxyInformation));
+
+fs.writeFileSync("./temp_object_dev.json", JSON.stringify(galaxyData["0_0"].objects[1], null, 4))
+console.log(`Written temp_object_dev.json at ${Date.now() - time}ms`);
+fs.writeFileSync("./temp_object_dev_nf.json", JSON.stringify(galaxyData["0_0"].objects[1]))
+console.log(`Written temp_object_dev_nf.json at ${Date.now() - time}ms`);
 
 console.log(`Galaxy Generated in ${Date.now() - time}ms`);

@@ -22,6 +22,8 @@ export declare class Vector2 {
     getDistance(other: Vector2): number;
     /**Number of digits after the decimal point */
     toFixed(fractionDigits?: number): Vector2;
+    round(): Vector2;
+    floor(): Vector2;
     /**
      * Compares 2 Vectors and tell you what Position is smaller, same or bigger
      * `false`: smaller

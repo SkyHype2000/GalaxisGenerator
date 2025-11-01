@@ -1,5 +1,5 @@
 {
-    "id": "1762003182841",
+    "id": "1762033138542",
     "position": {
         "x": 303,
         "y": 334
@@ -15,9 +15,9 @@
                     "mass": 2.013181372119414,
                     "spectral": {
                         "name": "Blau-Weißer HRS",
-                        "class": "A-7",
-                        "subclass": "A-727",
-                        "lum": 8.193900231409509e+21
+                        "class": "A",
+                        "subclass": "A-7",
+                        "lum": 8.193900231409511e+27
                     },
                     "planets": [
                         {
@@ -27,10 +27,10 @@
                             "mass": 0,
                             "gravitation": 0,
                             "Orbit": {
-                                "OrbitalPeriod": 6.38223575977454e-10,
-                                "OrbitalLength": 8.809933804143023,
-                                "OrbitalSpeed": 13803836360.401459,
-                                "OrbitalHeight": 1.4021445132417478
+                                "OrbitalPeriod": 106678136.13088259,
+                                "OrbitalLength": 2673258948930.6895,
+                                "OrbitalSpeed": 25059.108134874878,
+                                "OrbitalHeight": 425462375886.96387
                             },
                             "moons": [
                                 {
@@ -41,9 +41,9 @@
                                     "gravitation": 0,
                                     "Orbit": {
                                         "OrbitalPeriod": null,
-                                        "OrbitalLength": 120712.2344524485,
+                                        "OrbitalLength": 94465089888.34296,
                                         "OrbitalSpeed": 0,
-                                        "OrbitalHeight": 19211.94880477497
+                                        "OrbitalHeight": 15034586005.35
                                     }
                                 }
                             ]
@@ -55,10 +55,10 @@
                             "mass": 0,
                             "gravitation": 0,
                             "Orbit": {
-                                "OrbitalPeriod": null,
-                                "OrbitalLength": null,
-                                "OrbitalSpeed": null,
-                                "OrbitalHeight": null
+                                "OrbitalPeriod": 120279170.90932593,
+                                "OrbitalLength": 2895905375874.32,
+                                "OrbitalSpeed": 24076.53256986147,
+                                "OrbitalHeight": 460897655296.7912
                             },
                             "moons": []
                         },
@@ -69,10 +69,10 @@
                             "mass": 0,
                             "gravitation": 0,
                             "Orbit": {
-                                "OrbitalPeriod": null,
-                                "OrbitalLength": null,
-                                "OrbitalSpeed": null,
-                                "OrbitalHeight": null
+                                "OrbitalPeriod": 161970026.9858274,
+                                "OrbitalLength": 3531402224681.129,
+                                "OrbitalSpeed": 21802.813090783344,
+                                "OrbitalHeight": 562040120103.7177
                             },
                             "moons": [
                                 {
@@ -83,9 +83,9 @@
                                     "gravitation": 0,
                                     "Orbit": {
                                         "OrbitalPeriod": null,
-                                        "OrbitalLength": null,
-                                        "OrbitalSpeed": null,
-                                        "OrbitalHeight": null
+                                        "OrbitalLength": 94465089888.34296,
+                                        "OrbitalSpeed": 0,
+                                        "OrbitalHeight": 15034586005.35
                                     }
                                 }
                             ]
@@ -97,10 +97,10 @@
                             "mass": 0,
                             "gravitation": 0,
                             "Orbit": {
-                                "OrbitalPeriod": null,
-                                "OrbitalLength": null,
-                                "OrbitalSpeed": null,
-                                "OrbitalHeight": null
+                                "OrbitalPeriod": 209743675.324102,
+                                "OrbitalLength": 4195496203851.5054,
+                                "OrbitalSpeed": 20002.96884932765,
+                                "OrbitalHeight": 667733959566.2493
                             },
                             "moons": [
                                 {
@@ -111,9 +111,9 @@
                                     "gravitation": 0,
                                     "Orbit": {
                                         "OrbitalPeriod": null,
-                                        "OrbitalLength": null,
-                                        "OrbitalSpeed": null,
-                                        "OrbitalHeight": null
+                                        "OrbitalLength": 94465089888.34296,
+                                        "OrbitalSpeed": 0,
+                                        "OrbitalHeight": 15034586005.35
                                     }
                                 },
                                 {
@@ -124,9 +124,9 @@
                                     "gravitation": 0,
                                     "Orbit": {
                                         "OrbitalPeriod": null,
-                                        "OrbitalLength": null,
-                                        "OrbitalSpeed": null,
-                                        "OrbitalHeight": null
+                                        "OrbitalLength": 94935065459.92674,
+                                        "OrbitalSpeed": 0,
+                                        "OrbitalHeight": 15109384940.7
                                     }
                                 }
                             ]
@@ -138,10 +138,10 @@
                             "mass": 0,
                             "gravitation": 0,
                             "Orbit": {
-                                "OrbitalPeriod": null,
-                                "OrbitalLength": null,
-                                "OrbitalSpeed": null,
-                                "OrbitalHeight": null
+                                "OrbitalPeriod": 316077707.33505785,
+                                "OrbitalLength": 5514675905343.429,
+                                "OrbitalSpeed": 17447.21559719997,
+                                "OrbitalHeight": 877687929885.1798
                             },
                             "moons": [
                                 {
@@ -152,9 +152,9 @@
                                     "gravitation": 0,
                                     "Orbit": {
                                         "OrbitalPeriod": null,
-                                        "OrbitalLength": 68259.97163804769,
+                                        "OrbitalLength": 94465089888.34296,
                                         "OrbitalSpeed": 0,
-                                        "OrbitalHeight": 10863.91190150787
+                                        "OrbitalHeight": 15034586005.35
                                     }
                                 },
                                 {
@@ -165,9 +165,9 @@
                                     "gravitation": 0,
                                     "Orbit": {
                                         "OrbitalPeriod": null,
-                                        "OrbitalLength": null,
-                                        "OrbitalSpeed": null,
-                                        "OrbitalHeight": null
+                                        "OrbitalLength": 94935065459.92674,
+                                        "OrbitalSpeed": 0,
+                                        "OrbitalHeight": 15109384940.7
                                     }
                                 }
                             ]
@@ -179,10 +179,10 @@
                             "mass": 0,
                             "gravitation": 0,
                             "Orbit": {
-                                "OrbitalPeriod": null,
-                                "OrbitalLength": null,
-                                "OrbitalSpeed": null,
-                                "OrbitalHeight": null
+                                "OrbitalPeriod": 446083081.08775526,
+                                "OrbitalLength": 6938537147314.968,
+                                "OrbitalSpeed": 15554.36070427874,
+                                "OrbitalHeight": 1104302484821.9155
                             },
                             "moons": [
                                 {
@@ -193,9 +193,9 @@
                                     "gravitation": 0,
                                     "Orbit": {
                                         "OrbitalPeriod": null,
-                                        "OrbitalLength": null,
-                                        "OrbitalSpeed": null,
-                                        "OrbitalHeight": null
+                                        "OrbitalLength": 94465089888.34296,
+                                        "OrbitalSpeed": 0,
+                                        "OrbitalHeight": 15034586005.35
                                     }
                                 },
                                 {
@@ -206,9 +206,9 @@
                                     "gravitation": 0,
                                     "Orbit": {
                                         "OrbitalPeriod": null,
-                                        "OrbitalLength": null,
-                                        "OrbitalSpeed": null,
-                                        "OrbitalHeight": null
+                                        "OrbitalLength": 94935065459.92674,
+                                        "OrbitalSpeed": 0,
+                                        "OrbitalHeight": 15109384940.7
                                     }
                                 }
                             ]
@@ -220,10 +220,10 @@
                             "mass": 0,
                             "gravitation": 0,
                             "Orbit": {
-                                "OrbitalPeriod": null,
-                                "OrbitalLength": null,
-                                "OrbitalSpeed": null,
-                                "OrbitalHeight": null
+                                "OrbitalPeriod": 527248471.6170727,
+                                "OrbitalLength": 7756532851781.389,
+                                "OrbitalSpeed": 14711.34250610927,
+                                "OrbitalHeight": 1234490544615.6836
                             },
                             "moons": [
                                 {
@@ -234,15 +234,15 @@
                                     "gravitation": 0,
                                     "Orbit": {
                                         "OrbitalPeriod": null,
-                                        "OrbitalLength": null,
-                                        "OrbitalSpeed": null,
-                                        "OrbitalHeight": null
+                                        "OrbitalLength": 94465089888.34296,
+                                        "OrbitalSpeed": 0,
+                                        "OrbitalHeight": 15034586005.35
                                     }
                                 }
                             ]
                         }
                     ],
-                    "radius": 1218790.086626627,
+                    "radius": 1218790086.6266272,
                     "temperature": 9380
                 }
             }

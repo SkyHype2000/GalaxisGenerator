@@ -76,6 +76,12 @@ class Vector2 {
         const y = new decimal_js_1.Decimal(this.y).toDecimalPlaces(fractionDigits).toNumber();
         return new Vector2(x, y);
     }
+    round() {
+        return new Vector2(Math.round(this.x), Math.round(this.y));
+    }
+    floor() {
+        return new Vector2(Math.floor(this.x), Math.floor(this.y));
+    }
     /**
      * Compares 2 Vectors and tell you what Position is smaller, same or bigger
      * `false`: smaller

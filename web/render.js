@@ -1,4 +1,4 @@
-import {gunzipSync} from 'https://cdn.skypack.dev/fflate@0.8.2?min';
+import { gunzipSync } from 'https://cdn.skypack.dev/fflate@0.8.2?min';
 
 const MAX_OBJECT_SIZE = 3;
 const MIN_OBJECT_SIZE = 3;
@@ -55,635 +55,641 @@ const currentZoom = document.getElementById('currentZoom');
 currentZoom.innerText = zoom.toFixed(2);
 
 fetch("galaxy.json.gz")
-  .then(res => res.arrayBuffer())
-  .then(buf => {
-    const json = new TextDecoder().decode(gunzipSync(new Uint8Array(buf)));
-    const data = JSON.parse(json);
-    nameShowDistance.addEventListener('change', () => {
-        NAME_VANISH_DISTANCE = nameShowDistance.value;
-        draw();
-    });
-
-    showNames.addEventListener('change', () => {
-        SHOW_NAMES = showNames.checked;
-        if (showNames.checked == true) { nameShowDistance.disabled = false }
-        else { nameShowDistance.disabled = true }
-        draw();
-    })
-
-    showDistanceLines.addEventListener('change', () => {
-        SHOW_LINE_DISTANCE = showDistanceLines.checked;
-        if (showDistanceLines.checked == true) maxDistanceLines.disabled = false;
-        else maxDistanceLines.disabled = true;
-        draw();
-    })
-
-    maxDistanceLines.addEventListener('change', () => {
-        OBJECT_DISTANCE_VISUALIZATION_LIMIT = Math.round(maxDistanceLines.value);
-        draw();
-    })
-
-    clickToSelect.addEventListener('change', () => {
-        CLICK_TO_SELECT = clickToSelect.checked;
-        draw();
-    })
-
-    uniformStarColor.addEventListener('change', () => {
-        UNIFORM_STAR_COLOR = uniformStarColor.checked;
-        draw();
-    })
-
-    detailResourceNames.addEventListener('change', () => {
-        DETAILED_RESOURCE_NAMES = detailResourceNames.checked;
-        draw();
-    })
-
-    let object_count = {
-        star: 0,
-        interstellar_t1_astroid: 0,
-        interstellar_t2_astroid: 0,
-        interstellar_t3_astroid: 0,
-        rogue_planet: 0,
-        anomaly: 0,
-        blackHole: 0,
-        mainBlackHole: 0
-    }
-
-    for (let i = 0; i < data.length; i++) {
-        const element = data[i];
-
-        switch (element.type) {
-            case 'star': object_count.star++; continue;
-            case 'interstellar_t1_astroid': object_count.interstellar_t1_astroid++; continue;
-            case 'interstellar_t2_astroid': object_count.interstellar_t2_astroid++; continue;
-            case 'interstellar_t3_astroid': object_count.interstellar_t3_astroid++; continue;
-            case 'rogue_planet': object_count.rogue_planet++; continue;
-            case 'anomaly': object_count.anomaly++; continue;
-            case 'blackHole': object_count.blackHole++; continue;
-            case 'mainBlackHole': object_count.mainBlackHole++; continue;
-        }
-    }
-
-    const spectralClassMap = {
-        O: 'o_star_count',
-        B: 'b_star_count',
-        A: 'a_star_count',
-        F: 'f_star_count',
-        G: 'g_star_count',
-        K: 'k_star_count',
-        M: 'm_star_count',
-        L: 'l_star_count',
-        T: 't_star_count',
-        Y: 'y_star_count'
-    };
-    const spectralClassCounts = {
-        O: 0, B: 0, A: 0, F: 0, G: 0, K: 0, M: 0, L: 0, T: 0, Y: 0
-    };
-
-    data.forEach(obj => {
-        if (
-            obj.type === "star" &&
-            obj.metadata &&
-            obj.metadata.starSpectral
-        ) {
-            const h = obj.metadata.starSpectral.h;
-            if (spectralClassCounts.hasOwnProperty(h)) {
-                spectralClassCounts[h]++;
-            }
-        }
-    });
-
-    Object.entries(spectralClassMap).forEach(([klass, elemId]) => {
-        const elem = document.getElementById(elemId);
-        if (elem) {
-            elem.innerText = `(${spectralClassCounts[klass]})`;
-        }
-    });
-
-    const star_count = document.getElementById('star_count');
-    star_count.innerText = `(${object_count.star})`;
-    const t1_astroid_count = document.getElementById('interstellar_t1_astroid_count');
-    t1_astroid_count.innerText = `(${object_count.interstellar_t1_astroid})`;
-    const t2_astroid_count = document.getElementById('interstellar_t2_astroid_count');
-    t2_astroid_count.innerText = `(${object_count.interstellar_t2_astroid})`;
-    const t3_astroid_count = document.getElementById('interstellar_t3_astroid_count');
-    t3_astroid_count.innerText = `(${object_count.interstellar_t3_astroid})`;
-    const rogue_planet_count = document.getElementById('rogue_planet_count');
-    rogue_planet_count.innerText = `(${object_count.rogue_planet})`;
-    const anomaly_count = document.getElementById('anomaly_count');
-    anomaly_count.innerText = `(${object_count.anomaly})`;
-    const blackHole_count = document.getElementById('blackHole_count');
-    blackHole_count.innerText = `(${object_count.blackHole})`;
-    const mainBlackHole_count = document.getElementById('mainBlackHole_count');
-    mainBlackHole_count.innerText = `(${object_count.mainBlackHole})`;
-
-    console.log("Objekte: " + data.length.toString());
-
-    console.log(JSON.stringify(object_count, "\n", 2));
-
-    legendDivs.forEach(div => {
-        div.addEventListener('mouseenter', () => {
-            const spectralClass = div.getAttribute('data-spectral-class');
-            if (spectralClass) {
-                hoveredType = null;
-                hoveredSpectralClass = spectralClass;
-            } else {
-                const id = div.id;
-                if (id.startsWith("legend.")) {
-                    hoveredType = id.split(".")[1];
-                    hoveredSpectralClass = null;
-                } else {
-                    hoveredType = null;
-                    hoveredSpectralClass = null;
-                }
-            }
+    .then(res => res.arrayBuffer())
+    .then(buf => {
+        const json = new TextDecoder().decode(gunzipSync(new Uint8Array(buf)));
+        const data = JSON.parse(json);
+        nameShowDistance.addEventListener('change', () => {
+            NAME_VANISH_DISTANCE = nameShowDistance.value;
             draw();
         });
 
-        div.addEventListener('mouseleave', () => {
-            hoveredType = null;
-            hoveredSpectralClass = null;
+        showNames.addEventListener('change', () => {
+            SHOW_NAMES = showNames.checked;
+            if (showNames.checked == true) { nameShowDistance.disabled = false }
+            else { nameShowDistance.disabled = true }
             draw();
-        });
-    });
+        })
 
-    function dist(a, b) {
-        return Math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2);
-    }
-
-    function createLegend() {
-        legend.innerHTML = '';
-        const types = [...new Set(data.map(o => o.type))];
-        types.forEach(type => {
-            const div = document.createElement('div');
-            div.style.cursor = 'default'; // Kein Pointer auf dem ganzen Div
-
-            // Dot als farbiger Kreis
-            const dot = document.createElement('span');
-            dot.className = 'dot';
-            dot.style.width = '12px';
-            dot.style.height = '12px';
-            dot.style.borderRadius = '50%';
-            dot.style.marginRight = '6px';
-            dot.style.backgroundColor = (() => {
-                switch (type) {
-                    case 'star': return 'yellow';
-                    case 'interstellar_t1_astroid': return 'lightgray';
-                    case 'interstellar_t2_astroid': return 'gray';
-                    case 'interstellar_t3_astroid': return 'darkgreen';
-                    case 'rogue_planet': return 'blue';
-                    case 'anomaly': return 'magenta';
-                    case 'blackHole': return 'pink';
-                    case 'mainBlackHole': return 'magenta';
-                    default: return 'white';
-                }
-            })();
-
-            div.appendChild(dot);
-
-            // Nur das Label ist hoverbar!
-            const label = document.createElement('span');
-            label.className = 'legend-label';
-            label.style.cursor = 'pointer';
-            label.innerText = type.charAt(0).toUpperCase() + type.slice(1);
-            div.appendChild(label);
-
-            label.addEventListener('mouseenter', () => {
-                hoveredType = type;
-                label.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
-                draw();
-            });
-            label.addEventListener('mouseleave', () => {
-                hoveredType = null;
-                label.style.backgroundColor = '';
-                draw();
-            });
-
-            legend.appendChild(div);
-        });
-
-        // Sternklassen-Legende
-        const spectralClasses = [
-            { key: 'O', color: '#9bb0ff' },
-            { key: 'B', color: '#aabfff' },
-            { key: 'A', color: '#cad7ff' },
-            { key: 'F', color: '#f8f7ff' },
-            { key: 'G', color: '#fff4ea' },
-            { key: 'K', color: '#ffd2a1' },
-            { key: 'M', color: '#ffcc6f' },
-            { key: 'L', color: '#ff9900' },
-            { key: 'T', color: '#cc6600' },
-            { key: 'Y', color: '#660066' }
-        ];
-        spectralClasses.forEach(cls => {
-            const div = document.createElement('div');
-            div.id = `legend.${cls.key}`;
-            div.setAttribute('data-spectral-class', cls.key);
-            div.style.cursor = 'default';
-
-            const dot = document.createElement('span');
-            dot.className = 'dot';
-            dot.style.width = '12px';
-            dot.style.height = '12px';
-            dot.style.borderRadius = '50%';
-            dot.style.marginRight = '6px';
-            dot.style.backgroundColor = cls.color;
-
-            div.appendChild(dot);
-
-            const label = document.createElement('span');
-            label.className = 'legend-label';
-            label.style.cursor = 'pointer';
-            label.innerText = cls.key + "-Stern";
-            div.appendChild(label);
-
-            // Counter
-            const countSpan = document.createElement('span');
-            countSpan.id = `${cls.key.toLowerCase()}_star_count`;
-            countSpan.style.marginLeft = '6px';
-            div.appendChild(countSpan);
-
-            label.addEventListener('mouseenter', () => {
-                hoveredType = null;
-                hoveredSpectralClass = cls.key;
-                label.style.backgroundColor = 'rgba(255,255,255,0.1)';
-                draw();
-            });
-            label.addEventListener('mouseleave', () => {
-                hoveredSpectralClass = null;
-                label.style.backgroundColor = '';
-                draw();
-            });
-
-            legend.appendChild(div);
-        });
-    }
-
-    function resize() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        offsetX = canvas.width / 2;
-        offsetY = canvas.height / 2;
-        draw();
-    }
-
-    canvas.addEventListener("mousedown", e => {
-        isDragging = true;
-        dragStartX = e.clientX - offsetX;
-        dragStartY = e.clientY - offsetY;
-    });
-
-    canvas.addEventListener("mousemove", e => {
-        if (isDragging) {
-            offsetX = e.clientX - dragStartX;
-            offsetY = e.clientY - dragStartY;
+        showDistanceLines.addEventListener('change', () => {
+            SHOW_LINE_DISTANCE = showDistanceLines.checked;
+            if (showDistanceLines.checked == true) maxDistanceLines.disabled = false;
+            else maxDistanceLines.disabled = true;
             draw();
-        } else if (!CLICK_TO_SELECT || !selectedObject) {
-            const mouseX = e.clientX;
-            const mouseY = e.clientY;
-            let found = null;
+        })
 
-            for (const obj of data) {
-                const x = obj.x * zoom + offsetX;
-                const y = obj.y * zoom + offsetY;
-                const baseSize = 6;
-                let scaleFactor = 1;
-                if (hoveredType) scaleFactor = (obj.type === hoveredType) ? 2 : 1;
-                if (hoveredObject && obj === hoveredObject) scaleFactor = 3;
-                const size = Math.max(Math.min(baseSize * scaleFactor, MAX_OBJECT_SIZE), MAX_OBJECT_SIZE);
-                const hitRadius = Math.max(MAX_OBJECT_SIZE + (zoom * 1), size);
+        maxDistanceLines.addEventListener('change', () => {
+            OBJECT_DISTANCE_VISUALIZATION_LIMIT = Math.round(maxDistanceLines.value);
+            draw();
+        })
 
-                if (Math.abs(x - mouseX) < hitRadius && Math.abs(y - mouseY) < hitRadius) {
-                    found = obj;
-                    break;
-                }
-            }
+        clickToSelect.addEventListener('change', () => {
+            CLICK_TO_SELECT = clickToSelect.checked;
+            draw();
+        })
 
-            if (found !== hoveredObject) {
-                hoveredObject = found;
-                if (!CLICK_TO_SELECT) selectedObject = null;
-                updateInfoPanel(hoveredObject || selectedObject);
-                draw();
+        uniformStarColor.addEventListener('change', () => {
+            UNIFORM_STAR_COLOR = uniformStarColor.checked;
+            draw();
+        })
+
+        detailResourceNames.addEventListener('change', () => {
+            DETAILED_RESOURCE_NAMES = detailResourceNames.checked;
+            draw();
+        })
+
+        let object_count = {
+            star: 0,
+            interstellar_t1_astroid: 0,
+            interstellar_t2_astroid: 0,
+            interstellar_t3_astroid: 0,
+            rogue_planet: 0,
+            anomaly: 0,
+            blackHole: 0,
+            mainBlackHole: 0
+        }
+
+        for (let i = 0; i < data.length; i++) {
+            const element = data[i];
+
+            switch (element.type) {
+                case 'star': object_count.star++; continue;
+                case 'interstellar_t1_astroid': object_count.interstellar_t1_astroid++; continue;
+                case 'interstellar_t2_astroid': object_count.interstellar_t2_astroid++; continue;
+                case 'interstellar_t3_astroid': object_count.interstellar_t3_astroid++; continue;
+                case 'rogue_planet': object_count.rogue_planet++; continue;
+                case 'anomaly': object_count.anomaly++; continue;
+                case 'blackHole': object_count.blackHole++; continue;
+                case 'mainBlackHole': object_count.mainBlackHole++; continue;
             }
         }
-    });
 
-    canvas.addEventListener("mouseup", e => {
-        isDragging = false;
-        if (CLICK_TO_SELECT) {
-            const mouseX = e.clientX;
-            const mouseY = e.clientY;
-            let found = null;
-
-            for (const obj of data) {
-                const x = obj.x * zoom + offsetX;
-                const y = obj.y * zoom + offsetY;
-                const baseSize = 6;
-                let scaleFactor = 1;
-                if (hoveredType) scaleFactor = (obj.type === hoveredType) ? 2 : 1;
-                if (hoveredObject && obj === hoveredObject) scaleFactor = 3;
-                const size = Math.max(Math.min(baseSize * scaleFactor, MAX_OBJECT_SIZE), MAX_OBJECT_SIZE);
-                const hitRadius = Math.max(MAX_OBJECT_SIZE + (zoom * 1), size);
-
-                if (Math.abs(x - mouseX) < hitRadius && Math.abs(y - mouseY) < hitRadius) {
-                    found = obj;
-                    break;
-                }
-            }
-
-            selectedObject = found;
-            hoveredObject = found;
-            updateInfoPanel(selectedObject || hoveredObject);
-            draw();
-        }
-    });
-
-    canvas.addEventListener("mouseup", () => isDragging = false);
-    canvas.addEventListener("mouseleave", () => {
-        isDragging = false;
-        if (!CLICK_TO_SELECT) hoveredObject = null;
-        updateInfoPanel(selectedObject || hoveredObject);
-        draw();
-    });
-
-    canvas.addEventListener("wheel", e => {
-        e.preventDefault();
-
-        if (e.ctrlKey) {
-            const zoomIntensity = 0.1;
-            const mouseX = e.offsetX;
-            const mouseY = e.offsetY;
-            const zoomDirection = e.deltaY > 0 ? -1 : 1;
-            const scale = 1 + zoomDirection * zoomIntensity;
-
-            const worldX = (mouseX - offsetX) / zoom;
-            const worldY = (mouseY - offsetY) / zoom;
-
-            zoom *= scale;
-            if (zoom < MAX_ZOOM_DISTANCE) zoom = MAX_ZOOM_DISTANCE;
-            if (zoom > MIN_ZOOM_DISTANCE) zoom = MIN_ZOOM_DISTANCE;
-
-            offsetX = mouseX - worldX * zoom;
-            offsetY = mouseY - worldY * zoom;
-
-            currentZoom.innerText = zoom.toFixed(2);
-            draw();
-            return;
-        }
-
-        // Horizontal SCrollen
-        if (e.shiftKey) {
-            offsetX -= e.deltaY * 0.5; // Faktor
-            draw();
-            return;
-        }
-
-        // Vertikal scrolleN
-        offsetY -= e.deltaY * 0.5; // Faktor
-        draw();
-    });
-
-    function draw() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const spectralClassMap = {
+            O: 'o_star_count',
+            B: 'b_star_count',
+            A: 'a_star_count',
+            F: 'f_star_count',
+            G: 'g_star_count',
+            K: 'k_star_count',
+            M: 'm_star_count',
+            L: 'l_star_count',
+            T: 't_star_count',
+            Y: 'y_star_count'
+        };
+        const spectralClassCounts = {
+            O: 0, B: 0, A: 0, F: 0, G: 0, K: 0, M: 0, L: 0, T: 0, Y: 0
+        };
 
         data.forEach(obj => {
-            const x = obj.x * zoom + offsetX;
-            const y = obj.y * zoom + offsetY;
+            if (
+                obj.type === "star" &&
+                obj.metadata &&
+                obj.metadata.starSpectral
+            ) {
+                const h = obj.metadata.starSpectral.h;
+                if (spectralClassCounts.hasOwnProperty(h)) {
+                    spectralClassCounts[h]++;
+                }
+            }
+        });
 
-            if (x < -50 || x > canvas.width + 50 || y < -50 || y > canvas.height + 50)
+        Object.entries(spectralClassMap).forEach(([klass, elemId]) => {
+            const elem = document.getElementById(elemId);
+            if (elem) {
+                elem.innerText = `(${spectralClassCounts[klass]})`;
+            }
+        });
+
+        const star_count = document.getElementById('star_count');
+        star_count.innerText = `(${object_count.star})`;
+        const t1_astroid_count = document.getElementById('interstellar_t1_astroid_count');
+        t1_astroid_count.innerText = `(${object_count.interstellar_t1_astroid})`;
+        const t2_astroid_count = document.getElementById('interstellar_t2_astroid_count');
+        t2_astroid_count.innerText = `(${object_count.interstellar_t2_astroid})`;
+        const t3_astroid_count = document.getElementById('interstellar_t3_astroid_count');
+        t3_astroid_count.innerText = `(${object_count.interstellar_t3_astroid})`;
+        const rogue_planet_count = document.getElementById('rogue_planet_count');
+        rogue_planet_count.innerText = `(${object_count.rogue_planet})`;
+        const anomaly_count = document.getElementById('anomaly_count');
+        anomaly_count.innerText = `(${object_count.anomaly})`;
+        const blackHole_count = document.getElementById('blackHole_count');
+        blackHole_count.innerText = `(${object_count.blackHole})`;
+        const mainBlackHole_count = document.getElementById('mainBlackHole_count');
+        mainBlackHole_count.innerText = `(${object_count.mainBlackHole})`;
+
+        console.log("Objekte: " + data.length.toString());
+
+        console.log(JSON.stringify(object_count, "\n", 2));
+
+        legendDivs.forEach(div => {
+            div.addEventListener('mouseenter', () => {
+                const spectralClass = div.getAttribute('data-spectral-class');
+                if (spectralClass) {
+                    hoveredType = null;
+                    hoveredSpectralClass = spectralClass;
+                } else {
+                    const id = div.id;
+                    if (id.startsWith("legend.")) {
+                        hoveredType = id.split(".")[1];
+                        hoveredSpectralClass = null;
+                    } else {
+                        hoveredType = null;
+                        hoveredSpectralClass = null;
+                    }
+                }
+                draw();
+            });
+
+            div.addEventListener('mouseleave', () => {
+                hoveredType = null;
+                hoveredSpectralClass = null;
+                draw();
+            });
+        });
+
+        function dist(a, b) {
+            return Math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2);
+        }
+
+        function createLegend() {
+            legend.innerHTML = '';
+            const types = [...new Set(data.map(o => o.type))];
+            types.forEach(type => {
+                const div = document.createElement('div');
+                div.style.cursor = 'default'; // Kein Pointer auf dem ganzen Div
+
+                // Dot als farbiger Kreis
+                const dot = document.createElement('span');
+                dot.className = 'dot';
+                dot.style.width = '12px';
+                dot.style.height = '12px';
+                dot.style.borderRadius = '50%';
+                dot.style.marginRight = '6px';
+                dot.style.backgroundColor = (() => {
+                    switch (type) {
+                        case 'star': return 'yellow';
+                        case 'interstellar_t1_astroid': return 'lightgray';
+                        case 'interstellar_t2_astroid': return 'gray';
+                        case 'interstellar_t3_astroid': return 'darkgreen';
+                        case 'rogue_planet': return 'blue';
+                        case 'anomaly': return 'magenta';
+                        case 'blackHole': return 'pink';
+                        case 'mainBlackHole': return 'magenta';
+                        default: return 'white';
+                    }
+                })();
+
+                div.appendChild(dot);
+
+                // Nur das Label ist hoverbar!
+                const label = document.createElement('span');
+                label.className = 'legend-label';
+                label.style.cursor = 'pointer';
+                label.innerText = type.charAt(0).toUpperCase() + type.slice(1);
+                div.appendChild(label);
+
+                label.addEventListener('mouseenter', () => {
+                    hoveredType = type;
+                    label.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                    draw();
+                });
+                label.addEventListener('mouseleave', () => {
+                    hoveredType = null;
+                    label.style.backgroundColor = '';
+                    draw();
+                });
+
+                legend.appendChild(div);
+            });
+
+            // Sternklassen-Legende
+            const spectralClasses = [
+                { key: 'O', color: '#9bb0ff' },
+                { key: 'B', color: '#aabfff' },
+                { key: 'A', color: '#cad7ff' },
+                { key: 'F', color: '#f8f7ff' },
+                { key: 'G', color: '#fff4ea' },
+                { key: 'K', color: '#ffd2a1' },
+                { key: 'M', color: '#ffcc6f' },
+                { key: 'L', color: '#ff9900' },
+                { key: 'T', color: '#cc6600' },
+                { key: 'Y', color: '#660066' }
+            ];
+            spectralClasses.forEach(cls => {
+                const div = document.createElement('div');
+                div.id = `legend.${cls.key}`;
+                div.setAttribute('data-spectral-class', cls.key);
+                div.style.cursor = 'default';
+
+                const dot = document.createElement('span');
+                dot.className = 'dot';
+                dot.style.width = '12px';
+                dot.style.height = '12px';
+                dot.style.borderRadius = '50%';
+                dot.style.marginRight = '6px';
+                dot.style.backgroundColor = cls.color;
+
+                div.appendChild(dot);
+
+                const label = document.createElement('span');
+                label.className = 'legend-label';
+                label.style.cursor = 'pointer';
+                label.innerText = cls.key + "-Stern";
+                div.appendChild(label);
+
+                // Counter
+                const countSpan = document.createElement('span');
+                countSpan.id = `${cls.key.toLowerCase()}_star_count`;
+                countSpan.style.marginLeft = '6px';
+                div.appendChild(countSpan);
+
+                label.addEventListener('mouseenter', () => {
+                    hoveredType = null;
+                    hoveredSpectralClass = cls.key;
+                    label.style.backgroundColor = 'rgba(255,255,255,0.1)';
+                    draw();
+                });
+                label.addEventListener('mouseleave', () => {
+                    hoveredSpectralClass = null;
+                    label.style.backgroundColor = '';
+                    draw();
+                });
+
+                legend.appendChild(div);
+            });
+        }
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            offsetX = canvas.width / 2;
+            offsetY = canvas.height / 2;
+            draw();
+        }
+
+        canvas.addEventListener("mousedown", e => {
+            isDragging = true;
+            dragStartX = e.clientX - offsetX;
+            dragStartY = e.clientY - offsetY;
+        });
+
+        canvas.addEventListener("mousemove", e => {
+            if (isDragging) {
+                offsetX = e.clientX - dragStartX;
+                offsetY = e.clientY - dragStartY;
+                draw();
+            } else if (!CLICK_TO_SELECT || !selectedObject) {
+                const mouseX = e.clientX;
+                const mouseY = e.clientY;
+                let found = null;
+
+                for (const obj of data) {
+                    const x = obj.x * zoom + offsetX;
+                    const y = obj.y * zoom + offsetY;
+                    const baseSize = 6;
+                    let scaleFactor = 1;
+                    if (hoveredType) scaleFactor = (obj.type === hoveredType) ? 2 : 1;
+                    if (hoveredObject && obj === hoveredObject) scaleFactor = 3;
+                    const size = Math.max(Math.min(baseSize * scaleFactor, MAX_OBJECT_SIZE), MAX_OBJECT_SIZE);
+                    const hitRadius = Math.max(MAX_OBJECT_SIZE + (zoom * 1), size);
+
+                    if (Math.abs(x - mouseX) < hitRadius && Math.abs(y - mouseY) < hitRadius) {
+                        found = obj;
+                        break;
+                    }
+                }
+
+                if (found !== hoveredObject) {
+                    hoveredObject = found;
+                    if (!CLICK_TO_SELECT) selectedObject = null;
+                    updateInfoPanel(hoveredObject || selectedObject);
+                    draw();
+                }
+            }
+        });
+
+        canvas.addEventListener("mouseup", e => {
+            isDragging = false;
+            if (CLICK_TO_SELECT) {
+                const mouseX = e.clientX;
+                const mouseY = e.clientY;
+                let found = null;
+
+                for (const obj of data) {
+                    const x = obj.x * zoom + offsetX;
+                    const y = obj.y * zoom + offsetY;
+                    const baseSize = 6;
+                    let scaleFactor = 1;
+                    if (hoveredType) scaleFactor = (obj.type === hoveredType) ? 2 : 1;
+                    if (hoveredObject && obj === hoveredObject) scaleFactor = 3;
+                    const size = Math.max(Math.min(baseSize * scaleFactor, MAX_OBJECT_SIZE), MAX_OBJECT_SIZE);
+                    const hitRadius = Math.max(MAX_OBJECT_SIZE + (zoom * 1), size);
+
+                    if (Math.abs(x - mouseX) < hitRadius && Math.abs(y - mouseY) < hitRadius) {
+                        found = obj;
+                        break;
+                    }
+                }
+
+                selectedObject = found;
+                hoveredObject = found;
+                updateInfoPanel(selectedObject || hoveredObject);
+                draw();
+            }
+        });
+
+        canvas.addEventListener("mouseup", () => isDragging = false);
+        canvas.addEventListener("mouseleave", () => {
+            isDragging = false;
+            if (!CLICK_TO_SELECT) hoveredObject = null;
+            updateInfoPanel(selectedObject || hoveredObject);
+            draw();
+        });
+
+        canvas.addEventListener("wheel", e => {
+            e.preventDefault();
+
+            if (e.ctrlKey) {
+                const zoomIntensity = 0.1;
+                const mouseX = e.offsetX;
+                const mouseY = e.offsetY;
+                const zoomDirection = e.deltaY > 0 ? -1 : 1;
+                const scale = 1 + zoomDirection * zoomIntensity;
+
+                const worldX = (mouseX - offsetX) / zoom;
+                const worldY = (mouseY - offsetY) / zoom;
+
+                zoom *= scale;
+                if (zoom < MAX_ZOOM_DISTANCE) zoom = MAX_ZOOM_DISTANCE;
+                if (zoom > MIN_ZOOM_DISTANCE) zoom = MIN_ZOOM_DISTANCE;
+
+                offsetX = mouseX - worldX * zoom;
+                offsetY = mouseY - worldY * zoom;
+
+                currentZoom.innerText = zoom.toFixed(2);
+                draw();
                 return;
+            }
 
-            let alpha = 1;
-            let size = MIN_OBJECT_HOVER_SIZE * zoom;
+            // Horizontal SCrollen
+            if (e.shiftKey) {
+                offsetX -= e.deltaY * 0.5; // Faktor
+                draw();
+                return;
+            }
 
-            if (hoveredSpectralClass) {
-                if (obj.type === "star") {
-                    const h = obj.metadata.starSpectral.h;
-                    if (h === hoveredSpectralClass) {
+            // Vertikal scrolleN
+            offsetY -= e.deltaY * 0.5; // Faktor
+            draw();
+        });
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            data.forEach(obj => {
+                const x = obj.x * zoom + offsetX;
+                const y = obj.y * zoom + offsetY;
+
+                if (x < -50 || x > canvas.width + 50 || y < -50 || y > canvas.height + 50)
+                    return;
+
+                let alpha = 1;
+                let size = MIN_OBJECT_HOVER_SIZE * zoom;
+
+                if (hoveredSpectralClass) {
+                    if (obj.type === "star") {
+                        const h = obj.metadata.starSpectral.h;
+                        if (h === hoveredSpectralClass) {
+                            alpha = 1;
+                            size = MAX_OBJECT_HOVER_SIZE * zoom;
+                        } else {
+                            alpha = 0.15;
+                            size = MIN_OBJECT_HOVER_SIZE * zoom;
+                        }
+                    } else {
+                        alpha = 0.05;
+                        size = MIN_OBJECT_HOVER_SIZE * zoom;
+                    }
+                }
+
+                else if (hoveredType) {
+                    if (obj.type === hoveredType) {
                         alpha = 1;
                         size = MAX_OBJECT_HOVER_SIZE * zoom;
                     } else {
-                        alpha = 0.15;
+                        alpha = 0.3;
                         size = MIN_OBJECT_HOVER_SIZE * zoom;
                     }
-                } else {
-                    alpha = 0.05;
-                    size = MIN_OBJECT_HOVER_SIZE * zoom;
                 }
-            }
 
-            else if (hoveredType) {
-                if (obj.type === hoveredType) {
+                if (hoveredObject && obj === hoveredObject) {
                     alpha = 1;
-                    size = MAX_OBJECT_HOVER_SIZE * zoom;
-                } else {
-                    alpha = 0.3;
-                    size = MIN_OBJECT_HOVER_SIZE * zoom;
+                    size = MAX_OBJECT_HOVER_SIZE * 1.5 * zoom;
                 }
-            }
 
-            if (hoveredObject && obj === hoveredObject) {
-                alpha = 1;
-                size = MAX_OBJECT_HOVER_SIZE * 1.5 * zoom;
-            }
+                size = Math.max(Math.min(size, 20), 1.5);
 
-            size = Math.max(Math.min(size, 20), 1.5);
+                ctx.globalAlpha = alpha;
 
-            ctx.globalAlpha = alpha;
-
-            switch (obj.type) {
-                case 'star':
-                    ctx.fillStyle = (
-                        obj.metadata &&
-                        obj &&
-                        obj.metadata.starSpectral &&
-                        obj.metadata.starSpectral.color &&
-                        !UNIFORM_STAR_COLOR
-                    ) ? obj.metadata.starSpectral.color : 'yellow';
-                    break;
-                case 'interstellar_t1_astroid': ctx.fillStyle = 'lightgray'; break;
-                case 'interstellar_t2_astroid': ctx.fillStyle = 'gray'; break;
-                case 'interstellar_t3_astroid': ctx.fillStyle = 'darkgreen'; break;
-                case 'rogue_planet': ctx.fillStyle = 'blue'; break;
-                case 'anomaly': ctx.fillStyle = 'magenta'; break;
-                case 'blackHole': ctx.fillStyle = 'pink'; break;
-                case 'mainBlackHole': ctx.fillStyle = 'magenta'; break;
-                default: ctx.fillStyle = 'white'; break;
-            }
-
-            ctx.beginPath();
-            ctx.arc(x, y, size, 0, 2 * Math.PI);
-            ctx.fill();
-            ctx.closePath();
-
-            if (
-                SHOW_NAMES && (
-                    zoom > NAME_VANISH_DISTANCE ||
-                    (hoveredType && obj.type === hoveredType) ||
-                    (hoveredObject && obj === hoveredObject) ||
-                    (hoveredSpectralClass && obj.type === "star" && obj.metadata.starSpectral.h === hoveredSpectralClass)
-                )
-            ) {
-                ctx.fillStyle = (obj.type === 'anomaly') ? 'magenta' : 'white';
-                ctx.fillStyle = (obj.type === 'mainBlackHole') ? 'magenta' : ctx.fillStyle;
-                ctx.font = `${FONT_SIZE}px monospace`;
-                ctx.fillText(obj.name, x + size + 3, y - size - 3);
-            }
-
-            ctx.globalAlpha = 1;
-        });
-
-        if (hoveredObject && SHOW_LINE_DISTANCE) {
-            const neighbors = data
-                .filter(o => o !== hoveredObject)
-                .map(o => ({ obj: o, dist: dist(o, hoveredObject) }))
-                .sort((a, b) => a.dist - b.dist)
-                .slice(0, OBJECT_DISTANCE_VISUALIZATION_LIMIT);
-
-            ctx.strokeStyle = 'white';
-            ctx.fillStyle = 'white';
-            ctx.lineWidth = 1;
-
-            neighbors.forEach(({ obj, dist }) => {
-                const x1 = hoveredObject.x * zoom + offsetX;
-                const y1 = hoveredObject.y * zoom + offsetY;
-                const x2 = obj.x * zoom + offsetX;
-                const y2 = obj.y * zoom + offsetY;
+                switch (obj.type) {
+                    case 'star':
+                        ctx.fillStyle = (
+                            obj.metadata &&
+                            obj &&
+                            obj.metadata.starSpectral &&
+                            obj.metadata.starSpectral.color &&
+                            !UNIFORM_STAR_COLOR
+                        ) ? obj.metadata.starSpectral.color : 'yellow';
+                        break;
+                    case 'interstellar_t1_astroid': ctx.fillStyle = 'lightgray'; break;
+                    case 'interstellar_t2_astroid': ctx.fillStyle = 'gray'; break;
+                    case 'interstellar_t3_astroid': ctx.fillStyle = 'darkgreen'; break;
+                    case 'rogue_planet': ctx.fillStyle = 'blue'; break;
+                    case 'anomaly': ctx.fillStyle = 'magenta'; break;
+                    case 'blackHole': ctx.fillStyle = 'pink'; break;
+                    case 'mainBlackHole': ctx.fillStyle = 'magenta'; break;
+                    default: ctx.fillStyle = 'white'; break;
+                }
 
                 ctx.beginPath();
-                ctx.moveTo(x1, y1);
-                ctx.lineTo(x2, y2);
-                ctx.stroke();
+                ctx.arc(x, y, size, 0, 2 * Math.PI);
+                ctx.fill();
+                ctx.closePath();
 
-                const midX = (x1 + x2) / 2;
-                const midY = (y1 + y2) / 2;
-                ctx.font = '10px monospace';
-                ctx.fillText(dist.toFixed(1) + " Lj", midX + 5, midY - 5);
+                if (
+                    SHOW_NAMES && (
+                        zoom > NAME_VANISH_DISTANCE ||
+                        (hoveredType && obj.type === hoveredType) ||
+                        (hoveredObject && obj === hoveredObject) ||
+                        (hoveredSpectralClass && obj.type === "star" && obj.metadata.starSpectral.h === hoveredSpectralClass)
+                    )
+                ) {
+                    ctx.fillStyle = (obj.type === 'anomaly') ? 'magenta' : 'white';
+                    ctx.fillStyle = (obj.type === 'mainBlackHole') ? 'magenta' : ctx.fillStyle;
+                    ctx.font = `${FONT_SIZE}px monospace`;
+                    ctx.fillText(obj.name, x + size + 3, y - size - 3);
+                }
+
+                ctx.globalAlpha = 1;
             });
+
+            if (hoveredObject && SHOW_LINE_DISTANCE) {
+                const neighbors = data
+                    .filter(o => o !== hoveredObject)
+                    .map(o => ({ obj: o, dist: dist(o, hoveredObject) }))
+                    .sort((a, b) => a.dist - b.dist)
+                    .slice(0, OBJECT_DISTANCE_VISUALIZATION_LIMIT);
+
+                ctx.strokeStyle = 'white';
+                ctx.fillStyle = 'white';
+                ctx.lineWidth = 1;
+
+                neighbors.forEach(({ obj, dist }) => {
+                    const x1 = hoveredObject.x * zoom + offsetX;
+                    const y1 = hoveredObject.y * zoom + offsetY;
+                    const x2 = obj.x * zoom + offsetX;
+                    const y2 = obj.y * zoom + offsetY;
+
+                    ctx.beginPath();
+                    ctx.moveTo(x1, y1);
+                    ctx.lineTo(x2, y2);
+                    ctx.stroke();
+
+                    const midX = (x1 + x2) / 2;
+                    const midY = (y1 + y2) / 2;
+                    ctx.font = '10px monospace';
+                    ctx.fillText(dist.toFixed(1) + " Lj", midX + 5, midY - 5);
+                });
+            }
+
+            updateInfoPanel(selectedObject || hoveredObject);
         }
 
-        updateInfoPanel(selectedObject || hoveredObject);
+
+
+        resize();
+        createLegend();
+});
+
+function updateInfoPanel(obj) {
+    if (!obj) {
+        info_content.innerHTML = `<span>Hover with the Mouse over a Object...</span>`;
+        showObjectDataButton.disabled = true;
+        return;
     }
 
-    function updateInfoPanel(obj) {
-        if (!obj) {
-            info_content.innerHTML = `<span>Hover with the Mouse over a Object...</span>`;
-            showObjectDataButton.disabled = true;
-            return;
+    // Space: &nbsp;
+    // Zwischenraum-m: " " \u2001
+    // Zwischenraum-n: " " \u2002
+
+    showObjectDataButton.disabled = false;
+    showObjectDataButton.addEventListener("click", () => {
+        const jsonStr = JSON.stringify(obj, null, 2);
+        const popup = window.open("", "Object Data", "width=600,height=600,resizable,scrollbars");
+        if (popup) {
+            popup.document.body.innerHTML = `<pre style="white-space:pre-wrap;word-break:break-all;font-family:monospace;">${jsonStr}</pre>`;
+            popup.document.title = obj.name ? `Object: ${obj.name}` : "Object Data";
         }
+    })
 
-        showObjectDataButton.disabled = false;
-        showObjectDataButton.addEventListener("click", () => {
-            const jsonStr = JSON.stringify(obj, null, 2);
-            const popup = window.open("", "Object Data", "width=600,height=600,resizable,scrollbars");
-            if (popup) {
-                popup.document.body.innerHTML = `<pre style="white-space:pre-wrap;word-break:break-all;font-family:monospace;">${jsonStr}</pre>`;
-                popup.document.title = obj.name ? `Object: ${obj.name}` : "Object Data";
-            }
-        })
-        
-        if (DEV_SHOW_CONSOLE_INFORMATION) console.log(obj);
+    if (DEV_SHOW_CONSOLE_INFORMATION) console.log(obj);
 
-        let html = `<b>Name:</b> ${obj.name}<br>`;
-        html += `<b>Type:</b> ${obj.type}<br>`;
-        html += `<b>Position:</b> x=${obj.x.toFixed(2)}, y=${obj.y.toFixed(2)} (Lj)<br>`;
-        html += `<b>Distance to Center:</b> ${obj.distanceToCenter ? obj.distanceToCenter.toFixed(2) : "-"} Lj<br>`;
+    let html = `<b>Name:</b> ${obj.name}<br>`;
+    html += `<b>Type:</b> ${obj.type}<br>`;
+    html += `<b>Position:</b> x=${obj.x.toFixed(2)}, y=${obj.y.toFixed(2)} (Lj)<br>`;
+    html += `<b>Distance to Center:</b> ${obj.distanceToCenter ? obj.distanceToCenter.toFixed(2) : "-"} Lj<br>`;
 
-        if (obj.metadata) {
-            const info = obj;
-            if (obj.type === "star") {
+    if (obj.metadata) {
+        const info = obj;
+        if (obj.type === "star") {
 
-                html += `<hr><b>Stardata:</b><br>`;
-                html += `Spectral Class: ${info.metadata.starSpectral?.h ?? "-"}-${info.metadata.starSpectral.s ?? "-"} (${info.metadata.starSpectral.name ?? "-"})<br>`;
-                html += `Tempreature: ${info.metadata.starTemperature ?? "-"} °K (${info.metadata.starSpectral.color ?? "-"})<br>`;
-                html += `Mass: ${info.metadata.starMass?.toFixed(3) ?? "-"} M☉<br>`;
-                html += `Radius: ${info.metadata.starRad?.toFixed(3) ?? "-"} R☉<br>`;
-                html += `Light Strength: ${info.metadata.starLum?.toFixed(5) ?? "-"} L☉<br>`;
-                html += `Mass (kg): ${info.metadata.starMassKG ? info.metadata.starMassKG.toExponential(3) : "-"}<br>`;
+            html += `<hr><b>Stardata:</b><br>`;
+            html += `Spectral Class: ${info.metadata.starSpectral?.h ?? "-"}-${info.metadata.starSpectral.s ?? "-"} (${info.metadata.starSpectral.name ?? "-"})<br>`;
+            html += `Tempreature: ${info.metadata.starTemperature ?? "-"} °K (${info.metadata.starSpectral.color ?? "-"})<br>`;
+            html += `Mass: ${info.metadata.starMass?.toFixed(3) ?? "-"} M☉<br>`;
+            html += `Radius: ${info.metadata.starRad?.toFixed(3) ?? "-"} R☉<br>`;
+            html += `Light Strength: ${info.metadata.starLum?.toFixed(5) ?? "-"} L☉<br>`;
+            html += `Mass (kg): ${info.metadata.starMassKG ? info.metadata.starMassKG.toExponential(3) : "-"}<br>`;
 
-                if (Array.isArray(info.metadata.planetSystem)) {
-                    html += `<hr><b>Planets (${info.metadata.planetSystem.length}):</b><br>`;
-                    info.metadata.planetSystem.forEach((planet, idx) => {
-                        let OTD = planet.OrbitalTimeInSec / (24 * 3600);
+            if (Array.isArray(info.metadata.planetSystem)) {
+                html += `<hr><b>Planets (${info.metadata.planetSystem.length}):</b><br>`;
+                info.metadata.planetSystem.forEach((planet, idx) => {
+                    let OTD = planet.OrbitalTimeInSec / (24 * 3600);
 
-                        let planetResString = "";
-                        const resourceLabel = DETAILED_RESOURCE_NAMES ? "name" : "short";
-                        const sortedResources = [...planet.resources].sort((a, b) => { return b.p - a.p; });
-                        for (let i = 0; i < sortedResources.length; i++) {
-                            const e = sortedResources[i];
-                            if (e.id != "nothing") {
-                                planetResString += `<br>&nbsp;&nbsp;${e[resourceLabel]} (${(e.p * 100).toFixed(1)}%)`;
-                            }
+                    let planetResString = "";
+                    const resourceLabel = DETAILED_RESOURCE_NAMES ? "name" : "short";
+                    const sortedResources = [...planet.resources].sort((a, b) => { return b.p - a.p; });
+                    for (let i = 0; i < sortedResources.length; i++) {
+                        const e = sortedResources[i];
+                        if (e.id != "nothing") {
+                            planetResString += `<br>&nbsp;&nbsp;${e[resourceLabel]} (${(e.p * 100).toFixed(1)}%)`;
                         }
+                    }
 
-                        html += `<u>Planet ${idx + 1}: ${planet.name}</u> <br>`;
-                        if (planet.attributes?.atm == "atmosphere" && planet.special.atmosphere != null) {
-                            html += `&nbsp;Temperature: ${planet.special.atmosphere.temperature.toFixed(3)} °K (${(planet.special.atmosphere.temperature - 273.15).toFixed(3)} °C)<br>`;
-                            html += `&nbsp;Atmosphärendruck: ${planet.special.atmosphere.atm.toFixed(2)} atm<br>`
-                            html += `&nbsp;Greenhouse Effect: ${planet.special.atmosphere.greenhouseEffect.toFixed(3)} °C<br>`
-                        }
-                        else {
-                            html += `&nbsp;Temperature: ${planet.temperature.toFixed(3)} °K (${(planet.temperature - 273.15).toFixed(3)} °C)<br>`;
-                        }
-                        html += `&nbsp;Orbital Heigth: ${planet.height.toFixed(2)} AE<br>`;
-                        html += `&nbsp;Mass: ${planet.massEM} Earth Masses (${planet.massKG.toExponential(3)} kg)<br>`;
-                        html += `&nbsp;Density: ${planet.d.toFixed(2)} kg/m³)<br>`;
-                        html += `&nbsp;Radius: ${(planet.r / 1000).toFixed(2)} km<br>`;
-                        html += `&nbsp;Orbital Period: ${planet.OrbitalTimeInYears} Years`;
-                        if (OTD < 100) { html += `(${OTD.toFixed(3)} Tage)<br>` } else { html += "<br>" }
-                        html += `&nbsp;Resources:${planetResString}<br>`;
-                        html += `&nbsp;Attributes: ${JSON.stringify(planet.attributes) ?? "-"}<br>`;
-                        if (planet.moons && planet.moons.length > 0) {
-                            if (planetResString.endsWith(", ")) planetResString = planetResString.slice(0, -2);
-                            html += `&nbsp;Moons (${planet.moons.length}):<br>`;
-                            planet.moons.forEach((moon, min) => {
-                                let moonResString = "";
-                                const resourceLabel = DETAILED_RESOURCE_NAMES ? "name" : "short";
-                                const sortedResources = [...moon.resources].sort((a, b) => { return b.p - a.p; });
-                                for (let i = 0; i < sortedResources.length; i++) {
-                                    const e = sortedResources[i];
-                                    if (e.id != "nothing") {
-                                        moonResString += `<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${e[resourceLabel]} (${(e.p * 100).toFixed(1)}%)`;
-                                    }
+                    html += `<u>Planet ${idx + 1}: ${planet.name}</u> <br>`;
+                    if (planet.attributes?.atm == "atmosphere" && planet.special.atmosphere != null) {
+                        html += `&nbsp;Temperature: ${planet.special.atmosphere.temperature.toFixed(3)} °K (${(planet.special.atmosphere.temperature - 273.15).toFixed(3)} °C)<br>`;
+                        html += `&nbsp;Atmosphärendruck: ${planet.special.atmosphere.atm.toFixed(2)} atm<br>`
+                        html += `&nbsp;Greenhouse Effect: ${planet.special.atmosphere.greenhouseEffect.toFixed(3)} °C<br>`
+                    }
+                    else {
+                        html += `&nbsp;Temperature: ${planet.temperature.toFixed(3)} °K (${(planet.temperature - 273.15).toFixed(3)} °C)<br>`;
+                    }
+                    html += `&nbsp;Orbital Heigth: ${planet.height.toFixed(2)} AE<br>`;
+                    html += `&nbsp;Mass: ${planet.massEM} Earth Masses (${planet.massKG.toExponential(3)} kg)<br>`;
+                    html += `&nbsp;Density: ${planet.d.toFixed(2)} kg/m³)<br>`;
+                    html += `&nbsp;Radius: ${(planet.r / 1000).toFixed(2)} km<br>`;
+                    html += `&nbsp;Orbital Period: ${planet.OrbitalTimeInYears} Years`;
+                    if (OTD < 100) { html += `(${OTD.toFixed(3)} Tage)<br>` } else { html += "<br>" }
+                    html += `&nbsp;Resources:${planetResString}<br>`;
+                    html += `&nbsp;Attributes: ${JSON.stringify(planet.attributes) ?? "-"}<br>`;
+                    if (planet.moons && planet.moons.length > 0) {
+                        if (planetResString.endsWith(", ")) planetResString = planetResString.slice(0, -2);
+                        html += `&nbsp;Moons (${planet.moons.length}):<br>`;
+                        planet.moons.forEach((moon, min) => {
+                            let moonResString = "";
+                            const resourceLabel = DETAILED_RESOURCE_NAMES ? "name" : "short";
+                            const sortedResources = [...moon.resources].sort((a, b) => { return b.p - a.p; });
+                            for (let i = 0; i < sortedResources.length; i++) {
+                                const e = sortedResources[i];
+                                if (e.id != "nothing") {
+                                    moonResString += `<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${e[resourceLabel]} (${(e.p * 100).toFixed(1)}%)`;
                                 }
+                            }
 
-                                html += `&nbsp;&nbsp;- ${moon.name}<br>`
-                                html += `&nbsp;&nbsp;&nbsp;&nbsp;Orbital Height: ${moon.height.toFixed(0)} km<br>`
-                                html += `&nbsp;&nbsp;&nbsp;&nbsp;Mass: ${moon.massEM} Earth Masses (${moon.massKG.toExponential(3)} kg)<br>`
-                                html += `&nbsp;&nbsp;&nbsp;&nbsp;Density: ${(moon.d).toFixed(2)} kg/m³<br>`
-                                html += `&nbsp;&nbsp;&nbsp;&nbsp;Radius: ${(moon.r / 1000).toFixed(2)} km<br>`
-                                html += `&nbsp;&nbsp;&nbsp;&nbsp;Orbital Peroid: ${(moon.OrbitalTimeInSec / 3600).toFixed(2)} h (${(moon.OrbitalTimeInSec / (24 * 3600)).toFixed(3)} Tage)<br>`;
-                                html += `&nbsp;&nbsp;&nbsp;&nbsp;Resources:${moonResString}<br>`;
-                                html += `&nbsp;&nbsp;&nbsp;&nbsp;Attributes: ${JSON.stringify(moon.attributes) ?? "-"}<br>`;
-                            });
-                        }
-                        html += "<br>"
-                    });
-                }
-            }
-
-            if (obj.type === "rogue_planet") {
-                html += `<hr><b>Planet Data:</b><br>`;
-                html += `Mass: ${info.massEM ?? "-"} Earth Mass<br>`;
-                html += `&nbsp;Resources: - <br>`;
-                if (info.moons && info.moons.length > 0) {
-                    html += `Moons (${info.moons.length}):<br>`;
-                    info.moons.forEach((moon, mi) => {
-                        html += `&nbsp;&nbsp;Orbital Height: ${moon.height.toFixed(0)} km<br>`
-                        html += `&nbsp;&nbsp;Mass: ${moon.massEM} Earth Masses (${moon.massKG.toExponential(3)} kg)<br>`
-                        html += `&nbsp;&nbsp;Density: ${(moon.d).toFixed(2)} kg/m³<br>`
-                        html += `&nbsp;&nbsp;Radius: ${(moon.r / 1000).toFixed(2)} km<br>`
-                        html += `&nbsp;&nbsp;Orbital Peroid: ${(moon.OrbitalTimeInSec / 3600).toFixed(2)} h (${(moon.OrbitalTimeInSec / (24 * 3600)).toFixed(3)} Tage)<br>`;
-                        html += `&nbsp;&nbsp;Resources: ${moonResString}<br>`;
-                        html += `&nbsp;&nbsp;Attributes: ${JSON.stringify(moon.attributes) ?? "-"}<br>`;
-                    });
-                }
+                            html += `&nbsp;&nbsp;- ${moon.name}<br>`
+                            html += `&nbsp;&nbsp;&nbsp;&nbsp;Orbital Height: ${moon.height.toFixed(0)} km<br>`
+                            html += `&nbsp;&nbsp;&nbsp;&nbsp;Mass: ${moon.massEM} Earth Masses (${moon.massKG.toExponential(3)} kg)<br>`
+                            html += `&nbsp;&nbsp;&nbsp;&nbsp;Density: ${(moon.d).toFixed(2)} kg/m³<br>`
+                            html += `&nbsp;&nbsp;&nbsp;&nbsp;Radius: ${(moon.r / 1000).toFixed(2)} km<br>`
+                            html += `&nbsp;&nbsp;&nbsp;&nbsp;Orbital Peroid: ${(moon.OrbitalTimeInSec / 3600).toFixed(2)} h (${(moon.OrbitalTimeInSec / (24 * 3600)).toFixed(3)} Tage)<br>`;
+                            html += `&nbsp;&nbsp;&nbsp;&nbsp;Resources:${moonResString}<br>`;
+                            html += `&nbsp;&nbsp;&nbsp;&nbsp;Attributes: ${JSON.stringify(moon.attributes) ?? "-"}<br>`;
+                        });
+                    }
+                    html += "<br>"
+                });
             }
         }
 
-        info_content.innerHTML = html;
+        if (obj.type === "rogue_planet") {
+            html += `<hr><b>Planet Data:</b><br>`;
+            html += `Mass: ${info.massEM ?? "-"} Earth Mass<br>`;
+            html += `&nbsp;Resources: - <br>`;
+            if (info.moons && info.moons.length > 0) {
+                html += `Moons (${info.moons.length}):<br>`;
+                info.moons.forEach((moon, mi) => {
+                    html += `&nbsp;&nbsp;Orbital Height: ${moon.height.toFixed(0)} km<br>`
+                    html += `&nbsp;&nbsp;Mass: ${moon.massEM} Earth Masses (${moon.massKG.toExponential(3)} kg)<br>`
+                    html += `&nbsp;&nbsp;Density: ${(moon.d).toFixed(2)} kg/m³<br>`
+                    html += `&nbsp;&nbsp;Radius: ${(moon.r / 1000).toFixed(2)} km<br>`
+                    html += `&nbsp;&nbsp;Orbital Peroid: ${(moon.OrbitalTimeInSec / 3600).toFixed(2)} h (${(moon.OrbitalTimeInSec / (24 * 3600)).toFixed(3)} Tage)<br>`;
+                    html += `&nbsp;&nbsp;Resources: ${moonResString}<br>`;
+                    html += `&nbsp;&nbsp;Attributes: ${JSON.stringify(moon.attributes) ?? "-"}<br>`;
+                });
+            }
+        }
     }
 
-    resize();
-    createLegend();
-})
+    info_content.innerHTML = html;
+}

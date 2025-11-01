@@ -60,35 +60,17 @@ class resource {
     /**
      * Informationen über eine Ressource, ich finde es einfacher und Übersichtlicher als eine JSON zu machen
      *
-     * `name` Name der Ressource
-     * `id` ID der Ressource
-     * `group` Gruppe der Ressource
-     * `short` Die Abkürzung, zb für Eisenerz: Fe2O3, Eisen oder nur Fe
-     * `description` Beschreibung der Ressource
-     * `density` Die Dichte der Ressource in kg/m^3
-     *  `chance` Die Wahrscheinlichkeit der Ressource
-     * `type` Typ der Ressource
-     * `found` Wo es gefunden werden kann, bei mehreren Punkten müssen mehrere Objekte erstellt werden.
+     * `name` Name of the Resource
+     * `id` ID of the Resource
+     * `group` Group of the Resource
+     * `short` The Short for a Resource, for Example "Fe" for "Iron"
+     * `description` Description of the Resource
+     * `density` The Density of the Resource in kg/m^3
+     * `chance` The Chance of the Resource
+     * `type` Type of the Resource
+     * `found` Where it can be found
      */
     constructor(name, id, group, short, description, density, chance, type, found) {
-        if (!name)
-            throw new Error("resource: 'name' darf nicht leer sein!");
-        if (!id)
-            throw new Error("resource: 'id' darf nicht leer sein!");
-        if (!group)
-            throw new Error("resource: 'group' darf nicht leer sein!");
-        if (!short)
-            throw new Error("resource: 'short' darf nicht leer sein!");
-        if (!description)
-            throw new Error("resource: 'description' darf nicht leer sein!");
-        if (density === undefined || density === null || isNaN(density))
-            throw new Error("resource: 'density' muss eine Zahl sein!");
-        if (chance === undefined || chance === null || isNaN(chance))
-            throw new Error("resource: 'chance' muss eine Zahl sein!");
-        if (!type)
-            throw new Error("resource: 'type' darf nicht leer sein!");
-        if (!found)
-            throw new Error("resource: 'found' darf nicht leer sein!");
         this.name = name;
         this.id = id;
         this.group = group;
@@ -154,6 +136,8 @@ class webResourceInformation {
         this.n = n;
         this.v = v;
     }
+    /**Creates a Very Useful Error for no Reason™. */
+    error() { throw new Error("Why are you Using this Function?"); }
     /**
      * Gibt den Web-Wert mit allen Nützlichen Informationen zurück
      *
@@ -230,7 +214,5 @@ function generateResources() {
 //* IRON
 //* COPPER
 //* ALUMINIUM
-//* For No Reason at all: PLASTIC BAG
-//* SILICON DIOXIDE
 //* WATER / WATER ICE
 //* EXOTIC

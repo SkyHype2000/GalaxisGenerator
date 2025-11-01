@@ -10,8 +10,8 @@ export type CelestialObjectTypes =
     "none" | "stellar_astroid" | "interstellar_t1_astroid" | "interstellar_t2_astroid" | "interstellar_t3_astroid" | "planet" | "moon" | "star" | "gas_planet" |
     "stellar_space" | "interstellar_space" | "anomaly" | "antimatter_anomaly" | "neutron_star" | "test" | "dev" | "everywhere" | "blackHole" | "mainBlackHole" |
     "rogue_planet"
-export const CelestialObjectTypesArray:CelestialObjectTypes[] = []
-export type ResourceTypes = "solid" | "liquid" | "gas" | "antimatter" | "exotic" | "plastic_bag"
+export const CelestialObjectTypesArray: CelestialObjectTypes[] = []
+export type ResourceTypes = "solid" | "liquid" | "gas" | "exotic" | "plastic_bag"
 
 /**
  * Das ist quasi die Class wo die Struktur aller Ressourcen verbaut ist.\
@@ -30,27 +30,17 @@ export class resource {
     /**
      * Informationen über eine Ressource, ich finde es einfacher und Übersichtlicher als eine JSON zu machen
      * 
-     * `name` Name der Ressource  
-     * `id` ID der Ressource  
-     * `group` Gruppe der Ressource  
-     * `short` Die Abkürzung, zb für Eisenerz: Fe2O3, Eisen oder nur Fe  
-     * `description` Beschreibung der Ressource  
-     * `density` Die Dichte der Ressource in kg/m^3  
-     *  `chance` Die Wahrscheinlichkeit der Ressource  
-     * `type` Typ der Ressource  
-     * `found` Wo es gefunden werden kann, bei mehreren Punkten müssen mehrere Objekte erstellt werden.
+     * `name` Name of the Resource  
+     * `id` ID of the Resource
+     * `group` Group of the Resource
+     * `short` The Short for a Resource, for Example "Fe" for "Iron"
+     * `description` Description of the Resource
+     * `density` The Density of the Resource in kg/m^3  
+     * `chance` The Chance of the Resource
+     * `type` Type of the Resource
+     * `found` Where it can be found
      */
     constructor(name: string, id: string, group: string, short: string, description: string, density: number, chance: number, type: ResourceTypes, found: CelestialObjectTypes) {
-        if (!name) throw new Error("resource: 'name' darf nicht leer sein!");
-        if (!id) throw new Error("resource: 'id' darf nicht leer sein!");
-        if (!group) throw new Error("resource: 'group' darf nicht leer sein!");
-        if (!short) throw new Error("resource: 'short' darf nicht leer sein!");
-        if (!description) throw new Error("resource: 'description' darf nicht leer sein!");
-        if (density === undefined || density === null || isNaN(density)) throw new Error("resource: 'density' muss eine Zahl sein!");
-        if (chance === undefined || chance === null || isNaN(chance)) throw new Error("resource: 'chance' muss eine Zahl sein!");
-        if (!type) throw new Error("resource: 'type' darf nicht leer sein!");
-        if (!found) throw new Error("resource: 'found' darf nicht leer sein!");
-
         this.name = name;
         this.id = id;
         this.group = group;
@@ -73,7 +63,7 @@ export class resource {
      * `n` = Der Wert wieviele Ressourcen dort drin stecken (Optional, kann nachträglich Deklariert werden)
      * `v` = Der Maximalwert von allen Ressourcen (Optional, kann nachträglich Deklariert werden)
      */
-    webInformation(p:number|null = null, n:number|null = null, v:number|null = null): webResourceInformation {
+    webInformation(p: number | null = null, n: number | null = null, v: number | null = null): webResourceInformation {
         return new webResourceInformation(this, p, n, v)
     }
 }
@@ -117,6 +107,9 @@ export class webResourceInformation {
         this.v = v;
     }
 
+    /**Creates a Very Useful Error for no Reason™. */
+    error() { throw new Error("Why are you Using this Function?"); }
+
     /**
      * Gibt den Web-Wert mit allen Nützlichen Informationen zurück
      * 
@@ -145,14 +138,15 @@ export class webResourceInformation {
     toWebJSON(p?: number): resWebJSONData {
         if ((p != null || p != undefined) && typeof p == "number") this.p = p;
         if (this.p == null) throw new Error("p was null, maybe it wasn't defined before use?");
-        return {name:this.name, id:this.id, short:this.short, p:this.p}
+        return { name: this.name, id: this.id, short: this.short, p: this.p }
     }
 }
 
 /**
  * Data that is getting used an the Website;
+ * It is smaller, so it is perfect for Websites
  */
-export type resWebJSONData = {name:string, id:string, short:string, p:number};
+export type resWebJSONData = { name: string, id: string, short: string, p: number };
 
 /**
  * Gibt die Ressource Basierend auf der ID zurück
@@ -167,9 +161,9 @@ export function getResourceByID(id: string): resource | null {
     return null;
 }
 
-export function generateResources(): {resource: resource, per: number, getWebJSON:() => resWebJSONData}[] {
+export function generateResources(): { resource: resource, per: number, getWebJSON: () => resWebJSONData }[] {
     const tries = 1000;
-    const res: Map<string, {resource: resource, n: number}> = new Map();
+    const res: Map<string, { resource: resource, n: number }> = new Map();
 
     for (let i = 0; i < tries; i++) {
         const x = config.rng();
@@ -185,7 +179,7 @@ export function generateResources(): {resource: resource, per: number, getWebJSO
         if (res.has(chosen.name)) {
             res.get(chosen.name)!.n++;
         } else {
-            res.set(chosen.name, {resource: chosen, n: 1});
+            res.set(chosen.name, { resource: chosen, n: 1 });
         }
     }
 
@@ -203,10 +197,6 @@ export function generateResources(): {resource: resource, per: number, getWebJSO
 //* COPPER
 
 //* ALUMINIUM
-
-//* For No Reason at all: PLASTIC BAG
-
-//* SILICON DIOXIDE
 
 //* WATER / WATER ICE
 

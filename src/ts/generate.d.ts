@@ -27,7 +27,7 @@ export declare function getRandomPosition(): Vector2;
  * I Just asked ChatGPT, lol.
  *
  * @param {number} max Maximalabstand
- * @param {number} min Mindistabstand
+ * @param {number} min Mindestabstand
  */
 export declare function getRandomDistance(max: number, min?: number): number;
 /**
@@ -37,9 +37,9 @@ export declare function getRandomDistance(max: number, min?: number): number;
  * which cannot be further away than the radius of the galaxy.
  *
  * After ~ 1 Week i figured it out lol.
- * it uses the distence generated with the `getRandomDistance()` and Converts it with help of the
+ * it uses the distance generated with the `getRandomDistance()` and Converts it with help of the
  * angle to the `x` and `y` position.
- * this is simple 5th Grade math lol, how i couldnt understand it...
+ * this is simple 5th Grade math lol, how i couldn't understand it...
  * [Polar Coordinate System (Wikipedia)](https://en.wikipedia.org/wiki/Polar_coordinate_system)
  *
  * @param {number} r Distance From the Center
@@ -60,19 +60,42 @@ export declare function generateUniqueName(): string;
  * There is a special function for generating anomaly names.
  * I didn't want to just use syllables for the names, so I decided to use this one.
  *
- * Because it sounds better for anomalies. Idk why.
+ * Because it sounds "more cool" for anomalies. Idk why.
  */
 export declare function generateAnomalyName(): string;
 export declare function generateStarSystem(): config.StarObjectMetadata;
 export declare function generateInterstellarAstroidField(): config.InterstellarAstroidFieldObjectMetadata;
 export declare function generateAnomaly(): config.AnomalyObjectMetadata;
 export declare function getSolarSpectralClassData(mass: number): config.SpectralClassData;
-export declare function generatePlanetSystemData(planetCount: number | undefined, StarMass: number): config.PlanetObjectMetadata[];
+export declare function generatePlanetSystemData(planetCount: number, StarMass: number, StarRadius: number): config.PlanetObjectMetadata[];
+/**
+ *
+ * @param MoonCount How Many Moons it should have
+ * @param OrbitalHeight The Orbital Height of the Object in m
+ * @param StarMass Mass of the Star in KG
+ * @returns
+ */
 export declare function generatePlanetData(MoonCount: number, OrbitalHeight: number, StarMass: number): config.PlanetObjectMetadata;
+/**
+ * Generates the Moonsystemdata for a Planet
+ *
+ * @param PlanetMass Planet Mass in KG
+ * @param moonCount Moon Count
+ */
 export declare function generateMoonSystemData(PlanetMass: number, moonCount?: number): config.MoonObjectMetadata[];
+/**
+ * Like the Function Says, it generates the Moon Data of a blanet
+ *
+ * @param OrbitalHeight Height of the Orbit in m
+ * @param PlanetMass Mass Of the Planet in kg
+ */
 export declare function generateMoonData(OrbitalHeight: number, PlanetMass: number): config.MoonObjectMetadata;
 /**
- * Very Effective at premitivly calculating the Mass of a Planet
+ * Calculates Orbital Information.
+ */
+export declare function calculateOrbitalInformation(mass: number, height: number): config.OrbitalInformation;
+/**
+ * Very Effective at primitively calculating the Mass of a Planet very Inefficiently
  *
  * @param radius Radius in meters
  * @param resources Array of resources

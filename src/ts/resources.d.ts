@@ -5,7 +5,7 @@
 export declare const allResources: resource[];
 export type CelestialObjectTypes = "none" | "stellar_astroid" | "interstellar_t1_astroid" | "interstellar_t2_astroid" | "interstellar_t3_astroid" | "planet" | "moon" | "star" | "gas_planet" | "stellar_space" | "interstellar_space" | "anomaly" | "antimatter_anomaly" | "neutron_star" | "test" | "dev" | "everywhere" | "blackHole" | "mainBlackHole" | "rogue_planet";
 export declare const CelestialObjectTypesArray: CelestialObjectTypes[];
-export type ResourceTypes = "solid" | "liquid" | "gas" | "antimatter" | "exotic" | "plastic_bag";
+export type ResourceTypes = "solid" | "liquid" | "gas" | "exotic" | "plastic_bag";
 /**
  * Das ist quasi die Class wo die Struktur aller Ressourcen verbaut ist.\
  * Also nicht "quasi" sondern "ja hier sind alle Elemente verbaut"
@@ -23,15 +23,15 @@ export declare class resource {
     /**
      * Informationen über eine Ressource, ich finde es einfacher und Übersichtlicher als eine JSON zu machen
      *
-     * `name` Name der Ressource
-     * `id` ID der Ressource
-     * `group` Gruppe der Ressource
-     * `short` Die Abkürzung, zb für Eisenerz: Fe2O3, Eisen oder nur Fe
-     * `description` Beschreibung der Ressource
-     * `density` Die Dichte der Ressource in kg/m^3
-     *  `chance` Die Wahrscheinlichkeit der Ressource
-     * `type` Typ der Ressource
-     * `found` Wo es gefunden werden kann, bei mehreren Punkten müssen mehrere Objekte erstellt werden.
+     * `name` Name of the Resource
+     * `id` ID of the Resource
+     * `group` Group of the Resource
+     * `short` The Short for a Resource, for Example "Fe" for "Iron"
+     * `description` Description of the Resource
+     * `density` The Density of the Resource in kg/m^3
+     * `chance` The Chance of the Resource
+     * `type` Type of the Resource
+     * `found` Where it can be found
      */
     constructor(name: string, id: string, group: string, short: string, description: string, density: number, chance: number, type: ResourceTypes, found: CelestialObjectTypes);
     /**
@@ -72,6 +72,8 @@ export declare class webResourceInformation {
      * @param v Der Maximalwert von allen Ressourcen
      */
     pnv(p: number, n: number, v: number): void;
+    /**Creates a Very Useful Error for no Reason™. */
+    error(): void;
     /**
      * Gibt den Web-Wert mit allen Nützlichen Informationen zurück
      *
@@ -97,6 +99,7 @@ export declare class webResourceInformation {
 }
 /**
  * Data that is getting used an the Website;
+ * It is smaller, so it is perfect for Websites
  */
 export type resWebJSONData = {
     name: string;

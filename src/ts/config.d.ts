@@ -84,7 +84,7 @@ export declare const planetRadius: Vector2;
  *
  * Standard: `0.1`
  *
- * For Reference, The average distance between Mercury and the Sun is ~0.387 AU
+ * Did some googling and For Reference, The average distance between Mercury and the Sun is ~0.387 AU
  * So `.1` AU is pretty close.
  */
 export declare const planetToSunStartDistance: number;
@@ -117,7 +117,7 @@ export declare const moonRadius: Vector2;
  *
  * Values in the Middle are More common than the Values on the Edges.
  *
- * Standard: `0.05-2`
+ * Standard: `0.0005-0.002`
  */
 export declare const moonToMoonChangeDistance: Vector2;
 /**
@@ -157,7 +157,7 @@ export declare const SB: 5.670373e-8;
 /**
  * The Length of a Astromical Unit in meters.
  */
-export declare const AU: 149597870700;
+export declare const AU: number;
 /**
  * The Length of a Light Year in meters.
  */
@@ -171,9 +171,9 @@ export declare const YEAR_IN_SEC: 31557600;
  */
 export declare const SUN_MASS_KG: 1.9884e30;
 /**
- * The Radius of the sun in KM
+ * The Radius of the sun in meters
  */
-export declare const R_SOL_KM: 695700;
+export declare const R_SOL: number;
 /**
  * The luminosity of the sun in watts
  */
@@ -186,6 +186,10 @@ export declare const T_SOL: 5778;
  * The mass of the Earth in KG
  */
 export declare const EARTH_MASS_KG: 5.972e24;
+/**
+ * The Radius of the Earth in meters
+ */
+export declare const EARTH_RADIUS: number;
 /**
  * Spectral Class
  */
@@ -264,7 +268,7 @@ export declare const VALID_SUBSPECTRAL_CLASS_VALUES: SpectralClassType[];
  * = "Historically, many constants were actually fiddled around with until reasonably consistent results were achieved."
  *
  * But after writing some code, this would be the most precise Number:
- * 1.0216388735543742521887522130876091683703957473078500310054178421533504358657415429775215553538366594
+ * `1.0216388735543742521887522130876091683703957473078500310054178421533504358657415429775215553538366594`
  * So i will take that
  *
  * ---
@@ -347,6 +351,8 @@ export type FilesObjectTypeInfo = {
  *
  * `extra`: Optional Object Spesific Data, for Example Star Information
  * - `star?`: the Metadata for a Star
+ * - `planet?`: the Metadata for a Planet
+ * - `interstellarAstroidField?`: the Metadata for a Interstellar Astroid Field
  */
 export type ObjectMetadata = {
     name: string;
@@ -388,8 +394,7 @@ export type PlanetObjectMetadata = {
     gravitation: number;
     resources: res.resWebJSONData[];
     moons: MoonObjectMetadata[];
-    OrbitalPeriod: number;
-    OrbitalHeigth: number;
+    Orbit: OrbitalInformation;
 };
 /**
  * Metadata for a Moon
@@ -402,8 +407,16 @@ export type MoonObjectMetadata = {
     radius: number;
     gravitation: number;
     resources: res.resWebJSONData[];
+    Orbit: OrbitalInformation;
+};
+/**
+ * Orbital Information of a Planet/Moon
+ */
+export type OrbitalInformation = {
     OrbitalPeriod: number;
-    OrbitalHeigth: number;
+    OrbitalSpeed: number;
+    OrbitalLength: number;
+    OrbitalHeight: number;
 };
 /**
  * Metadata for a InterstellarAstroidField
@@ -421,16 +434,34 @@ export type AnomalyObjectMetadata = {
     name: string;
 };
 /**
- * Range Data for the Web-Oriantation File.
+ * Range Data for the Web-Orientation File.
+ *
+ * ---
+ *
+ * The Min-Value declares how big the Map is on the smallest (Everything in the Bottom-Left) (in Sectors)
+ * The Max-Value declares how big the Map is on the highest (Everything in the Top-Right) (in Sectors)
+ *
+ * In the `array`, all Sectors are Written Down
+ * In the `spaceObjectAmount` all objects are Counted
+ * In the `spaceObjectTypes` are all Object ans the amount of how many there are for that Object-Type
  */
 export type range = {
     min: Vector2;
     max: Vector2;
     array: string[];
+    spaceObjectAmount: number;
     spaceObjectTypes: {
         [k: string]: {
             objectType: res.CelestialObjectTypes;
             amount: number;
         };
     };
+};
+/**
+ * Final Galaxy Information
+ */
+export type galaxyInformation = {
+    seed: string;
+    name: string;
+    range: range;
 };
