@@ -20,6 +20,7 @@ import { gzipSync, strToU8 } from 'fflate';
  */
 const time = Date.now();
 fs.mkdirSync(`./galaxyLists/${time}`, { recursive: true })
+fs.mkdirSync(`./src/dev`, { recursive: true })
 
 /**
  * The Sector Data that is getting put into the Files.
@@ -372,7 +373,7 @@ export function generateAnomaly(): config.AnomalyObjectMetadata {
     return returnData;
 }
 
-let recordedSpectralClasses = {
+let recordedSpectralClasses: {[key:string]:number} = {
     O: 0,
     B: 0,
     A: 0,
@@ -401,6 +402,8 @@ export function getSolarSpectralClassData(mass: number): config.SpectralClassDat
             break;
         }
     }
+
+    recordedSpectralClasses[returnData.class]++;
 
     const temperature = Math.round((config.rng() * (currentClass.tempmax - currentClass.tempmin)) + currentClass.tempmin);
     returnData.temperature = temperature;
@@ -539,7 +542,7 @@ while (objects.length < config.count) {
 }
 console.log(`\u001b[1A\u001b[2K` + `Objects Generated in ${Date.now() - generateStartTime}ms`)
 
-let range: config.range = { min: new Vector2(), max: new Vector2(), array: [], spaceObjectAmount: 0, spaceObjectTypes: {} }
+let range: config.range = { min: new Vector2(), max: new Vector2(), array: [], spaceObjectAmount: 0, spaceObjectTypes: {}, starClassAmount:recordedSpectralClasses }
 
 const galaxyJsonPath = `./galaxyLists/${time}/galaxy.json.gz`;
 const rangeJsonPath = `./galaxyLists/${time}/galaxyInformation.json`;
@@ -578,9 +581,14 @@ galaxyInformation.range = range;
 
 fs.writeFileSync(rangeJsonPath, JSON.stringify(galaxyInformation));
 
-fs.writeFileSync("./temp_object_dev.json", JSON.stringify(galaxyData["0_0"].objects[1], null, 4))
-console.log(`Written temp_object_dev.json at ${Date.now() - time}ms`);
-fs.writeFileSync("./temp_object_dev_nf.json", JSON.stringify(galaxyData["0_0"].objects[1]))
-console.log(`Written temp_object_dev_nf.json at ${Date.now() - time}ms`);
+fs.writeFileSync("./src/dev/temp_galaxy_object_dev.json", JSON.stringify(galaxyData["0_0"].objects[1], null, 4))
+console.log(`Written src/dev/temp_galaxy_object_dev.json at ${Date.now() - time}ms`);
+fs.writeFileSync("./src/dev/temp_galaxy_object_dev_nf.json", JSON.stringify(galaxyData["0_0"].objects[1]))
+console.log(`Written src/dev/temp_galaxy_object_dev_nf.json at ${Date.now() - time}ms`);
+
+fs.writeFileSync(`./src/dev/temp_galaxy_information_dev.json`, JSON.stringify(galaxyInformation, null, 4))
+console.log(`Written src/dev/temp_galaxy_information_dev.json at ${Date.now() - time}ms`);
+fs.writeFileSync(`./src/dev/temp_galaxy_information_dev_nf.json`, JSON.stringify(galaxyInformation))
+console.log(`Written src/dev/temp_galaxy_information_dev_nf.json at ${Date.now() - time}ms`);
 
 console.log(`Galaxy Generated in ${Date.now() - time}ms`);

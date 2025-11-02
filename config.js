@@ -258,12 +258,12 @@ for (let i = 0; i < exports.VALID_SPECTRAL_CLASS_VALUES.length; i++) {
  * - Perfect: `1.021639 (+.00001)`
  *
  * If you Asking "why did you do that?"
- * Answer: "I Have no life and I'am pretty sure that the Gravitational Constant was Determinated the same way XD"
+ * Answer: "I Have no life and I'am pretty sure that the Gravitational Constant was Determined the same way XD"
  *
- * This is what ChatGPT said to my constant: "Historisch wurden viele Konstanten tatsächlich erst mal so rumgestochert, bis man halbwegs konsistente Ergebnisse hatte."
+ * This is what ChatGPT said to my constant: "Historisch wurden viele Konstanten tatsächlich erst mal so herumgestochert, bis man halbwegs konsistente Ergebnisse hatte."
  * = "Historically, many constants were actually fiddled around with until reasonably consistent results were achieved."
  *
- * But after writing some code, this would be the most precise Number:
+ * But after writing some code, this would be the most precise Number (This did the exact same thing as me in Desmos, just more accurate):
  * `1.0216388735543742521887522130876091683703957473078500310054178421533504358657415429775215553538366594`
  * So i will take that
  *

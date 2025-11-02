@@ -36,6 +36,67 @@ let DETAILED_RESOURCE_NAMES = false;
 const canvas = document.getElementById('galaxy');
 const ctx = canvas.getContext('2d');
 
+// HZML
+const legend_Star_amount = document.getElementById("star_count");
+const legend_o_Star_amount = document.getElementById("o_star_count");
+const legend_b_Star_amount = document.getElementById("b_star_count");
+const legend_a_Star_amount = document.getElementById("a_star_count");
+const legend_f_Star_amount = document.getElementById("f_star_count");
+const legend_g_Star_amount = document.getElementById("g_star_count");
+const legend_k_Star_amount = document.getElementById("k_star_count");
+const legend_m_Star_amount = document.getElementById("m_star_count");
+const legend_l_Star_amount = document.getElementById("l_star_count");
+const legend_t_Star_amount = document.getElementById("t_star_count");
+const legend_y_Star_amount = document.getElementById("y_star_count");
+
+let Star_amount_Information = {
+    star: +legend_Star_amount.innerText | 0,
+    o_star: +legend_o_Star_amount.innerText | 0,
+    b_star: +legend_b_Star_amount.innerText | 0,
+    a_star: +legend_a_Star_amount.innerText | 0,
+    f_star: +legend_f_Star_amount.innerText | 0,
+    g_star: +legend_g_Star_amount.innerText | 0,
+    k_star: +legend_k_Star_amount.innerText | 0,
+    m_star: +legend_m_Star_amount.innerText | 0,
+    l_star: +legend_l_Star_amount.innerText | 0,
+    t_star: +legend_t_Star_amount.innerText | 0,
+    y_star: +legend_y_Star_amount.innerText | 0,
+    update: () => {
+        legend_Star_amount.innerText = Star_amount_Information.star;
+        legend_o_Star_amount.innerText = Star_amount_Information.o_star;
+        legend_b_Star_amount.innerText = Star_amount_Information.b_star;
+        legend_a_Star_amount.innerText = Star_amount_Information.a_star;
+        legend_f_Star_amount.innerText = Star_amount_Information.f_star;
+        legend_g_Star_amount.innerText = Star_amount_Information.g_star;
+        legend_k_Star_amount.innerText = Star_amount_Information.k_star;
+        legend_m_Star_amount.innerText = Star_amount_Information.m_star;
+        legend_l_Star_amount.innerText = Star_amount_Information.l_star;
+        legend_t_Star_amount.innerText = Star_amount_Information.t_star;
+        legend_y_Star_amount.innerText = Star_amount_Information.y_star;
+    }
+}
+log("Starter Legend Star Information");
+log(Star_amount_Information);
+Star_amount_Information.update();
+
+const legend_interstellar_t1_astroid_count = document.getElementById("interstellar_t1_astroid_count")
+const legend_interstellar_t2_astroid_count = document.getElementById("interstellar_t2_astroid_count")
+const legend_interstellar_t3_astroid_count = document.getElementById("interstellar_t3_astroid_count")
+
+let InterstellarAstroid_amount_Information = {
+    t1_astroid: +legend_interstellar_t1_astroid_count.innerText | 0,
+    t2_astroid: +legend_interstellar_t2_astroid_count.innerText | 0,
+    t3_astroid: +legend_interstellar_t3_astroid_count.innerText | 0,
+    update: () => {
+        legend_interstellar_t1_astroid_count.innerText = InterstellarAstroid_amount_Information.t1_astroid;
+        legend_interstellar_t2_astroid_count.innerText = InterstellarAstroid_amount_Information.t2_astroid;
+        legend_interstellar_t3_astroid_count.innerText = InterstellarAstroid_amount_Information.t3_astroid;
+    }
+}
+log("Starter Legend Interstellar Astroid Information");
+log(InterstellarAstroid_amount_Information);
+InterstellarAstroid_amount_Information.update();
+
 // UI Elements
 const info_panel = document.getElementById('info_panel');
 const info_content = document.getElementById('info_content');
@@ -62,6 +123,13 @@ fetch('galaxyInformation.json')
         log(JSON.stringify(GALAXY_DATA["0_0"].objects[1]));
         log("Galaxy Data Full.")
         log(GALAXY_DATA);
+    })
+    .then(() => {
+        Star_amount_Information.star = GALAXY_INFORMATION.range.spaceObjectTypes.star.amount;
+        log("Loaded Star_amount_Information.star from .range.spaceObjectTypes.star.amount: " + Star_amount_Information.star)
+
+        const temp = GALAXY_INFORMATION.range.starClassAmount;
+        log(temp);
     })
     .then(() => {
         console.info("\x1b[32mLoaded all Information!\x1b[0m");
