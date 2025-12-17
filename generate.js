@@ -512,11 +512,12 @@ while (objects.length < config.count) {
 }
 console.log(`\u001b[1A\u001b[2K` + `Objects Generated in ${Date.now() - generateStartTime}ms`);
 let range = { min: new tool_1.Vector2(), max: new tool_1.Vector2(), array: [], spaceObjectAmount: 0, spaceObjectTypes: {}, starClassAmount: recordedSpectralClasses };
-const galaxyJsonPath = `./galaxyLists/${time}/galaxy.json.gz`;
-const rangeJsonPath = `./galaxyLists/${time}/galaxyInformation.json`;
+const galaxyDataJsonPath = `./galaxyLists/${time}/galaxy.json.gz`;
+const galaxyInformationJsonPath = `./galaxyLists/${time}/galaxyInformation.json`;
 const galaxyData = Object.fromEntries(files);
 const compressedGalaxy = (0, fflate_1.gzipSync)((0, fflate_1.strToU8)(JSON.stringify(galaxyData)));
-fs_1.default.writeFileSync(galaxyJsonPath, compressedGalaxy);
+fs_1.default.writeFileSync(galaxyDataJsonPath, compressedGalaxy);
+fs_1.default.writeFileSync("./web_new/galaxy.json.gz", compressedGalaxy);
 files.forEach((e_i, i) => {
     range.array.push(e_i.name);
     e_i.objects.forEach((e_j, j) => {
@@ -544,7 +545,8 @@ let galaxyInformation = {};
 galaxyInformation.seed = config.seed;
 galaxyInformation.name = (0, tool_1.generateName)();
 galaxyInformation.range = range;
-fs_1.default.writeFileSync(rangeJsonPath, JSON.stringify(galaxyInformation));
+fs_1.default.writeFileSync(galaxyInformationJsonPath, JSON.stringify(galaxyInformation));
+fs_1.default.writeFileSync("./web_new/galaxyInformation.json", JSON.stringify(galaxyInformation));
 fs_1.default.writeFileSync("./src/dev/temp_galaxy_object_dev.json", JSON.stringify(galaxyData["0_0"].objects[1], null, 4));
 console.log(`Written src/dev/temp_galaxy_object_dev.json at ${Date.now() - time}ms`);
 fs_1.default.writeFileSync("./src/dev/temp_galaxy_object_dev_nf.json", JSON.stringify(galaxyData["0_0"].objects[1]));
